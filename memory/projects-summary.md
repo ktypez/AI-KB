@@ -5,7 +5,7 @@ last_updated: 2026-06-21
 projects:
   - id: truck
     path: ~/truck
-    domain: truck.ezzy.dev (Vercel SPA)
+    domain: truck.mcky.space (Vercel SPA)
   - id: mcky.space
     path: ~/mcky.space
     domain: mcky.space (Vercel)

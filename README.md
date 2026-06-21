@@ -18,7 +18,7 @@ Centralized knowledge base for all AI-assisted projects — agent profiles, proj
 
 | Project | Framework | Path |
 |---------|-----------|------|
-| [truck](https://truck.ezzy.dev) | React 19 + Vite 6 + Supabase | `~/truck` |
+| [truck](https://truck.mcky.space) | React 19 + Vite 6 + Supabase | `~/truck` |
 | [mcky.space](https://mcky.space) | Next.js 14 | `~/mcky.space` |
 | [clientdata](https://data.mcky.space) | Next.js 16 + Neon | `~/clientdata` |
 
