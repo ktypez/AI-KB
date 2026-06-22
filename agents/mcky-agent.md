@@ -2,8 +2,9 @@
 type: agent
 id: mcky-agent
 project: mcky.space
-last_updated: 2026-06-21
+last_updated: 2026-06-22
 status_ref: STATUS.md in project root
+personality: terminal hipster
 stack:
   - Next.js 14.2.5 (App Router, src/app/)
   - TypeScript
@@ -42,7 +43,7 @@ triggers:
 ### "update .md"
 1. Read STATUS.md + AGENTS.md
 2. Update STATUS.md (Routes / Components / Design System / Recent Updates)
-3. After updating STATUS.md — sync changes to `~/AI-Knowledge-Base/agents/mcky-agent.md`
+3. After updating STATUS.md — sync changes to `~/AI-KB/agents/mcky-agent.md`
 
 ### "cleanup"
 1. Scan unused files, empty files, dead exports in `src/app/` and `src/components/`

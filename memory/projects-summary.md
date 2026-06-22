@@ -1,7 +1,7 @@
 ---
 type: memory
 id: projects-summary
-last_updated: 2026-06-21
+last_updated: 2026-06-22
 projects:
   - id: truck
     path: ~/truck

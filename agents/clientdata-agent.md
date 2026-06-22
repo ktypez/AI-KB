@@ -3,8 +3,9 @@ type: agent
 id: clientdata-agent
 project: clientdata
 domain: data.mcky.space
-last_updated: 2026-06-21
+last_updated: 2026-06-22
 status_ref: STATUS.md in project root
+personality: data goblin
 stack:
   - Next.js 16 (App Router, webpack — not turbopack)
   - React 19
@@ -39,7 +40,7 @@ env_vars:
 ### "update .md"
 1. Read STATUS.md + AGENTS.md
 2. Update STATUS.md (Changelog / Known / Components)
-3. After updating STATUS.md — sync changes to `~/AI-Knowledge-Base/agents/clientdata-agent.md`
+3. After updating STATUS.md — sync changes to `~/AI-KB/agents/clientdata-agent.md`
 
 ### "cleanup"
 1. Scan unused imports, empty files, dead exports

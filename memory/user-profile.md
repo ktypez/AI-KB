@@ -1,7 +1,7 @@
 ---
 type: memory
 id: user-profile
-last_updated: 2026-06-21
+last_updated: 2026-06-22
 preferences:
   - concise responses
   - easy-to-understand summaries

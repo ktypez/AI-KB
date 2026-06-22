@@ -1,7 +1,7 @@
 ---
 type: tasks
 id: tasks-overview
-last_updated: 2026-06-21
+last_updated: 2026-06-22
 shared_triggers:
   - trigger: update .md
     action: Read KB/status/<project>-status.md + AGENTS.md, update KB/status/<project>-status.md, sync KB/agents/<agent>.md if needed
@@ -28,8 +28,8 @@ shared_triggers:
 
 Before editing any project file:
 1. Read the project's AGENTS.md for rules
-2. Read the project's status in `~/AI-Knowledge-Base/status/<project>-status.md`
+2. Read the project's status in `~/AI-KB/status/<project>-status.md`
 3. Read the relevant source file (always latest version)
 
-After making changes to any file in AI-Knowledge-Base:
+After making changes to any file in AI-KB:
 - The change is already centralized — no sync needed

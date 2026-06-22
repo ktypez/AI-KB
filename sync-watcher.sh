@@ -1,9 +1,9 @@
 #!/data/data/com.termux/files/usr/bin/bash
-# Background watcher daemon for AI-Knowledge-Base → shared/AI-KB
+# Background watcher daemon for AI-KB → shared/AI-KB
 # Watches for file changes and syncs automatically
 # Requires: inotify-tools (pkg install inotify-tools)
 
-SRC="$HOME/AI-Knowledge-Base"
+SRC="$HOME/AI-KB"
 DST="$HOME/storage/shared/AI-KB"
 LOG="$HOME/.termux/ai-kb-sync.log"
 PIDFILE="$HOME/.termux/ai-kb-sync.pid"

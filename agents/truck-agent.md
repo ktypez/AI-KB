@@ -2,8 +2,9 @@
 type: agent
 id: truck-agent
 project: truck
-last_updated: 2026-06-21
+last_updated: 2026-06-22
 status_ref: STATUS.md in project root
+personality: overtime enthusiast
 stack:
   - React 19 + Vite 6 + TypeScript + Supabase + PWA
   - react-router-dom v7, tanstack/react-query v5
