@@ -20,6 +20,13 @@ type: status
 
 ## Changelog
 
+### Stale Cache After Mutations — Server Response + Cache Invalidation
+- Fixed: `lib/storage.ts` — `addClient`/`updateClient` now `await res.json()` and return server-processed Client (R2 URLs, server timestamps). Error messages parsed from server body. localStorage cache updated with server-processed data instead of raw user input. `deleteClient` now syncs localStorage cache too.
+- Fixed: `app/page.tsx` — `handleDetailUpdate` and `onSave` handler now async, use server return values for React state. On error, `alert()` the server error message + `fetchClients()` rollback to restore fresh state.
+- Fixed: `components/ClientDetail.tsx` — `handleDelete` uses `deleteClient` from `@/lib/storage` instead of raw `fetch`. Catches errors with `alert()`. localStorage cache now properly synced on delete.
+- Fixed: `app/api/clients/route.ts` — removed `Cache-Control: public, max-age=10, stale-while-revalidate=30` from GET response (was causing stale data after mutations).
+- Fixed: `app/api/clients/[id]/route.ts` — removed `Cache-Control: public, max-age=60` from GET response (same reason).
+
 ### PWA Install Alert
 - Fixed: popup still showing after install (wrong SSR `isStandalone` initialization)
 - Fixed: no install button on unsupported browsers (now hidden)
