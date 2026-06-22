@@ -5,7 +5,7 @@ Centralized knowledge base for all projects — agent profiles, status, user mem
 ## Structure
 
 ```
-├── agents/       Agent profiles (truck, mcky, clientdata, writer)
+├── agents/       Agent profiles (project-a, project-b, project-c, writer)
 ├── status/       Centralized project status (replaces local STATUS.md)
 ├── memory/       User profile & projects summary
 ├── tasks/        Shared trigger definitions
@@ -24,12 +24,12 @@ Tasks run via `~/.config/opencode/skills/`:
 | `update-md` | "update .md" | Sync status + agent files |
 | `cleanup-project` | "cleanup" | Unused scan + health check |
 | `kb-manage` | "sync KB" | Validate, index, sync |
-| `writer-work` | "summarize" | Docs & changelogs |
+| `writer-work` | "summarize" / "wrap-day" | Docs & changelogs |
 
 ## Projects
 
 | Project | Stack | Path |
 |---------|-------|------|
-| [truck](https://truck.mcky.space) | React 19 + Vite 6 + Supabase | `~/truck` |
-| [mcky.space](https://mcky.space) | Next.js 14 | `~/mcky.space` |
-| [clientdata](https://data.mcky.space) | Next.js 16 + Neon | `~/clientdata` |
+| project-a | React 19 + Vite 6 + Supabase | `~/project-a` |
+| project-b | Next.js 14 | `~/project-b` |
+| project-c | Next.js 16 + Neon | `~/project-c` |

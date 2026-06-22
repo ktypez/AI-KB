@@ -22,7 +22,7 @@ prettier: no semi, single quotes, trailing comma all, 100 width
 deployment: Vercel (SPA rewrite in vercel.json)
 triggers:
   "update .md": Read STATUS.md + AGENTS.md, update Components/Data Flow/Constraints
-  "สรุปวัน": Read diff → update Changelog.tsx + STATUS.md → git commit
+  "wrap-day": Read diff → update Changelog.tsx + STATUS.md → git commit
   "cleanup": Scan unused → health check → present findings → update docs
 env_vars:
   - VITE_SUPABASE_URL
@@ -87,11 +87,11 @@ main.tsx → App.tsx (auth gate + session + theme)
 2. Update STATUS.md (Components / Data Flow / Constraints)
 3. Update project AGENTS.md if needed
 
-### "สรุปวัน"
+### "wrap-day"
 1. Read diff, Changelog, STATUS.md
 2. Add Thai summary to `src/components/Changelog.tsx` as new `v{YYYY.MM.DD}` entry
 3. Update STATUS.md — Components / Data Flow / Constraints
-4. `git add` + commit `"docs: สรุปวัน {YYYY-MM-DD}"`
+4. `git add` + commit `"docs: wrap-day {YYYY-MM-DD}"`
 5. Only touch Changelog.tsx and STATUS.md
 
 ### "cleanup"

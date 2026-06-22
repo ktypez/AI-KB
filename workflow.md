@@ -11,7 +11,7 @@ last_updated: 2026-06-22
 | "update .md" | Read AGENTS.md + KB status → update `status/<project>-status.md` → sync agent file |
 | "cleanup" | Scan unused deps/files → health check → present findings → update status |
 | "sync KB" | Validate frontmatter → update agent/task indexes → sync to shared storage |
-| "summarize" | Read diff/status → write changelog or step-by-step docs |
+| "wrap-day" | Read diff → update Changelog.tsx + status → commit (truck only) |
 
 ## 2. Daily Workflow
 **update .md** — Read project AGENTS.md + status file → read source files → update status (components/routes/data flow) → update agent file if patterns changed.
@@ -20,7 +20,7 @@ last_updated: 2026-06-22
 
 **sync KB** — Validate all .md files have YAML frontmatter (type, id, last_updated) → update AGENTS.md index → update tasks/overview.md → run `bash ~/AI-KB/sync-to-shared.sh`.
 
-**summarize** — Read relevant KB files → write changelog or instructions per user's style rules.
+**wrap-day** — Read git diff + Changelog.tsx → add `vYYYY.MM.DD` entry with Thai summary → commit (truck only).
 
 ## 3. Project-Specific Notes
 - **truck** — React 19 + Vite 6 + Supabase PWA. Dev: `node node_modules/.bin/vite`. Build: `node node_modules/vite/bin/vite.js build`. Test: `node node_modules/.bin/vitest run`.

@@ -9,7 +9,7 @@ shared_triggers:
   - trigger: cleanup
     action: Scan unused → health check → present findings → update KB/status/<project>-status.md + KB
     applies_to: [truck, mcky.space, clientdata]
-  - trigger: สรุปวัน
+  - trigger: wrap-day
     action: Read diff, update Changelog.tsx + KB/status/truck-status.md, commit
     applies_to: [truck]
 ---
@@ -22,7 +22,7 @@ shared_triggers:
 |---------|-------------|----------|
 | `update .md` | Read KB/status/<project>-status.md + AGENTS.md, update KB/status/<project>-status.md, sync KB/agents/ if needed | truck, mcky.space, clientdata |
 | `cleanup` | Scan unused → health check → present findings → update KB/status/<project>-status.md + KB | truck, mcky.space, clientdata |
-| `สรุปวัน` | Review today's diff, write changelog entry, update KB/status/truck-status.md, commit | truck |
+| `wrap-day` | Review today's diff, write changelog entry, update KB/status/truck-status.md, commit | truck |
 
 ## Task Checklist
 

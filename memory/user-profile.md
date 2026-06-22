@@ -14,6 +14,7 @@ rules:
   - answer first, then act
   - use contractions (I'll, don't)
   - emojis only when explicitly asked
+  - README.md must use censored names: project-a, project-b, project-c (no real names/domains)
 termux:
   - node: use directly (no npx)
   - vite: node node_modules/.bin/vite

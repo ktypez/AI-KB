@@ -49,7 +49,7 @@ All context lives in this KB.
 |---------|-------|------------|------------|
 | `update .md` | ✅ | ✅ | ✅ |
 | `cleanup` | ✅ | ✅ | ✅ |
-| `สรุปวัน` | ✅ | — | — |
+| `wrap-day` | ✅ | — | — |
 
 Each agent file in `agents/` defines its own trigger implementations.
 
