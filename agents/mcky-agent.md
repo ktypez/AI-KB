@@ -9,18 +9,28 @@ stack:
   - Next.js 14.2.5 (App Router, src/app/)
   - TypeScript
   - Pure CSS (globals.css, no Tailwind classes)
-  - JetBrains Mono (Google Fonts)
+  - JetBrains Mono via next/font/google (was Google Fonts <link>)
   - localStorage (client-side only)
   - Supabase (blog posts)
-  - react-markdown + remark-gfm + remark-breaks
+  - react-markdown + remark-gfm + remark-breaks (dynamic import)
+  - SWR (blog data fetching, replaces manual useEffect)
   - Deployment: Vercel
 routes:
-  - path: / — Terminal sim homepage with typewriter animation
-  - path: /about — Terminal-style bio page
-  - path: /blog — Blog with markdown support (react-markdown + remark-gfm)
+  - path: / — Terminal sim homepage with typewriter animation (dynamic import of TerminalAnimation)
+  - path: /about — Terminal-style bio page (server component, no 'use client')
+  - path: /blog — Blog with markdown support
+  - path: /blog/[id] — Blog post page (SWR + dynamic Markdown)
   - path: /habits — Habit tracker (3 tabs: habits, stats, profile)
-  - path: /task — Todo list (3 tabs)
-  - path: /projects — Project showcase with cat project.txt
+  - path: /task — Todo list (2 tabs: todos, stats)
+  - path: /projects — Project showcase (server component, no 'use client')
+components:
+  - TerminalAnimation: Extracted from homepage, typewriter + blinking cursor
+  - HabitRow: memo component from HabitsTab
+  - SectionBlock: memo component from HabitsTab
+  - ViewModeBar: extracted view-mode toggle from HabitsTab
+  - TodoRow: memo component from task page
+  - FloatingButtons: dynamic import (ssr: false)
+  - Markdown: dynamic import (ssr: false)
 commands:
   dev: npm run dev
   build: npm run build
@@ -28,15 +38,24 @@ commands:
 triggers:
   "update .md": Read STATUS.md + AGENTS.md, update routes/components/design → sync KB
   "cleanup": Scan unused → build check → present findings → update docs
+perf_patterns:
+  - Conditional render (tab === 'x' && ...) instead of display:none
+  - React.memo for list items (HabitRow, TodoRow, SectionBlock)
+  - useMemo for derived/computed data (openCount, rate, heatMap, periodStats)
+  - useCallback for event handlers passed as props
+  - dynamic(() => import(...), { ssr: false }) for client-only components
+  - next/font instead of external font link
+  - SWR for data fetching with caching/dedup
 ---
 
 # mcky.space Agent
 
 ## Design System
-- Dark theme `#0a0e14` bg
-- Accent colors: amber, green, cyan, blue, purple
+- Dark theme `#0a0e14` → `#15141b` (Aura)
+- Accent colors: purple, mint, peach, blue, pink
 - CSS variables in `:root` — no magic numbers
 - Terminal/retro aesthetic
+- 2px dashed terminal-style page dividers
 
 ## Triggers
 
@@ -64,5 +83,7 @@ triggers:
 
 - Prioritize reference design when given
 - New routes must match existing terminal style exactly
-- All pages `'use client'` — inline state + localStorage
+- Static pages (about, projects) are server components — no `'use client'`
+- Interactive pages use `dynamic(() => import(...), { ssr: false })` for client-only features
+- All client components use inline state + localStorage
 - No external API calls, no database
