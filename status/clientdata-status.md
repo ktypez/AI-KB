@@ -27,6 +27,11 @@ type: status
 - Fixed: `app/api/clients/route.ts` — removed `Cache-Control: public, max-age=10, stale-while-revalidate=30` from GET response (was causing stale data after mutations).
 - Fixed: `app/api/clients/[id]/route.ts` — removed `Cache-Control: public, max-age=60` from GET response (same reason).
 
+### Cleanup
+- Fixed: ESLint `set-state-in-effect` error in `AdminSuggestionsInline.tsx` (deferred fetchData via `Promise.resolve().then()`)
+- Removed: 4 unused `components/ui/*` files (`alert.tsx`, `card.tsx`, `input.tsx`, `separator.tsx`)
+- Removed: `export` from 3 internally-only functions in `duplicate-names.ts` (`normalizeName`, `findClientByName`, `findSimilarClients`)
+
 ### PWA Install Alert
 - Fixed: popup still showing after install (wrong SSR `isStandalone` initialization)
 - Fixed: no install button on unsupported browsers (now hidden)
