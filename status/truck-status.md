@@ -2,7 +2,7 @@
 last_updated: 2026-06-23
 project: truck
 type: status
-last_commit: e862f7c
+last_commit: 183f26d
 ---
 
 # Project Status — truck
@@ -158,6 +158,7 @@ last_commit: e862f7c
 
 - `IncomeView.tsx` — หน้ารายได้/ภาษีรายเดือน: MonthYearSelector, HeroCard (ยอดสุทธิ), SalaryBreakdown (แยกค่ากะ/OT/โบนัสฯลฯ), TaxSummary (สรุปภาษี)
   - ดึง `income_settings` จาก Supabase → ส่งเข้า `calculateIncome(logs, daysInMonth, settings)` → recalc อัตโนมัติเมื่อ settings เปลี่ยน
+- `TaxSummary.tsx` — สรุปภาษีหัก ณ ที่จ่าย 3%: แสดง เงินเดือน/ภาษี/คงเหลือ per section (base, extras, total) ด้วย CSS grid (`1fr auto`) สำหรับ left-label / right-value alignment. รายได้เพิ่ม section ซ่อนเมื่อ `othersGross === 0`. Helper component `TaxRow` รับ `label`, `value`, `negative`, `bold`, `highlight` props
 
 ## Data Flow — Income Settings
 
