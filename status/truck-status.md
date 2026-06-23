@@ -2,7 +2,7 @@
 last_updated: 2026-06-23
 project: truck
 type: status
-last_commit: 183f26d
+last_commit: 7c39627
 ---
 
 # Project Status — truck
@@ -206,11 +206,16 @@ last_commit: 183f26d
 
 - Install banner (`PwaInstallBanner.tsx`): ลอยเหนือ navtab (bottom: 88px), จำ dismissed ใน localStorage, fallback 5s สำหรับ iOS (ไม่มี beforeinstallprompt)
 - SW registration: `registerSW({ immediate })` จาก `virtual:pwa-register` + `injectRegister: 'auto'` ใน vite.config
-- Cache version: `ezzy-truck-v2`
-- 404 fallback: `/assets/` fetch ได้ 404 → clear all caches + `postMessage({ type: 'FORCE_RELOAD' })` → client reload หน้าใหม่
+- Cache version: `ezzy-truck-v3`
+- `/assets/` hashed chunks: **network-first** (`networkFirstWithReload`) — content-hash ทำให้ immutable, network-first ถูกต้อง. 404/fail → clear caches + FORCE_RELOAD
+- `/assets/` non-JS: `cacheFirstWithFallback` สำหรับไฟล์อื่น
+- Icons/fonts/images: `staleWhileRevalidate`
+- Pages/navigation: `networkFirst`
+- External (Supabase): `networkFirst`
 - Client listener: `navigator.serviceWorker.addEventListener('message')` ใน main.tsx รับ `FORCE_RELOAD` แล้ว `window.location.reload()`
 - PWA shortcuts (vite.config.ts manifest): บันทึกกะ (`/daily?today=1`), ตารางกะ (`/shifts`), รายได้ (`/income`), โปรไฟล์ (`/profile`)
 - `today=1` URL param: DailyView detects `?today=1` → jump to current date (bypass last-saved date)
+- Lesson: cache-first สำหรับ hashed assets ทำให้ React.lazy "Failed to fetch dynamically imported module" ถ้า SW ยังไม่ update precache manifest — เปลี่ยนเป็น network-first แล้ว
 
 ## Constraints
 
