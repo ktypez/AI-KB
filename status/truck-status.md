@@ -2,7 +2,7 @@
 last_updated: 2026-06-23
 project: truck
 type: status
-last_commit: 7c39627
+last_commit: 7bf5f80
 ---
 
 # Project Status — truck

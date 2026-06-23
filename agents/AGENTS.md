@@ -1,7 +1,7 @@
 ---
 type: index
 id: agents-index
-last_updated: 2026-06-22
+last_updated: 2026-06-23
 projects:
   - id: mcky-agent
     path: agents/mcky-agent.md
