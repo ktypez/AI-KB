@@ -83,6 +83,7 @@ main.tsx → App.tsx (auth gate + session + theme)
 - **Focus trap**: `useFocusTrap(active, ref, onClose?)` — traps Tab/Shift+Tab + Escape in modals, restores previous focus
 - **Modal pattern**: All 6 modals + MonthYearPopup use `.modal-backdrop` + `.modal-content`
 - **Skeleton loaders**: Theme-aware CSS skeleton (var(--skeleton-base)/var(--skeleton-shine) pulse animation) for DailyView, ShiftCalendar, IncomeView
+- **Mutation invalidation contract**: any save that mutates `logs` must invalidate ALL of: `['monthly-logs', userId, year, month]`, `['yearly-logs', userId, year]`, `['income', userId, year, month]`. `App.tsx handleSaveSuccess` (DailyView path) and `ShiftCalendar.tsx` upsert/delete onSuccess must stay in sync — if one is updated, the other must be too. Lesson: X2/special days picked only from calendar were invisible to IncomeView because ShiftCalendar onSuccess only invalidated logs.
 
 ## Triggers
 
