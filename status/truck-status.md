@@ -2,7 +2,7 @@
 last_updated: 2026-06-23
 project: truck
 type: status
-last_commit: 0a42a9e
+last_commit: pending
 ---
 
 # Project Status — truck
@@ -144,7 +144,7 @@ last_commit: 0a42a9e
 
 ### ShiftCalendar
 
-- `ShiftCalendar.tsx` — ตารางกะรายเดือน พร้อม leave summary + loading spinner (@phosphor-icons/react)
+- `ShiftCalendar.tsx` — ตารางกะรายเดือน พร้อม leave summary + loading spinner (@phosphor-icons/react). `upsertMutation` และ `deleteMutation` ต้อง invalidate `['income', userId, year, monthNum]` ด้วย (ไม่ใช่แค่ logs) — ป้องกัน stale ตอน user เลือกกะจาก calendar โดยไม่เปิด DailyView, IncomeView query จะไม่ refresh ถ้า invalidate แค่ logs
 - `shifts/CalendarGrid.tsx` — ตารางปฏิทิน 3 แถว (วันที่, ★/⚡ indicator, เวลากะ) + Badge 'x2' (สีม่วง) สำหรับ day_type === 'special'
 - `shifts/ShiftModal.tsx` — modal เลือกกะ/ลา (ใช้ @phosphor-icons/react: Clock, Lightning, Trash)
 - `shifts/ShiftSummary.tsx` — แสดงสรุปวันทำงาน/หยุด/ลา (ใช้ yearly logs query, ChartBar icon)
