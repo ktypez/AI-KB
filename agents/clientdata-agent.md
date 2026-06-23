@@ -107,7 +107,7 @@ Custom properties in `globals.css` for consistent theming:
 ## Termux
 - `/usr/bin/env` broken — use `node /path/to/bin` instead of `npx`
 - `oc` alias = normal opencode, `occ` alias = termux-chroot with HOME override
-- Plugins: opencode-mem, opencode-command-inject, opencode-background-agents, DCP, snip, termux-notify
+- Plugins: opencode-mem, opencode-command-inject, opencode-background-agents, DCP, termux-notify
 
 ## Notes
 - `lib/auth.ts` uses `.auth-local.json` fallback when DATABASE_URL is unset

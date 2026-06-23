@@ -10,7 +10,7 @@ type: status
 
 | Path | Status | Description |
 |------|--------|-------------|
-| `/` | ✅ Live | Terminal sim homepage with typewriter animation (dynamic import) |
+| `/` | ✅ Live | Terminal sim homepage — instant render, CSS cursor blink (no entrance animation) |
 | `/about` | ✅ Live | About page with terminal-style bio (server component) |
 | `/blog` | ✅ Live | Blog with markdown support (react-markdown + remark-gfm) — 8 posts |
 | `/blog/[id]` | ✅ Live | Blog post page with SWR caching + dynamic Markdown |
@@ -43,7 +43,7 @@ type: status
 | Component | Notes |
 |-----------|-------|
 | `FloatingButtons` | Dynamic import (ssr: false) in layout — theme toggle + nav |
-| `TerminalAnimation` | New — extracted from homepage, typewriter + cursor effect |
+| `TerminalAnimation` | Homepage terminal — instant render, CSS-only cursor blink (no JS animation) |
 | `Markdown` | Dynamic import (ssr: false) in blog/[id] |
 | `HabitsTab` | Extracted sub-components: `HabitRow` (memo), `SectionBlock` (memo), `ViewModeBar` |
 | `StatsTab` | Uses useMemo for computed stats, conditional render |
@@ -52,6 +52,8 @@ type: status
 
 ## Recent Updates
 
+- `2026-06-23` — Fix: added RLS policies for `todos` (ALL) and `app_config` (SELECT) for anon role in `setup.sql` — fixes 500 errors on /task CRUD ops when RLS is enabled on Supabase
+- `2026-06-23` — UI: homepage instant render — removed all JS typewriter/stagger animation, replaced with pure CSS `@keyframes blink` cursor
 - `2026-06-23` — UI: shimmer skeleton loading for HabitsTab and StatsTab (CSS-only `@keyframes shimmer`, `.skel` class)
 - `2026-06-22` — Blog: new post "Making mcky.space faster" (ID 8)
 - `2026-06-22` — Perf: massive refactor across all pages — conditional render, React.memo, useMemo, useCallback

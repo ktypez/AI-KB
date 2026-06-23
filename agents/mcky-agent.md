@@ -2,7 +2,7 @@
 type: agent
 id: mcky-agent
 project: mcky.space
-last_updated: 2026-06-22
+last_updated: 2026-06-23
 status_ref: STATUS.md in project root
 personality: terminal hipster
 stack:
@@ -16,7 +16,7 @@ stack:
   - SWR (blog data fetching, replaces manual useEffect)
   - Deployment: Vercel
 routes:
-  - path: / — Terminal sim homepage with typewriter animation (dynamic import of TerminalAnimation)
+  - path: / — Terminal sim homepage — instant render, CSS cursor blink (no entrance animation)
   - path: /about — Terminal-style bio page (server component, no 'use client')
   - path: /blog — Blog with markdown support
   - path: /blog/[id] — Blog post page (SWR + dynamic Markdown)
@@ -24,7 +24,7 @@ routes:
   - path: /task — Todo list (2 tabs: todos, stats)
   - path: /projects — Project showcase (server component, no 'use client')
 components:
-  - TerminalAnimation: Extracted from homepage, typewriter + blinking cursor
+  - TerminalAnimation: Homepage terminal — instant render, CSS-only cursor blink (no JS animation)
   - HabitRow: memo component from HabitsTab
   - SectionBlock: memo component from HabitsTab
   - ViewModeBar: extracted view-mode toggle from HabitsTab
