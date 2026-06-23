@@ -60,9 +60,10 @@ perf_patterns:
 ## Triggers
 
 ### "update .md"
-1. Read STATUS.md + AGENTS.md
-2. Update STATUS.md (Routes / Components / Design System / Recent Updates)
-3. After updating STATUS.md — sync changes to `~/AI-KB/agents/mcky-agent.md`
+1. Read project AGENTS.md + current KB status
+2. Update `~/AI-KB/status/mcky-status.md` with latest changes
+3. Update `~/AI-KB/agents/mcky-agent.md` (routes, components, design system)
+4. If project AGENTS.md has stale info, update it too
 
 ### "cleanup"
 1. Scan unused files, empty files, dead exports in `src/app/` and `src/components/`

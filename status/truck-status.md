@@ -1,7 +1,8 @@
 ---
-last_updated: 2026-06-22
+last_updated: 2026-06-23
 project: truck
 type: status
+last_commit: 0a42a9e
 ---
 
 # Project Status — truck
@@ -40,14 +41,14 @@ type: status
 | ------------------------------------ | ------- | -------------- |
 | vendor-react                         | 194 KB  | 60 KB          |
 | vendor-supabase                      | 208 KB  | 54 KB          |
-| vendor-icons (@phosphor-icons/react) | 107 KB  | 25 KB          |
+| vendor-icons (@phosphor-icons/react) | 139 KB  | 32 KB          |
 | vendor-query (@tanstack-query)       | 39 KB   | 12 KB          |
 | vendor-router                        | 36 KB   | 13 KB          |
-| index (main)                         | 21 KB   | 7 KB           |
-| DailyView                            | 19 KB   | 5 KB           |
+| index (main)                         | 29 KB   | 10 KB          |
+| DailyView                            | 25 KB   | 7 KB           |
 | ProfilePage                          | 20 KB   | 5 KB           |
-| Route chunks                         | 5-8 KB  | 2-3 KB         |
-| PWA precache                         | 1931 KB | — (53 entries) |
+| Route chunks                         | 9-11 KB | 3-4 KB         |
+| PWA precache                         | 1961 KB | — (55 entries) |
 
 ## Tests (14)
 
@@ -79,8 +80,20 @@ type: status
 ## Hooks
 
 - `useOnlineStatus()` — extract from OfflineBanner
+- `useFocusTrap()` — trap focus within a container (modal/dialog): `useFocusTrap(active, ref, onClose?)`. Queries focusable elements, cycles Tab/Shift+Tab, Escape calls onClose, restores previous focus on cleanup. Applied to all 6 modals.
+- `usePendingSyncCount()` — count pending offline mutations from localStorage keys matching `offline-mutation-*`. Returns `number`.
 - `useRef` patterns — OdometerCard (focus chain), AuthScreen (password ref)
-- `src/hooks/` folder: `useOnlineStatus.ts`
+- `src/hooks/` folder: `useOnlineStatus.ts`, `useFocusTrap.ts`, `usePendingSyncCount.ts`
+
+## Library — offlineQueue
+
+- `src/lib/offlineQueue.ts` — offline mutation queue using localStorage:
+  - `enqueueMutation(mutation)`: store as `offline-mutation-{id}` (id = `${table}-${operation}-${Date.now()}`), deduplicate by serialized key
+  - `dequeueMutation(id)`: remove item from localStorage
+  - `getAllMutations()`: read all `offline-mutation-*` keys → parse JSON
+  - `replayMutations(sb)`: `window.addEventListener('online', ...)` → iterate mutations → execute Supabase upsert/delete → dequeue on success, skip on 409/23505 (conflict/duplicate), re-enqueue on other errors
+  - `clearAllMutations()`: remove all `offline-mutation-*` keys
+  - Deduplication: checks existing mutations with same `table` + `payload.date` — skips if already queued
 
 ## Components
 
@@ -88,10 +101,21 @@ type: status
 
 - `PageHeader.tsx` — shared header component: back button `<` + title (font 22, weight 900) + optional description (14px) + optional children in 2-col grid (6fr/4fr). Hard text shadow on title+desc. Used by all 6 views.
 - `MonthYearSelector.tsx` — prev/next `<` `>` buttons + clickable month/year label → opens `MonthYearPopup`. Height 42px, radius 12px, flex-fill.
+- `Skeleton.tsx` — base skeleton component: CSS `var(--skeleton-base)`/`var(--skeleton-shine)` for theme-aware shimmer (animation `skeleton-pulse 1.4s ease-in-out infinite`). Props: `width`, `height`, `borderRadius` (default 8), `className`. Exported as named export + default.
+- `skeletons/DailyViewSkeleton.tsx` — skeleton for DailyView: DateSlider block (280x44, radius 22) + date text (100x16) + 2 counter cards (2-col grid, each 140x70) + 2 wide blocks (300x44) + summary banner (340x80). Wraps in outer card matching DailyView card styling.
+- `skeletons/ShiftCalendarSkeleton.tsx` — skeleton for ShiftCalendar: month bar (200x36) + legend row (80x16 + 80x16) + 4 rows × 6 columns of date cells (each 44x44, radius 10) in CSS grid `repeat(6, 1fr)`. Spacing: row gap 6px, col gap 4px.
+- `skeletons/IncomeViewSkeleton.tsx` — skeleton for IncomeView: month selector row (200x36) + hero card (340x110) + heading (100x18) + 6 salary rows (label 80x14 + value 60x14) + tax summary (340x50). Two hero card rows: one large (140x28) + one small (80x18).
+- `ConfirmModal.tsx` — reusable confirmation dialog with `.confirm-overlay` + `.confirm-dialog` pattern
 
 ### DailyView
 
 - `DailyView.tsx` — หน้าบันทึกกะรายวัน: DateSlider เลือกวัน, ShiftBadge แสดงกะ, OdometerCard (เลขไมล์), CounterCard (เที่ยว/ OT), HelpFixWorkCard (ช่วยซ่อม), LeaveCard (ลา, มี glow animation), SummaryBanner สรุปท้ายวัน (ปุ่มบันทึกถูกลบออกแล้ว)
+
+### ErrorBoundary
+
+- `AppRoutes.tsx` wraps each lazy-loaded route with `<ErrorBoundary fallback={<RouteError />}>` (catch-all per view)
+- `RouteError` component: fallback UI with error icon + "เกิดข้อผิดพลาด" message + "ลองใหม่" retry button
+- `ErrorBoundary` class component: `componentDidCatch(error, errorInfo)` logs to console, `getDerivedStateFromError` sets hasError flag
 
 ### Profile
 
@@ -105,7 +129,7 @@ type: status
 
 ### Header
 
-- `Header.tsx` — แสดง avatar วงกลม (32px) + display name (จาก `auth.user_metadata`) พร้อมลิงก์ไปหน้า profile (ปุ่มออกจากระบบถูกลบออกแล้ว)
+- `Header.tsx` — แสดง avatar วงกลม (32px) + display name (จาก `auth.user_metadata`) + pending-sync badge (usePendingSyncCount) พร้อมลิงก์ไปหน้า profile (ปุ่มออกจากระบบถูกลบออกแล้ว)
 
 ### Auth
 
@@ -184,6 +208,8 @@ type: status
 - Cache version: `ezzy-truck-v2`
 - 404 fallback: `/assets/` fetch ได้ 404 → clear all caches + `postMessage({ type: 'FORCE_RELOAD' })` → client reload หน้าใหม่
 - Client listener: `navigator.serviceWorker.addEventListener('message')` ใน main.tsx รับ `FORCE_RELOAD` แล้ว `window.location.reload()`
+- PWA shortcuts (vite.config.ts manifest): บันทึกกะ (`/daily?today=1`), ตารางกะ (`/shifts`), รายได้ (`/income`), โปรไฟล์ (`/profile`)
+- `today=1` URL param: DailyView detects `?today=1` → jump to current date (bypass last-saved date)
 
 ## Constraints
 

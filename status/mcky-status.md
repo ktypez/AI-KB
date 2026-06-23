@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-06-22
+last_updated: 2026-06-23
 project: mcky.space
 type: status
 ---
@@ -36,6 +36,7 @@ type: status
 - CSS variables in `:root` — no magic numbers
 - Page headers use `2px dashed` terminal-style dividers
 - All pages follow terminal/retro aesthetic
+- Skeleton loading: `.skel` class with `shimmer` keyframe (CSS-only, theme-aware)
 
 ## Components
 
@@ -51,6 +52,7 @@ type: status
 
 ## Recent Updates
 
+- `2026-06-23` — UI: shimmer skeleton loading for HabitsTab and StatsTab (CSS-only `@keyframes shimmer`, `.skel` class)
 - `2026-06-22` — Blog: new post "Making mcky.space faster" (ID 8)
 - `2026-06-22` — Perf: massive refactor across all pages — conditional render, React.memo, useMemo, useCallback
 - `2026-06-22` — Perf: replaced Google Fonts <link> with `next/font` (JetBrains_Mono)

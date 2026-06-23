@@ -1,7 +1,7 @@
 ---
 type: memory
 id: projects-summary
-last_updated: 2026-06-22
+last_updated: 2026-06-23
 projects:
   - id: truck
     path: ~/truck
@@ -27,7 +27,7 @@ projects:
 | Auth | Supabase Auth | none | scrypt + HMAC tokens |
 | PWA | ✅ (injectManifest) | ❌ | ✅ (Serwist) |
 | Testing | vitest (14 tests) | ❌ | ❌ |
-| Theme | 16 themes, CSS vars | Dark terminal (#0a0e14) | Tailwind |
+| Theme | 16 themes, CSS vars | Aura dark terminal, shimmer skeleton | Tailwind |
 | CI/CD | GitHub Actions (edge functions) | Vercel | Vercel |
 
 ## Dev Commands

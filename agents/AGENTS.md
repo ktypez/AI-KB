@@ -11,6 +11,8 @@ projects:
     path: agents/clientdata-agent.md
   - id: writer-agent
     path: agents/writer-agent.md
+  - id: code-review
+    path: agents/code-review.md
 ---
 
 # AI Agents Overview
@@ -25,6 +27,7 @@ Centralized index of all AI agents across the knowledge base.
 | truck-agent | truck | Shift logging & income PWA (React 19 + Supabase) | overtime enthusiast |
 | clientdata-agent | clientdata | Client management & CRM (Next.js 16 + Neon) | data goblin |
 | writer-agent | global | Content writer & summarizer | word goblin |
+| code-review | global | Code quality, bug detection, security audit | code inspector |
 
 ## Related Directories
 
@@ -41,17 +44,18 @@ Each project's AGENTS.md is now **ultra-thin** — contains only:
 1. `## KB` section linking to the correct KB agent file
 2. `## Local` section for project-specific notes (env files, status files)
 
-All context lives in this KB.
+All context lives in this KB. The old local STATUS.md pattern is deprecated — use `update kb` (or the `update .md` alias) to update centralized status.
 
 ## Cross-Project Triggers
 
 | Trigger | truck | mcky.space | clientdata |
 |---------|-------|------------|------------|
-| `update .md` | ✅ | ✅ | ✅ |
+| `update kb` | ✅ | ✅ | ✅ |
+| `update .md` | ✅ (alias for `update kb`) | ✅ (alias for `update kb`) | ✅ (alias for `update kb`) |
 | `cleanup` | ✅ | ✅ | ✅ |
 | `wrap-day` | ✅ | — | — |
 
-Each agent file in `agents/` defines its own trigger implementations.
+`update .md` is now an alias for `update kb` — both do the same thing (update centralized KB files in `~/AI-KB/`). The old local STATUS.md pattern is deprecated.
 
 ## Global Rules
 

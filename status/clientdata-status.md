@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-06-22
+last_updated: 2026-06-23
 project: clientdata
 type: status
 ---
@@ -8,7 +8,7 @@ type: status
 
 ## Lint
 
-- ESLint — **0 errors**, 4 warnings (all `_`-prefixed unused params)
+- ESLint — **0 errors**, 0 warnings
 
 ## TypeScript
 
@@ -16,72 +16,73 @@ type: status
 
 ## Branch
 
-- `master` (design/animation merged + deleted)
+- `master`
 
 ## Changelog
 
-### Stale Cache After Mutations — Server Response + Cache Invalidation
-- Fixed: `lib/storage.ts` — `addClient`/`updateClient` now `await res.json()` and return server-processed Client (R2 URLs, server timestamps). Error messages parsed from server body. localStorage cache updated with server-processed data instead of raw user input. `deleteClient` now syncs localStorage cache too.
-- Fixed: `app/page.tsx` — `handleDetailUpdate` and `onSave` handler now async, use server return values for React state. On error, `alert()` the server error message + `fetchClients()` rollback to restore fresh state.
-- Fixed: `components/ClientDetail.tsx` — `handleDelete` uses `deleteClient` from `@/lib/storage` instead of raw `fetch`. Catches errors with `alert()`. localStorage cache now properly synced on delete.
-- Fixed: `app/api/clients/route.ts` — removed `Cache-Control: public, max-age=10, stale-while-revalidate=30` from GET response (was causing stale data after mutations).
-- Fixed: `app/api/clients/[id]/route.ts` — removed `Cache-Control: public, max-age=60` from GET response (same reason).
+### 38146e6 — Code Review Fixes (2026-06-23)
+- `fetchClients` now calls `setCachedClients(data)` to keep localStorage cache in sync
+- `AbortController` added to suggestions fetch in `ClientDetail` to prevent stale responses
+- `pushNav` writes distinct URLs per view (`/?detail=id`, `/?edit=id`, `/?add=1`, `/?map=1`, `/?suggestions=1`) instead of always `/`
+- Undo delete in `ClientDetail` now calls `addClient` instead of `updateClient` for proper re-insertion
+- `LoadingScreen` reuses `<TableSkeleton>` component instead of duplicating same JSX (21 lines removed)
+
+### UI/UX Improvements
+- Added 20+ CSS custom properties to `globals.css` (surface, text, border tokens for light/dark)
+- Updated 12 components to use CSS variables instead of hardcoded hex colors (PageHeader, Sidebar, LoadingScreen, EmptyState, SearchDropdown, ErrorScreen, PwaInstallAlert, DesktopCardView, LoginModal, SetupScreen, LoadMore, SuggestionBadge)
+- Fixed card hover transitions to use targeted `transition-[box-shadow,transform,border-color]` instead of `transition-all`
+- Mobile FAB button now uses `bg-primary` (theme accent) instead of hardcoded `#c80008`
+
+### Skeleton Loading
+- Created `components/ui/skeleton.tsx` — base Skeleton primitive
+- Created `components/TableSkeleton.tsx` — table row skeletons
+- Created `components/CardSkeleton.tsx` — card grid skeletons
+- Updated `LoadingScreen` to show full skeleton layout (sidebar + header + table) instead of spinner
+
+### Undo Delete Toast
+- Delete now shows 10s undo toast with progress bar (sonner)
+- Server deletion deferred until toast auto-closes
+- If undo clicked within 10s, client is restored without server call
+- Progress bar: CSS `@keyframes toast-progress` on `.delete-toast` class
+
+### Smarter Empty States
+- `EmptyState` now accepts `filter` and `search` props
+- Shows context-specific copy: filter name, search query, or generic message
+- Updated DesktopTableView, DesktopCardView, MobileCardList to pass filter/search
+
+### Search Improvements
+- Debounce reduced from 200ms to 150ms
+- `SearchDropdown` extracted from `page.tsx` to `components/SearchDropdown.tsx`
+
+### Route Planning Fallback
+- Added manual origin input (lat/lng fields) when geolocation fails
+- RouteModal shows input form instead of just error message
+- Added `showManualOrigin`, `manualOriginLat/Lng` state to page.tsx
+
+### PWA Install Timing
+- Install prompt now waits for 3rd visit + 30s delay before showing
+- Tracks visit count in `localStorage` (`ezzylist_pwa_visits`)
+
+### Auth Fixes
+- Setup screen removed from page.tsx — app is public for viewing
+- Auth setup check (`/api/auth?check=setup`) now catches DB errors gracefully (defaults to configured)
+- Removed unused `needsSetup`, `loginPassword`, `loginError`, `loginLoading`, `handleLogin` from page.tsx
 
 ### Cleanup
-- Fixed: ESLint `set-state-in-effect` error in `AdminSuggestionsInline.tsx` (deferred fetchData via `Promise.resolve().then()`)
-- Removed: 4 unused `components/ui/*` files (`alert.tsx`, `card.tsx`, `input.tsx`, `separator.tsx`)
-- Removed: `export` from 3 internally-only functions in `duplicate-names.ts` (`normalizeName`, `findClientByName`, `findSimilarClients`)
+- Removed `SetupScreen` import and setup-blocking logic from page.tsx
+- Removed unused `check=setup` fetch from auth check useEffect
 
-### PWA Install Alert
-- Fixed: popup still showing after install (wrong SSR `isStandalone` initialization)
-- Fixed: no install button on unsupported browsers (now hidden)
-- Fixed: cannot dismiss
-- Added: standalone mode detection (`display-mode: standalone`, `navigator.standalone`)
-- Added: guard for unsupported browsers (non-iOS without beforeinstallprompt)
+## Components
 
-### Prettier
-- `.prettierrc` created (no semi, single quotes, trailing commas, tabWidth 2, printWidth 100)
-- Ignored: `.next`, `out`, `build`, `public/sw.js`, `node_modules`
-- Formatted 70 files across the project
-
-### Animations
-All CSS-only, using `tw-animate-css`:
-
-| Component         | Animation                       |
-| ----------------- | ------------------------------- |
-| LoginModal        | `animate-in fade-in zoom-in-95` |
-| RouteModal        | `slide-in-from-bottom-10`       |
-| DesktopCardView   | hover lift `-translate-y-0.5`   |
-| SelectionToolbar  | `slide-in-from-bottom-2`        |
-| SuggestionBadge   | `zoom-in-75`                    |
-| EmptyState        | `fade-in duration-500`          |
-| CopyDropdown      | `zoom-in-95`                    |
-| PageHeader search | `transition-all duration-200`   |
-
-### Plugins (global opencode)
-- opencode-mem, opencode-command-inject, opencode-background-agents, @tarquinen/opencode-dcp, opencode-snip
-- Local `plugins/termux-notify.ts`
-- filesystem MCP
-
-### Cleanup
-- Removed unused `tests/`, `jest.config.js`, stale logs, codemap system
-- Fixed `turbapack` typo, all lint errors/warnings
-- Simplified `app/page.tsx`
-
-### Deploy
-
-- `TELEGRAM_CHAT_ID` updated on Vercel to `-1004343649661`
-- Production deploy successful → `https://data.mcky.space`
-
-### Suggestions
-
-- Fixed: admin suggestions page not loading (missing `useEffect` call on mount)
-- Fixed: approve/reject buttons stuck (added `processingSuggestion` state + spinner)
-- Fixed: approve not updating client data locally (use suggestion data instead of `fetchClients()`)
-- Fixed: race condition / SW cache overriding optimistic status (merge API state with local state in `useEffect`)
-- Fixed: SW cache returning stale `/api/suggestions` and `/api/clients` responses (added `NetworkOnly` rule in `app/sw.ts` before `defaultCache`)
+| Component | File | Purpose |
+|-----------|------|---------|
+| Skeleton | `components/ui/skeleton.tsx` | Base animated skeleton primitive |
+| TableSkeleton | `components/TableSkeleton.tsx` | Table row loading placeholder |
+| CardSkeleton | `components/CardSkeleton.tsx` | Card grid loading placeholder |
+| SearchDropdown | `components/SearchDropdown.tsx` | Map view search results dropdown |
 
 ## Known
 
 - No test runner
 - `/usr/bin/env` broken on Termux
+- `useReducer` refactor of page.tsx deferred (20+ tightly coupled useState hooks)

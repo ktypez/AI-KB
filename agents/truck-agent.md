@@ -2,7 +2,7 @@
 type: agent
 id: truck-agent
 project: truck
-last_updated: 2026-06-22
+last_updated: 2026-06-23
 status_ref: STATUS.md in project root
 personality: overtime enthusiast
 stack:
@@ -50,8 +50,8 @@ env_vars:
 |-----------|---------------|
 | `.github/workflows/` | CI/CD — deploy edge functions on push to master |
 | `supabase/functions/` | Edge functions (approve-user, get-all-users, notify-telegram) |
-| `src/lib/` | Supabase client (`sb`) |
-| `src/hooks/` | `useOnlineStatus` |
+| `src/lib/` | Supabase client (`sb`), offline mutation queue (`offlineQueue`) |
+| `src/hooks/` | `useOnlineStatus`, `useFocusTrap`, `usePendingSyncCount` |
 | `src/utils/` | `calculateIncome()`, shift helpers |
 | `src/components/` | UI — 6 views + shared components |
 | `src/components/daily/` | Daily logging (DateSlider, ShiftBadge, OdometerCard, etc.) |
@@ -59,13 +59,15 @@ env_vars:
 | `src/components/history/` | Historical browsing |
 | `src/components/income/` | Salary breakdown (HeroCard, SalaryBreakdown, TaxSummary) |
 | `src/components/profile/` | Profile management modals |
+| `src/components/skeletons/` | Loading skeletons (DailyView, ShiftCalendar, IncomeView) |
 
 ## Architecture
 ```
 main.tsx → App.tsx (auth gate + session + theme)
          → AppRoutes.tsx (lazy-loaded: DailyView, ShiftCalendar, History, IncomeView, ProfilePage, Changelog, AdminPanel, UserManagement, IncomeSettings)
+         → ErrorBoundary wrapper per route (catch-all, RouteError fallback)
          → Supabase (sb) + ReactQuery (monthly-logs, day-log, income, yearly-logs)
-         → utils/calculator.ts (calculateIncome) + utils/shift-helpers.ts
+         → offlineQueue (localStorage mutation queue, auto-replay on reconnect)
          → AuthScreen (sign-in / request account via Telegram)
 ```
 
@@ -78,14 +80,17 @@ main.tsx → App.tsx (auth gate + session + theme)
 - **LocalStorage key**: `last-saved-{userId}-{year}-{month}-{day}`
 - **Timezone**: regex extract hh:mm from Supabase, `Intl.DateTimeFormat('sv-SE')` for local
 - **Focus chain**: `useRef` + `.current?.focus()` — never `document.getElementById`
+- **Focus trap**: `useFocusTrap(active, ref, onClose?)` — traps Tab/Shift+Tab + Escape in modals, restores previous focus
 - **Modal pattern**: All 6 modals + MonthYearPopup use `.modal-backdrop` + `.modal-content`
+- **Skeleton loaders**: Theme-aware CSS skeleton (var(--skeleton-base)/var(--skeleton-shine) pulse animation) for DailyView, ShiftCalendar, IncomeView
 
 ## Triggers
 
 ### "update .md"
-1. Read STATUS.md + AGENTS.md
-2. Update STATUS.md (Components / Data Flow / Constraints)
-3. Update project AGENTS.md if needed
+1. Read project AGENTS.md + current KB status
+2. Update `~/AI-KB/status/truck-status.md` with latest changes
+3. Update `~/AI-KB/agents/truck-agent.md` (directory map, architecture, patterns)
+4. If project AGENTS.md has stale info, update it too
 
 ### "wrap-day"
 1. Read diff, Changelog, STATUS.md
