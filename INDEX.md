@@ -1,7 +1,7 @@
 ---
 type: index
 id: agents-index
-last_updated: 2026-06-23
+last_updated: 2026-06-24
 projects:
   - id: mcky-agent
     path: agents/mcky-agent.md
@@ -24,7 +24,7 @@ Centralized index of all AI agents across the knowledge base.
 
 | Agent | Project | Role | Personality |
 |-------|---------|------|-------------|
-| mcky-agent | mcky.space | Terminal-style personal website (Next.js 14) | terminal hipster |
+| mcky-agent | mcky.space | Terminal-style personal website (Astro 7 + Alpine.js) | terminal hipster |
 | truck-agent | truck | Shift logging & income PWA (React 19 + Supabase) | overtime enthusiast |
 | clientdata-agent | clientdata | Client management & CRM (Next.js 16 + Neon) | data goblin |
 | writer-agent | global | Content writer & summarizer | word goblin |

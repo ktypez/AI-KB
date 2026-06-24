@@ -1,7 +1,7 @@
 ---
 type: memory
 id: projects-summary
-last_updated: 2026-06-23
+last_updated: 2026-06-24
 projects:
   - id: truck
     path: ~/truck
@@ -20,11 +20,11 @@ projects:
 
 | Aspect | truck | mcky.space | clientdata |
 |--------|-------|------------|------------|
-| Framework | React 19 + Vite 6 | Next.js 14.2.5 (App Router) | Next.js 16 |
-| Database | Supabase (Postgres) | localStorage + Supabase (blog posts) | Neon Postgres (Drizzle) |
-| Storage | Supabase Storage | localStorage | Cloudflare R2 |
-| State | tanstack/react-query | inline useState | React Query |
-| Auth | Supabase Auth | none | scrypt + HMAC tokens |
+| Framework | React 19 + Vite 6 | Astro 7 + Alpine.js | Next.js 16 |
+| Database | Supabase (Postgres) | Supabase (habits/todos/auth) + .md files (blog) | Neon Postgres (Drizzle) |
+| Storage | Supabase Storage | Supabase | Cloudflare R2 |
+| State | tanstack/react-query | Alpine.js x-data | custom fetch + React state |
+| Auth | Supabase Auth | SHA-256 header-based auth | scrypt + HMAC tokens |
 | PWA | ✅ (injectManifest) | ❌ | ✅ (Serwist) |
 | Testing | vitest (14 tests) | ❌ | ❌ |
 | Theme | 16 themes, CSS vars | Aura dark terminal, shimmer skeleton | Tailwind |

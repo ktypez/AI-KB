@@ -11,12 +11,12 @@ type: status
 | Path | Status | Description |
 |------|--------|-------------|
 | `/` | ✅ Live | Terminal sim homepage — instant render, CSS cursor blink |
-| `/about` | ✅ Live | About page with terminal-style bio (pure HTML + React island) |
-| `/blog` | ✅ Live | Blog listing — Astro page + BlogApp React island (SWR, read-only) |
-| `/blog/[slug]` | ✅ Live | Blog post by slug — Astro dynamic page + BlogPostApp (read-only, .md source) |
-| `/habits` | ✅ Live | Habit tracker (3 views: day, week, month) |
-| `/task` | ✅ Live | Todo list with stats heatmap |
-| `/projects` | ✅ Live | Project showcase (pure HTML + React island) |
+| `/about` | ✅ Live | About page with terminal-style bio (pure Astro, no JS) |
+| `/blog` | ✅ Live | Blog listing — Astro page (static .md data, read-only) |
+| `/blog/[slug]` | ✅ Live | Blog post by slug — Astro dynamic page (read-only, .md source) |
+| `/habits` | ✅ Live | Habit tracker — Alpine.js x-data (3 views: day, week, month) |
+| `/task` | ✅ Live | Todo list — Alpine.js x-data (CRUD, priority, stats heatmap) |
+| `/projects` | ✅ Live | Project showcase (pure Astro, no JS) |
 
 ## Tech Stack
 

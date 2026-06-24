@@ -12,31 +12,25 @@ stack:
   - JetBrains Mono via Google Fonts CSS @import
   - Supabase (habits/todos/auth)
   - Blog: .md files compiled to TypeScript at build time (no Supabase dependency)
-  - React 18 islands via @astrojs/react
-  - react-markdown + remark-gfm + remark-breaks (client island)
-  - SWR (blog data fetching)
+  - Client UI: Alpine.js via CDN (x-data/x-init patterns for interactivity)
+  - Markdown: `marked` (lightweight, no React dependency)
+  - Data Fetching: Plain fetch for all client data
+  - API: Astro endpoints (8 routes in src/pages/api/)
   - Auth: SHA-256 password via Web Crypto API, header-based gating
   - Deployment: Vercel via @astrojs/vercel
 routes:
-  - path: / — Terminal sim homepage — Astro page + TerminalStatic React island
-  - path: /about — Terminal-style bio page (Astro static + React island)
-  - path: /blog — Blog — Astro page + BlogApp React island (SWR, read-only)
-  - path: /blog/[slug] — Blog post by slug — Astro dynamic page + BlogPostApp (read-only, .md source)
-  - path: /habits — Habit tracker — Astro page + HabitsPage React island
-  - path: /task — Todo list — Astro page + TaskPage React island
-  - path: /projects — Project showcase (Astro static + React island)
+  - path: / — Terminal sim homepage — Astro page (static HTML, CSS cursor blink)
+  - path: /about — Terminal-style bio page (Astro static, pure HTML)
+  - path: /blog — Blog — Astro page (static .md data, read-only)
+  - path: /blog/[slug] — Blog post by slug — Astro dynamic page (read-only, .md source)
+  - path: /habits — Habit tracker — Astro page + Alpine.js x-data (3 views: day, week, month)
+  - path: /task — Todo list — Astro page + Alpine.js x-data (CRUD, priority, stats heatmap)
+  - path: /projects — Project showcase (Astro static, pure HTML)
 components:
-  - TerminalStatic: Homepage terminal — Astro client:load island
-  - BlogApp: Blog listing — SWR, read-only
-  - BlogPostApp: Blog post view — SWR, Markdown rendering, PostNav
-  - HabitsTab: Habit day/week/month views — HabitRow (memo), SectionBlock (memo), ViewModeBar
-  - StatsTab: Weekly/monthly/habit-level stats
-  - TaskApp: Todo list with heatmap — TodoRow (memo), period stats
-  - PostNav: Prev/next blog navigation (SWR, renamed from PostNavNoNext)
-  - FloatingButtons: Theme toggle + nav — client:only="react"
-  - Markdown: Direct import for blog body rendering
-  - Providers: ThemeProvider + AuthProvider + FloatingButtons
-  - HomePage / BlogPage / BlogPostPage / HabitsPage / TaskPage: Page-level React islands wrapping Providers + content
+  - habitsApp: Alpine.js data object — day/week/month views, toggle/delete/add habits
+  - habitsStats: Alpine.js data object — overview stats (completion, streaks, DOW)
+  - taskApp: Alpine.js data object — todo CRUD, priority cycling, list grouping, stats heatmap
+  - require-auth.ts: Middleware — validates x-auth-hash header, returns 401/503
   - fetchWithAuth: Utility that attaches x-auth-hash header on mutating requests
 commands:
   dev: npm run dev
@@ -48,14 +42,14 @@ triggers:
   "update .md": Read STATUS.md + AGENTS.md, update routes/components/design → sync KB
   "cleanup": Scan unused → build check → present findings → update docs
 perf_patterns:
-  - Conditional render (tab === 'x' && ...) instead of display:none
-  - React.memo for list items (HabitRow, TodoRow, SectionBlock)
-  - useMemo for derived/computed data (openCount, rate, heatMap, periodStats)
-  - useCallback for event handlers passed as props
-  - Astro client:load / client:only directives for React islands
-  - JetBrains Mono via CSS @import (Google Fonts)
-  - SWR for data fetching with caching/dedup
+  - Alpine.js x-data + x-init for client-side interactivity (no React bundle)
+  - `marked` for lightweight markdown rendering (no React dependency)
+  - Plain fetch for all API calls (no SWR/React Query)
+  - Astro static pages for non-interactive content (about, projects)
   - Blog .md compiled to TS at build time (no runtime filesystem access)
+  - JetBrains Mono via CSS @import (Google Fonts)
+  - CSS-only skeleton loading (.skel class with shimmer keyframe)
+  - SHA-256 auth hash stored in localStorage as auth_hash
 ---
 
 # mcky.space Agent
@@ -94,8 +88,8 @@ perf_patterns:
 
 - Prioritize reference design when given
 - New routes must match existing terminal style exactly
-- Static pages (about, projects) are pure HTML + `<Providers client:load>` island
-- Interactive pages use page-level React islands wrapping Providers + content directly
+- Static pages (about, projects) are pure Astro HTML — no JS needed
+- Interactive pages (habits, task) use Alpine.js x-data directives inline in .astro templates
 - Blog is read-only — edit via Git (.md files + rebuild)
 - All mutating API endpoints require `x-auth-hash` header (validated via `require-auth` middleware)
 - No external API calls, no database (except Supabase for habits/todos/auth)
