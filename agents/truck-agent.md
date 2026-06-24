@@ -2,7 +2,7 @@
 type: agent
 id: truck-agent
 project: truck
-last_updated: 2026-06-23
+last_updated: 2026-06-24
 status_ref: STATUS.md in project root
 personality: overtime enthusiast
 stack:
@@ -54,7 +54,7 @@ env_vars:
 | `src/hooks/` | `useOnlineStatus`, `useFocusTrap`, `usePendingSyncCount` |
 | `src/utils/` | `calculateIncome()`, shift helpers |
 | `src/components/` | UI — 6 views + shared components |
-| `src/components/daily/` | Daily logging (DateSlider, ShiftBadge, OdometerCard, etc.) |
+| `src/components/daily/` | Daily logging (DateSlider, ShiftBadge, OdometerCard, CounterCard, LeaveCard) |
 | `src/components/shifts/` | Monthly calendar (CalendarGrid, ShiftModal, ShiftSummary) |
 | `src/components/history/` | Historical browsing |
 | `src/components/income/` | Salary breakdown (HeroCard, SalaryBreakdown, TaxSummary) |
@@ -72,9 +72,12 @@ main.tsx → App.tsx (auth gate + session + theme)
 ```
 
 ## Key Patterns
+- **Responsive**: mobile-first PWA, desktop uses max-width 1400px content-area centered. 2-column grids activated at 1024px. NavTabs stays at bottom on all viewport sizes.
 - **Auth gate**: App.tsx checks Supabase session → AuthScreen or main app
 - **Toast**: `useToast()` from ToastContext — never `alert()` or `console.log()`
-- **Modal pattern**: `.modal-backdrop` (fadeIn) + `.modal-content` (scaleIn, glassmorphism)
+- **Modal pattern**: `.modal-backdrop` (fadeIn) + `.modal-content` (scaleIn) — no glassmorphism on modals
+- **Card margin**: `.card` has no margin-bottom; spacing via parent `gap` or `.view > .card + .card { margin-top: var(--space-lg) }`
+- **Spacing**: CSS var system `--space-2xs`(2px) through `--space-3xl`(30px) used across all margin/padding/gap
 - **Theme**: CSS custom properties + `data-theme` (16 themes), saved in localStorage
 - **Back button guard**: popstate handler + `navDepthRef` for PWA exit confirmation
 - **LocalStorage key**: `last-saved-{userId}-{year}-{month}-{day}`

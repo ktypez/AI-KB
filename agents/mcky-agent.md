@@ -2,39 +2,48 @@
 type: agent
 id: mcky-agent
 project: mcky.space
-last_updated: 2026-06-23
+last_updated: 2026-06-24
 status_ref: STATUS.md in project root
 personality: terminal hipster
 stack:
-  - Next.js 14.2.5 (App Router, src/app/)
+  - Astro 7.0.2 (server output, Vercel adapter)
   - TypeScript
   - Pure CSS (globals.css, no Tailwind classes)
-  - JetBrains Mono via next/font/google (was Google Fonts <link>)
-  - localStorage (client-side only)
-  - Supabase (blog posts)
-  - react-markdown + remark-gfm + remark-breaks (dynamic import)
-  - SWR (blog data fetching, replaces manual useEffect)
-  - Deployment: Vercel
+  - JetBrains Mono via Google Fonts CSS @import
+  - Supabase (habits/todos/auth)
+  - Blog: .md files compiled to TypeScript at build time (no Supabase dependency)
+  - React 18 islands via @astrojs/react
+  - react-markdown + remark-gfm + remark-breaks (client island)
+  - SWR (blog data fetching)
+  - Auth: SHA-256 password via Web Crypto API, header-based gating
+  - Deployment: Vercel via @astrojs/vercel
 routes:
-  - path: / — Terminal sim homepage — instant render, CSS cursor blink (no entrance animation)
-  - path: /about — Terminal-style bio page (server component, no 'use client')
-  - path: /blog — Blog with markdown support
-  - path: /blog/[id] — Blog post page (SWR + dynamic Markdown)
-  - path: /habits — Habit tracker (3 tabs: habits, stats, profile)
-  - path: /task — Todo list (2 tabs: todos, stats)
-  - path: /projects — Project showcase (server component, no 'use client')
+  - path: / — Terminal sim homepage — Astro page + TerminalStatic React island
+  - path: /about — Terminal-style bio page (Astro static + React island)
+  - path: /blog — Blog — Astro page + BlogApp React island (SWR, read-only)
+  - path: /blog/[slug] — Blog post by slug — Astro dynamic page + BlogPostApp (read-only, .md source)
+  - path: /habits — Habit tracker — Astro page + HabitsPage React island
+  - path: /task — Todo list — Astro page + TaskPage React island
+  - path: /projects — Project showcase (Astro static + React island)
 components:
-  - TerminalAnimation: Homepage terminal — instant render, CSS-only cursor blink (no JS animation)
-  - HabitRow: memo component from HabitsTab
-  - SectionBlock: memo component from HabitsTab
-  - ViewModeBar: extracted view-mode toggle from HabitsTab
-  - TodoRow: memo component from task page
-  - FloatingButtons: dynamic import (ssr: false)
-  - Markdown: dynamic import (ssr: false)
+  - TerminalStatic: Homepage terminal — Astro client:load island
+  - BlogApp: Blog listing — SWR, read-only
+  - BlogPostApp: Blog post view — SWR, Markdown rendering, PostNav
+  - HabitsTab: Habit day/week/month views — HabitRow (memo), SectionBlock (memo), ViewModeBar
+  - StatsTab: Weekly/monthly/habit-level stats
+  - TaskApp: Todo list with heatmap — TodoRow (memo), period stats
+  - PostNav: Prev/next blog navigation (SWR, renamed from PostNavNoNext)
+  - FloatingButtons: Theme toggle + nav — client:only="react"
+  - Markdown: Direct import for blog body rendering
+  - Providers: ThemeProvider + AuthProvider + FloatingButtons
+  - HomePage / BlogPage / BlogPostPage / HabitsPage / TaskPage: Page-level React islands wrapping Providers + content
+  - fetchWithAuth: Utility that attaches x-auth-hash header on mutating requests
 commands:
   dev: npm run dev
-  build: npm run build
-  lint: Built into npm run build (Next.js checks)
+  build: npm run build (runs prebuild hook for blog index first)
+  build-blog: node scripts/build-blog-posts.mjs
+  start: npm run start
+  lint: Not configured (pure CSS, no framework lint)
 triggers:
   "update .md": Read STATUS.md + AGENTS.md, update routes/components/design → sync KB
   "cleanup": Scan unused → build check → present findings → update docs
@@ -43,9 +52,10 @@ perf_patterns:
   - React.memo for list items (HabitRow, TodoRow, SectionBlock)
   - useMemo for derived/computed data (openCount, rate, heatMap, periodStats)
   - useCallback for event handlers passed as props
-  - dynamic(() => import(...), { ssr: false }) for client-only components
-  - next/font instead of external font link
+  - Astro client:load / client:only directives for React islands
+  - JetBrains Mono via CSS @import (Google Fonts)
   - SWR for data fetching with caching/dedup
+  - Blog .md compiled to TS at build time (no runtime filesystem access)
 ---
 
 # mcky.space Agent
@@ -66,13 +76,13 @@ perf_patterns:
 4. If project AGENTS.md has stale info, update it too
 
 ### "cleanup"
-1. Scan unused files, empty files, dead exports in `src/app/` and `src/components/`
-2. Health check: `npm run build` (includes typecheck + lint)
+1. Scan unused files, empty files, dead exports in `src/`
+2. Health check: `npm run build` (runs prebuild + astro build)
 3. Deep scan: leftover dirs, `console.log`, TODO/FIXME
 4. Present findings for user to choose
 5. Commit & Push if user says so
 6. Update STATUS.md + KB agent file
-7. Never cleanup `.env*`, `node_modules/`, `.next/`, `.git/`, or essential config
+7. Never cleanup `.env*`, `node_modules/`, `dist/`, `.next/`, `.git/`, or essential config
 
 ## Agent Guidelines
 | Rule | Value |
@@ -84,7 +94,9 @@ perf_patterns:
 
 - Prioritize reference design when given
 - New routes must match existing terminal style exactly
-- Static pages (about, projects) are server components — no `'use client'`
-- Interactive pages use `dynamic(() => import(...), { ssr: false })` for client-only features
-- All client components use inline state + localStorage
-- No external API calls, no database
+- Static pages (about, projects) are pure HTML + `<Providers client:load>` island
+- Interactive pages use page-level React islands wrapping Providers + content directly
+- Blog is read-only — edit via Git (.md files + rebuild)
+- All mutating API endpoints require `x-auth-hash` header (validated via `require-auth` middleware)
+- No external API calls, no database (except Supabase for habits/todos/auth)
+- Build: `npm run build` runs `prebuild` (blog index) + `astro build`

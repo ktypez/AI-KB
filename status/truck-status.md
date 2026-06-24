@@ -1,8 +1,8 @@
 ---
-last_updated: 2026-06-23
+last_updated: 2026-06-24
 project: truck
 type: status
-last_commit: 0cda5f9
+last_commit: a236895
 ---
 
 # Project Status — truck
@@ -26,6 +26,8 @@ last_commit: 0cda5f9
 - `getBangkokTimestamp()` module-level function (Intl.DateTimeFormat cached)
 - Modal pattern: animation classes `.modal-backdrop` (fadeIn 0.2s) + `.modal-content`/`.confirm-dialog` (scaleIn 0.22s, scale 0.92→1). Glassmorphism styles (background, backdrop-filter, border, border-radius, padding, box-shadow) are in the CSS classes — modals only override width/maxWidth/overflowY inline. Dialog MUST be a child node of backdrop (flexbox centering on parent). All 6 modals + MonthYearPopup use the same pattern. ConfirmModal uses `.confirm-overlay` + `.confirm-dialog` same pattern.
 - Profile modals: reauthenticate via `sb.auth.signInWithPassword()` ก่อน updateUser
+- **Spacing**: CSS custom property system `--space-2xs`(2px) / `--space-xs`(4px) / `--space-sm`(8px) / `--space-md`(12px) / `--space-lg`(16px) / `--space-xl`(20px) / `--space-2xl`(24px) / `--space-3xl`(30px). All margin/padding/gap across the site uses these variables.
+- **Card margin**: `.card` has NO margin-bottom. Spacing between cards handled by parent container `gap` (Daily/History/Shift/Income grid containers) or `.view > .card + .card { margin-top: var(--space-lg) }` (Profile/Admin).
 
 ## CI/CD — GitHub Actions
 
@@ -34,6 +36,16 @@ last_commit: 0cda5f9
 - Steps: checkout (fetch-depth:0) → supabase/setup-cli@v1 → `supabase link --project-ref rmkevbdpmixsydldkiwv` → git diff หาฟังก์ชันที่เปลี่ยน → deploy ทีละอัน
 - `SUPABASE_ACCESS_TOKEN` (secret) + hardcoded ref ID (`rmkevbdpmixsydldkiwv`)
 - Edge functions: `approve-user`, `get-all-users`, `notify-telegram`
+
+## Responsive
+
+- Mobile-first (PWA) with desktop support
+- Desktop: `content-area` max-width 1400px centered, nav-tabs max-width 1400px centered
+- Media queries: `@media (min-width: 768px)` for full-width desktop, `@media (min-width: 1024px)` for 2-column grid layouts
+- 2-column grids: `.daily-grid`, `.history-grid`, `.shift-grid`, `.income-grid` with `grid-template-columns: 1fr 1fr` at ≥1024px
+- NavTabs stays at bottom on all viewport sizes (no `order: -1`)
+- Profile page: full-width on desktop (`max-width: none` via `:has()` selector)
+- Admin/Profile/Changelog: single column on all screen sizes (no grid overrides)
 
 ## Bundle (dist) — after vendor chunk split
 
@@ -48,7 +60,7 @@ last_commit: 0cda5f9
 | DailyView                            | 25 KB   | 7 KB           |
 | ProfilePage                          | 20 KB   | 5 KB           |
 | Route chunks                         | 9-11 KB | 3-4 KB         |
-| PWA precache                         | 1961 KB | — (55 entries) |
+| PWA precache                         | ~1960 KB | — (55 entries) |
 
 ## Tests (14)
 
@@ -69,6 +81,7 @@ last_commit: 0cda5f9
 - 5 light: clean-light, retro-pastel, modern, cotton-candy, summer-morning
 - 5 dark: clean-dark, retro-dark, midnight-ocean, twilight, sunset
 - 6 shinchan: shinchan, blue-sky, shinchan-bath, shinchan-sleep, shinchan-cute, shinchan-white
+- Includes one "glass" theme (glassmorphism full blur effects)
 - Theme picker: 2-column grid (light/dark) + collapsible "ชินจัง (6)" section at bottom
 - Theme modal closes on selection (theme flash effect visible)
 - `clean-light` / `clean-dark`: gradient bg (160°) + SVG noise texture overlay (feTurbulence, 8% opacity)
@@ -109,7 +122,10 @@ last_commit: 0cda5f9
 
 ### DailyView
 
-- `DailyView.tsx` — หน้าบันทึกกะรายวัน: DateSlider เลือกวัน, ShiftBadge แสดงกะ, OdometerCard (เลขไมล์), CounterCard (เที่ยว/ OT), HelpFixWorkCard (ช่วยซ่อม), LeaveCard (ลา, มี glow animation), SummaryBanner สรุปท้ายวัน (ปุ่มบันทึกถูกลบออกแล้ว)
+- `DailyView.tsx` — หน้าบันทึกกะรายวัน: DateSlider เลือกวัน, ShiftBadge แสดงกะ (solid card, no glass), OdometerCard (รวม SummaryBanner: ระยะทาง/รอบ/จุดส่ง + ไมล์เข้า/ออก/OT/สาย คั่นด้วย horizontal dashed divider), CounterCard (4 steppers: รอบ/จุด + งานช่วย/งานแก้ ใน 2×2 layout คั่นด้วย horizontal divider), LeaveCard (ลา, มี glow animation)
+- Left column (desktop ≥1024px): ShiftBadge + OdometerCard
+- Right column (desktop ≥1024px): CounterCard + info pill + Save button
+- **Deleted files**: `HelpFixWorkCard.tsx` (merged into CounterCard), `SummaryBanner.tsx` (merged into OdometerCard)
 
 ### ErrorBoundary
 
@@ -123,7 +139,7 @@ last_commit: 0cda5f9
 - `profile/EmailChangeModal.tsx` — modal เปลี่ยนอีเมล + ยืนยันรหัสผ่านปัจจุบัน
 - `profile/PasswordChangeModal.tsx` — modal 3 ช่อง (รหัสปัจจุบัน / ใหม่ / ยืนยันใหม่)
 - `profile/ProfileEditModal.tsx` — modal แก้ไข display name + อัปโหลด avatar ไปยัง Supabase Storage (bucket `avatars`)
-- `profile/AdminPanel.tsx` — แผงควบคุมแอดมิน: เมนู "จัดการผู้ใช้งาน" + "ตั้งค่ารายได้"
+- `profile/AdminPanel.tsx` — แผงควบคุมแอดมิน: เมนู "จัดการผู้ใช้งาน" + "ตั้งค่ารายได้" (single-page nav, no AdminLayout wrapper)
 - `profile/UserManagement.tsx` — จัดการผู้ใช้: tabs (all/pending/approved/rejected), ค้นหา, อนุมัติ/ปฏิเสธ/รีเซ็ตรหัสผ่าน
 - `profile/IncomeSettings.tsx` — ตั้งค่ารายได้: ฟอร์มแก้ 11 ค่า (เงินเดือน, ค่ารอบ, ค่า OT, ฯลฯ) → upsert `income_settings` table
 
@@ -156,7 +172,7 @@ last_commit: 0cda5f9
 
 ### IncomeView
 
-- `IncomeView.tsx` — หน้ารายได้/ภาษีรายเดือน: MonthYearSelector, HeroCard (ยอดสุทธิ), SalaryBreakdown (แยกค่ากะ/OT/โบนัสฯลฯ), TaxSummary (สรุปภาษี)
+- `IncomeView.tsx` — หน้ารายได้/ภาษีรายเดือน: MonthYearSelector, HeroCard (ยอดสุทธิ, full-width top), SalaryBreakdown (ซ้าย), TaxSummary (ขวา) ใน 2-column grid desktop
   - ดึง `income_settings` จาก Supabase → ส่งเข้า `calculateIncome(logs, daysInMonth, settings)` → recalc อัตโนมัติเมื่อ settings เปลี่ยน
 - `TaxSummary.tsx` — สรุปภาษีหัก ณ ที่จ่าย 3%: แสดง เงินเดือน/ภาษี/คงเหลือ per section (base, extras, total) ด้วย CSS grid (`1fr auto`) สำหรับ left-label / right-value alignment. รายได้เพิ่ม section ซ่อนเมื่อ `othersGross === 0`. Helper component `TaxRow` รับ `label`, `value`, `negative`, `bold`, `highlight` props
 
@@ -201,6 +217,11 @@ last_commit: 0cda5f9
 - `src/constants.ts` — removed dead exports `MONTHS_SHORT`, `DAYS_SHORT`, `MAX_YEAR` (unused)
 - `.openclaude/` — removed leftover directory
 - `vite.log` — removed leftover log file
+
+## Deletions (2026-06-24)
+
+- `HelpFixWorkCard.tsx` — merged into CounterCard (all 4 steppers in one card with horizontal divider)
+- `SummaryBanner.tsx` — merged into OdometerCard (stats row + horizontal divider + input fields)
 
 ## PWA
 
