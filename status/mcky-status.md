@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-06-24
+last_updated: 2026-06-24T23:30
 project: mcky.space
 type: status
 ---
@@ -25,9 +25,9 @@ type: status
 - **Styling:** Pure CSS via `globals.css` (no Tailwind classes used)
 - **Font:** JetBrains Mono via Google Fonts CSS `@import`
 - **Data:** Supabase (habits, todos, auth); blog from `.md` files (no Supabase dependency)
-- **Markdown:** react-markdown + remark-gfm + remark-breaks (client island)
-- **Data Fetching:** SWR for blog (client islands), plain fetch for habits/task
-- **Client UI:** React 18 islands via `@astrojs/react` (client:load)
+- **Markdown:** `marked` (lightweight, no React dependency)
+- **Data Fetching:** Plain fetch for all client data
+- **Client UI:** Alpine.js via CDN (`x-data`/`x-init` patterns for interactivity)
 - **API:** Astro endpoints (8 routes in `src/pages/api/`)
 - **Auth:** Password via SHA-256 hash in `app_config` table, Web Crypto API, header-based auth gating
 - **Blog:** `.md` files in `src/data/blog/` compiled to TypeScript at build time via `scripts/build-blog-posts.mjs`
@@ -46,17 +46,10 @@ type: status
 
 | Component | Notes |
 |-----------|-------|
-| `FloatingButtons` | Astro `client:only="react"` — theme toggle + nav |
-| `TerminalStatic` | Homepage terminal — Astro `client:load` island |
-| `Markdown` | Direct import in BlogPostApp (client island) |
-| `HabitsTab` | Extracted sub-components: `HabitRow` (memo), `SectionBlock` (memo), `ViewModeBar` |
-| `StatsTab` | Uses useMemo for computed stats, conditional render |
-| `TaskApp` | Full todo app with heatmap stats, `TodoRow` memo component |
-| `BlogApp` | Blog listing — SWR fetch from `/api/blog`, read-only |
-| `BlogPostApp` | Blog post view — SWR fetch from `/api/blog/[slug]`, read-only with Markdown |
-| `PostNav` | Prev/next blog post navigation (renamed from PostNavNoNext) |
-| `Providers` | ThemeProvider + AuthProvider + FloatingButtons wrapper |
-| `BlogPage` / `HabitsPage` / `TaskPage` / `HomePage` / `BlogPostPage` | Page-level React islands wrapping Providers + content directly |
+| `habitsApp()` | Alpine.js data object — day/week/month views, toggle/delete/add habits |
+| `habitsStats()` | Alpine.js data object — overview stats (completion, streaks, DOW) |
+| `taskApp()` | Alpine.js data object — todo CRUD, priority cycling, list grouping, stats |
+| `require-auth.ts` | Middleware — validates `x-auth-hash` header, returns 401/503 |
 | `fetchWithAuth` | Utility that attaches `x-auth-hash` header to mutating requests |
 
 ## API Endpoints
@@ -79,6 +72,9 @@ type: status
 
 ## Recent Updates
 
+- `2026-06-24` — **Cleanup: removed stale `.next/` directory and unused `@napi-rs/wasm-runtime` dep** (leftover from old Next.js setup).
+- `2026-06-24` — **Update: refreshed `/projects` page** with current stack info across all 3 projects (mcky.space stack → Astro 7/Alpine.js, renamed "data" → "clientdata", added route planning & OT calc features).
+- `2026-06-24` — **Code review fixes**. Fixed `perfectDays`→`greenDays` in habit stats (was rendering `undefined`). Fixed month view DOW calc to use `T12:00:00` (DST-safe). Added missing `aggRes` error check in `buildHabitsData`. Simplified `goToDate` to use `d.date` directly. Replaced all bare `catch {}` with `console.warn` in habits + task Alpine apps. Added Supabase error check in `require-auth.ts` (returns 503 on outage).
 - `2026-06-24` — **Security: auth gating on all mutating API endpoints**. Created `require-auth.ts` middleware (checks `x-auth-hash` header). Applied to all POST/PATCH/DELETE on habits and todos. Added `ALLOWED_FIELDS` whitelist to todos endpoints. Login now stores SHA-256 hash in localStorage as `auth_hash` (not `'1'`). Created `fetchWithAuth` utility — client components use it for mutating requests.
 - `2026-06-24` — **Chore: code review fixes**. Added `prebuild` hook for blog index generation. Removed dead `@astrojs/node` dep. Renamed `PostNavNoNext` → `PostNav` with fixed fetcher error handling. Removed old `AuthPrompt.tsx`.
 - `2026-06-24` — **Fix: page-level React islands instead of slot children**. Slot children in React islands render as static HTML (no hydration). Created `BlogPage`, `HabitsPage`, `TaskPage`, `HomePage`, `BlogPostPage` — each wraps `Providers` + page content directly in the React tree. Removed `Providers` from `Layout.astro`. Static pages (about, projects) use `Providers client:load` directly since their content is pure HTML.
@@ -89,7 +85,7 @@ type: status
 
 ## Known Issues
 
-- None (build passes clean)
+- `_ld()` helper duplicated in both `habits.astro` and `task.astro` inline scripts — minor, could be hoisted to Layout
 
 ## Upcoming
 
