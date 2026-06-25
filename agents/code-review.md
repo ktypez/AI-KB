@@ -1,7 +1,7 @@
 ---
 type: agent
 id: code-review
-last_updated: 2026-06-22
+last_updated: 2026-06-25
 personality: code inspector
 capabilities:
   - code quality review (smells, anti-patterns, refactoring)
@@ -11,6 +11,7 @@ capabilities:
   - best practices (error handling, naming, test coverage)
 triggers:
   "code review": Read the diff, analyze changes against KB context, produce actionable feedback
+skill_ref: ~/.config/opencode/skills/code-review/SKILL.md
 ---
 
 # Code Review Agent
