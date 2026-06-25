@@ -2,7 +2,7 @@
 last_updated: 2026-06-25
 project: truck
 type: status
-last_commit: 6bfda29
+last_commit: 11e6a6d
 ---
 
 # Project Status — truck
@@ -117,8 +117,8 @@ last_commit: 6bfda29
 - `MonthYearSelector.tsx` — prev/next `<` `>` buttons + clickable month/year label → opens `MonthYearPopup`. Height 42px, radius 12px, flex-fill.
 - `Skeleton.tsx` — base skeleton component: CSS `var(--skeleton-base)`/`var(--skeleton-shine)` for theme-aware shimmer (animation `skeleton-pulse 1.4s ease-in-out infinite`). Props: `width`, `height`, `borderRadius` (default 8), `className`. Exported as named export + default.
 - `skeletons/DailyViewSkeleton.tsx` — skeleton for DailyView: uses `daily-grid` with left/right columns matching real layout. Left: ShiftBadge skeleton (flex row with button + toggle) + OdometerCard skeleton (3 stats with dashed dividers + 4 input rows with dashed borders). Right: CounterCard skeleton (2×2 counters with dashed dividers + info pill) + Save button skeleton.
-- `skeletons/ShiftCalendarSkeleton.tsx` — skeleton for ShiftCalendar: month bar (200x36) + legend row (80x16 + 80x16) + 4 rows × 6 columns of date cells (each 44x44, radius 10) in CSS grid `repeat(6, 1fr)`. Spacing: row gap 6px, col gap 4px.
-- `skeletons/IncomeViewSkeleton.tsx` — skeleton for IncomeView: month selector row (200x36) + hero card (340x110) + heading (100x18) + 6 salary rows (label 80x14 + value 60x14) + tax summary (340x50). Two hero card rows: one large (140x28) + one small (80x18).
+- `skeletons/ShiftCalendarSkeleton.tsx` — skeleton for ShiftCalendar: uses `shift-grid` with left/right columns. Left: CalendarGrid skeleton (7×5 grid of cells, 72px height each). Right: ShiftSummary skeleton (ChartBar icon + title + 4 summary rows with values + remaining badges for sick/personal leave).
+- `skeletons/IncomeViewSkeleton.tsx` — skeleton for IncomeView: HeroCard (net income display) + uses `income-grid` with left/right columns. Left: SalaryBreakdown skeleton (header with icon + 8 salary rows with circle icons + values). Right: TaxSummary skeleton (header + 3 base rows + dashed divider + 3 extra rows + solid divider + 3 total rows).
 - `ConfirmModal.tsx` — reusable confirmation dialog with `.confirm-overlay` + `.confirm-dialog` pattern
 
 ### DailyView
