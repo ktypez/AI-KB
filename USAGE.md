@@ -18,8 +18,7 @@ This knowledge base (`~/AI-KB/`) works with **any** AI coding tool — Cursor, C
 │   ├── mcky-agent.md
 │   ├── truck-agent.md
 │   ├── clientdata-agent.md
-│   ├── writer-agent.md
-│   └── code-review.md
+│   └── writer-agent.md
 ├── skills/              ← Specialized skills (INDEX.md + 8 skills)
 ├── status/              ← Live project status
 │   ├── mcky-status.md

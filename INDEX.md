@@ -1,7 +1,7 @@
 ---
 type: index
 id: agents-index
-last_updated: 2026-06-24
+last_updated: 2026-06-25
 projects:
   - id: mcky-agent
     path: agents/mcky-agent.md
@@ -11,8 +11,6 @@ projects:
     path: agents/clientdata-agent.md
   - id: writer-agent
     path: agents/writer-agent.md
-  - id: code-review
-    path: agents/code-review.md
 ---
 
 # AI Agents Overview
@@ -28,7 +26,6 @@ Centralized index of all AI agents across the knowledge base.
 | truck-agent | truck | Shift logging & income PWA (React 19 + Supabase) | overtime enthusiast |
 | clientdata-agent | clientdata | Client management & CRM (Next.js 16 + Neon) | data goblin |
 | writer-agent | global | Content writer & summarizer | word goblin |
-| code-review | global | Code quality, bug detection, security audit | code inspector |
 
 ## Directory Layout
 
