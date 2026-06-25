@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-06-23
+last_updated: 2026-06-25T09:00:00Z
 project: clientdata
 type: status
 ---
@@ -19,6 +19,28 @@ type: status
 - `master`
 
 ## Changelog
+
+### 2026-06-25 — Bundle Optimization & Cleanup
+- Added `@next/bundle-analyzer`, identified maplibre-gl (1MB/266KB gz) as 46% of client bundle
+- Created `MapPreviewDynamic.tsx` wrapper with `next/dynamic` (same pattern as `MapPickerDynamic.tsx`)
+- Changed `ClientDetail.tsx` to import `MapPreviewDynamic` instead of `MapPreview` — maplibre now async
+- Removed `@next/bundle-analyzer` after analysis complete
+- Cleaned `package.json` `allowScripts` (removed unused msw/sharp refs)
+- Removed stale `.next/analyze` directory
+
+### 2026-06-25 — Tech Stack Upgrade
+- next: 16.2.6 → 16.2.9
+- react/react-dom: 19.2.4 → 19.2.7
+- typescript: 5.9.3 → 6.0.3
+- @types/node: 20.x → 26.x
+- @aws-sdk/client-s3: 3.1055.0 → 3.1075.0
+- @base-ui/react: 1.5.0 → 1.6.0
+- tailwindcss: 4.3.0 → 4.3.1
+- @tailwindcss/postcss: 4.3.0 → 4.3.1
+- @types/react: 19.2.15 → 19.2.17
+- eslint-config-next: 16.2.6 → 16.2.9
+- Added `"types": ["geojson"]` to tsconfig.json (TS6 `types: []` default broke global GeoJSON namespace)
+- eslint 10 blocked — `eslint-config-next` doesn't support it yet
 
 ### 38146e6 — Code Review Fixes (2026-06-23)
 - `fetchClients` now calls `setCachedClients(data)` to keep localStorage cache in sync
@@ -80,6 +102,7 @@ type: status
 | TableSkeleton | `components/TableSkeleton.tsx` | Table row loading placeholder |
 | CardSkeleton | `components/CardSkeleton.tsx` | Card grid loading placeholder |
 | SearchDropdown | `components/SearchDropdown.tsx` | Map view search results dropdown |
+| MapPreviewDynamic | `components/MapPreviewDynamic.tsx` | Lazy-loaded map preview wrapper |
 
 ## Known
 
