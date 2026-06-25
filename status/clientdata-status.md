@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-06-25T12:00:00Z
+last_updated: 2026-06-25T14:00:00Z
 project: clientdata
 type: status
 ---
@@ -19,6 +19,11 @@ type: status
 - `master`
 
 ## Changelog
+
+### 2026-06-25 — Map Pin Fix + Color Update
+- **Fixed**: Map pins not rendering after style changes (theme toggle) — `addLayers()` now explicitly cleans up stale layers/source before re-adding instead of guarding with `getSource()` which could return stale references during style transitions
+- **Updated**: Map pin colors from hardcoded red (`#c80008`) to design system primary teal/green (`#1a8a6a` light, `#2ebd8a` dark)
+- **Updated**: `lib/pin.ts` HTML pin markers to match new teal/green primary colors
 
 ### 2026-06-25 — Bundle Optimization & Cleanup
 - Added `@next/bundle-analyzer`, identified maplibre-gl (1MB/266KB gz) as 46% of client bundle
@@ -80,9 +85,9 @@ type: status
 - Logo.tsx SVG fill converted to style prop for CSS variable compatibility
 - All colors now flow from globals.css tokens — single source of truth
 
-### 2026-06-25 — Alert → Toast Migration
-- Replaced 2 `alert()` calls with `toast.error()` (sonner) in page.tsx
-- Error messages now show as non-blocking toast notifications
+### 2026-06-25 — Map Pin + Split View Fixes
+- InlineMap: replaced unparseable `var(--primary)` in circle layers with runtime `getComputedStyle` — resolves MapLibre GL WebGL color parsing limitation
+- page.tsx: all nav callbacks (`navToDetail`, `navToMap`, `navToAdd`, `navToEdit`) now reset all view states to prevent split view when switching between suggestions and map
 
 ### 38146e6 — Code Review Fixes (2026-06-23)
 - `fetchClients` now calls `setCachedClients(data)` to keep localStorage cache in sync
