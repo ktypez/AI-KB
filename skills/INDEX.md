@@ -72,7 +72,11 @@ To invoke a skill manually, reference it by name in your task:
 
 1. Create skill in `~/.config/opencode/skills/<skill-name>/SKILL.md`
 2. Add entry to this `INDEX.md` (table + skills list in frontmatter)
-3. Create `~/AI-KB/skills/<skill-name>.md` with summary
-4. Run `bash ~/AI-KB/sync-to-shared.sh` to sync
+3. Create `~/AI-KB/skills/<skill-name>.md` with summary — **always required**
+4. Update `~/AI-KB/INDEX.md` skills section if it lists individual skills
+5. Update `~/AI-KB/USAGE.md` skills count in directory tree
+6. Run `bash ~/AI-KB/sync-to-shared.sh` to sync
+
+> **Rule**: Every skill MUST have a matching `~/AI-KB/skills/<skill-name>.md` doc. No skill without docs.
 
 (End of file - total 79 lines)
