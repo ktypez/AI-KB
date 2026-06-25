@@ -1,15 +1,15 @@
 ---
-last_updated: 2026-06-24
+last_updated: 2026-06-25
 project: truck
 type: status
-last_commit: a236895
+last_commit: 15a2abb
 ---
 
 # Project Status — truck
 
 ## Stack
 
-- React 19 + Vite 6 + TypeScript + Supabase (timestamptz, Asia/Bangkok timezone)
+- React 19 + Vite 8 + TypeScript 6 + Supabase (timestamptz, Asia/Bangkok timezone)
 - react-router-dom v7, tanstack/react-query v5
 - PWA via vite-plugin-pwa (injectManifest)
 - Custom themes.css (16 themes, default: clean-light)
@@ -27,7 +27,8 @@ last_commit: a236895
 - Modal pattern: animation classes `.modal-backdrop` (fadeIn 0.2s) + `.modal-content`/`.confirm-dialog` (scaleIn 0.22s, scale 0.92→1). Glassmorphism styles (background, backdrop-filter, border, border-radius, padding, box-shadow) are in the CSS classes — modals only override width/maxWidth/overflowY inline. Dialog MUST be a child node of backdrop (flexbox centering on parent). All 6 modals + MonthYearPopup use the same pattern. ConfirmModal uses `.confirm-overlay` + `.confirm-dialog` same pattern.
 - Profile modals: reauthenticate via `sb.auth.signInWithPassword()` ก่อน updateUser
 - **Spacing**: CSS custom property system `--space-2xs`(2px) / `--space-xs`(4px) / `--space-sm`(8px) / `--space-md`(12px) / `--space-lg`(16px) / `--space-xl`(20px) / `--space-2xl`(24px) / `--space-3xl`(30px). All margin/padding/gap across the site uses these variables.
-- **Card margin**: `.card` has NO margin-bottom. Spacing between cards handled by parent container `gap` (Daily/History/Shift/Income grid containers) or `.view > .card + .card { margin-top: var(--space-lg) }` (Profile/Admin).
+- **Card margin**: `.card` has NO margin-bottom. Spacing between cards handled by parent container `gap` (Daily/History/Shift/Income grid containers) or `.view > .card + .card { margin-top: var(--space-md) }` (Profile/Admin).
+- **Buddhist year**: Use `toBuddhistYear(year)` from `@/constants` instead of inline `+ 543`
 
 ## CI/CD — GitHub Actions
 
@@ -80,15 +81,17 @@ last_commit: a236895
 - 16 themes total (default: `clean-light`)
 - 5 light: clean-light, retro-pastel, modern, cotton-candy, summer-morning
 - 5 dark: clean-dark, retro-dark, midnight-ocean, twilight, sunset
-- 6 shinchan: shinchan, blue-sky, shinchan-bath, shinchan-sleep, shinchan-cute, shinchan-white
+- 6 shinchan: shinchan, shinchan-blue, shinchan-bath, shinchan-sleep, shinchan-cute, shinchan-white
 - Includes one "glass" theme (glassmorphism full blur effects)
 - Theme picker: 2-column grid (light/dark) + collapsible "ชินจัง (6)" section at bottom
 - Theme modal closes on selection (theme flash effect visible)
 - `clean-light` / `clean-dark`: gradient bg (160°) + SVG noise texture overlay (feTurbulence, 8% opacity)
 - All themes use `.hero-card` selector for HeroCard overrides
 - All shinchan `.tab` has separate rules (not grouped with wiggle selector)
-- Shinchan light themes (shinchan, blue-sky, shinchan-bath) use dark-on-gradient pattern (active buttons/hero/dateslider have dark text like shinchan-white)
-- shinchan/blue-sky/shinchan-bath now have `.modal-content, .month-bar` override (solid bg + 3px border)
+- Shinchan light themes (shinchan, shinchan-blue, shinchan-bath) use dark-on-gradient pattern (active buttons/hero/dateslider have dark text like shinchan-white)
+- shinchan/shinchan-blue/shinchan-bath have `.modal-content, .month-bar` override (solid bg + 3px border)
+- Shinchan themes (all 6) apply `backdrop-filter: blur(8px)` + semi-transparent bg to `.card`, `.summary-banner`, `.cal-cell`, `.shift-badge-wrapper`, `.mys-chip` (glass effect)
+- CSS custom properties `--primary`, `--primary-bg`, `--secondary` no longer use `!important` (attribute selector specificity is sufficient)
 
 ## Hooks
 
@@ -101,12 +104,10 @@ last_commit: a236895
 ## Library — offlineQueue
 
 - `src/lib/offlineQueue.ts` — offline mutation queue using localStorage:
-  - `enqueueMutation(mutation)`: store as `offline-mutation-{id}` (id = `${table}-${operation}-${Date.now()}`), deduplicate by serialized key
-  - `dequeueMutation(id)`: remove item from localStorage
-  - `getAllMutations()`: read all `offline-mutation-*` keys → parse JSON
-  - `replayMutations(sb)`: `window.addEventListener('online', ...)` → iterate mutations → execute Supabase upsert/delete → dequeue on success, skip on 409/23505 (conflict/duplicate), re-enqueue on other errors
-  - `clearAllMutations()`: remove all `offline-mutation-*` keys
-  - Deduplication: checks existing mutations with same `table` + `payload.date` — skips if already queued
+  - `saveLog()` / `removeLog()`: attempt Supabase upsert/delete; if offline, queue to localStorage + optimistically update cache
+  - `replayQueue(userId, queryClient?, onNotify?)`: iterate queued mutations → execute Supabase upsert/delete → dequeue on success, `continue` on error (skip failing item, retry remaining)
+  - `getPendingCount(userId?)`: return count of pending mutations
+  - Deduplication: same-day upsert replaces previous; delete after upsert removes the upsert
 
 ## Components
 
@@ -135,7 +136,7 @@ last_commit: a236895
 
 ### Profile
 
-- `ProfilePage.tsx` — แสดง avatar, display name, email, KPI ปี (8 รายการ 2 คอลัมน์ + รายได้/ภาษี + วันลาคงเหลือ), เลือกปีได้ (ปุ่ม ◀ ▶), ปุ่มเปลี่ยนอีเมล/รหัสผ่าน (2 คอลัมน์), ปุ่ม What's New, ออกจากระบบ (พื้นหลังแดง)
+- `ProfilePage.tsx` — แสดง avatar, display name, email, KPI ปี (8 รายการ 2 คอลัมน์ + รายได้/ภาษี + วันลาคงเหลือ), เลือกปีได้ (ปุ่ม ◀ ▶), ปุ่มเปลี่ยนอีเมล/รหัสผ่าน (2 คอลัมน์), ปุ่ม What's New, ออกจากระบบ (พื้นหลังแดง). Admin panel visibility gated by `user_profiles.is_admin` DB query (not hardcoded email).
 - `profile/EmailChangeModal.tsx` — modal เปลี่ยนอีเมล + ยืนยันรหัสผ่านปัจจุบัน
 - `profile/PasswordChangeModal.tsx` — modal 3 ช่อง (รหัสปัจจุบัน / ใหม่ / ยืนยันใหม่)
 - `profile/ProfileEditModal.tsx` — modal แก้ไข display name + อัปโหลด avatar ไปยัง Supabase Storage (bucket `avatars`)
@@ -211,12 +212,31 @@ last_commit: a236895
 - Prop pattern: `<Icon size={20} weight="duotone" />` หรือ `ComponentType<{size, weight, style}>`
 - SalaryRow.tsx รับ icon เป็น ComponentType (ไม่ใช่ string class)
 
-## Cleanup (2026-06-18 + 2026-06-20)
+## Cleanup (2026-06-18 + 2026-06-20 + 2026-06-25)
 
+### 2026-06-18 / 2026-06-20
 - `src/types.ts` — removed (empty file, never imported)
-- `src/constants.ts` — removed dead exports `MONTHS_SHORT`, `DAYS_SHORT`, `MAX_YEAR` (unused)
-- `.openclaude/` — removed leftover directory
-- `vite.log` — removed leftover log file
+- `src/constants.ts` — removed dead exports `APP_CONFIG` (unused)
+- `src/utils/shift-helpers.ts` — removed dead export `getShiftLabel`
+- `src/lib/offlineQueue.ts` — removed dead exports `QueuedOp` (interface), `getQueue` (function)
+- `src/components/ToastContext.tsx` — removed dead export `ToastContext` (raw context, consumers use `useToast`)
+- `src/components/shifts/ShiftModal.tsx` — dedup `ShiftType` (now imports from shift-helpers)
+- `src/components/ShiftCalendar.tsx` — dedup `ShiftType` (now imports from shift-helpers)
+- `.opencode/` — deleted (62 MB stale node_modules, plans dir), added to `.gitignore`
+
+### 2026-06-25 — Code review fixes
+- **RLS**: `pending_users` SELECT/UPDATE now requires `is_admin` (was any authenticated user)
+- **Admin gate**: replaced hardcoded `email === 'mcky@mcky.space'` with `user_profiles.is_admin` DB query
+- **CSS**: removed duplicate `box-shadow` in twilight/cotton-candy themes
+- **CSS**: added missing `-webkit-backdrop-filter` on midnight-ocean `.shift-sheet`
+- **CSS**: removed duplicate `.profile-grid-left/-right` selectors
+- **CSS**: removed `!important` from `--primary`/`--primary-bg`/`--secondary` across all 16 themes (49 declarations)
+- **DOM leak**: ThemeEffects now cleans up chocobi-fall container on unmount
+- **Type safety**: replaced `as any` with `Session`, `Record<string, any>` in App/DailyView/ProfilePage
+- **Deps**: removed unused `clsx` (`^2.1.1`) and `tailwind-merge` (`^3.6.0`)
+- **Hover**: DailyList replaced inline `onMouseEnter/Leave` with `.daily-row:hover` CSS class
+- **Buddhist year**: extracted `toBuddhistYear()` to `@/constants` (6 call sites unified)
+- **Offline queue**: `replayQueue` now `continue`s on error instead of `break` (resilience)
 
 ## Deletions (2026-06-24)
 
@@ -240,8 +260,8 @@ last_commit: a236895
 
 ## Constraints
 
-- ห้าม `as any`, `@ts-ignore`, `@ts-expect-error`
-- CSS overrides ใช้ `!important` เมื่อต้องชนะ base style
+- ห้าม `@ts-ignore`, `@ts-expect-error` (ใช้ `as Record<string, any>` แทน `as any` เมื่อต้องทำงานกับ dynamic payloads)
+- CSS overrides ใช้ `!important` เมื่อต้องชนะ base style (ยกเว้น `--primary`/`--primary-bg`/`--secondary` custom properties — attribute selector specificity ก็เพียงพอ)
 - ใช้ module-level Intl.DateTimeFormat instance (ไม่สร้างซ้ำใน render)
 - localStorage key pattern: `last-saved-{userId}-{year}-{month}-{day}`
 - Reauthentication pattern: `sb.auth.signInWithPassword()` ก่อน `sb.auth.updateUser()` (email/password change)

@@ -2,11 +2,11 @@
 type: agent
 id: truck-agent
 project: truck
-last_updated: 2026-06-24
+last_updated: 2026-06-25
 status_ref: STATUS.md in project root
 personality: overtime enthusiast
 stack:
-  - React 19 + Vite 6 + TypeScript + Supabase + PWA
+  - React 19 + Vite 8 + TypeScript 6 + Supabase + PWA
   - react-router-dom v7, tanstack/react-query v5
   - Custom themes.css (16 themes, default: clean-light)
   - Telegram Bot API for account requests
@@ -76,9 +76,12 @@ main.tsx → App.tsx (auth gate + session + theme)
 - **Auth gate**: App.tsx checks Supabase session → AuthScreen or main app
 - **Toast**: `useToast()` from ToastContext — never `alert()` or `console.log()`
 - **Modal pattern**: `.modal-backdrop` (fadeIn) + `.modal-content` (scaleIn) — no glassmorphism on modals
-- **Card margin**: `.card` has no margin-bottom; spacing via parent `gap` or `.view > .card + .card { margin-top: var(--space-lg) }`
+- **Card margin**: `.card` has no margin-bottom; spacing via parent `gap` or `.view > .card + .card { margin-top: var(--space-md) }`
 - **Spacing**: CSS var system `--space-2xs`(2px) through `--space-3xl`(30px) used across all margin/padding/gap
-- **Theme**: CSS custom properties + `data-theme` (16 themes), saved in localStorage
+- **Theme**: CSS custom properties + `data-theme` (16 themes), saved in localStorage. `--primary`/`--primary-bg`/`--secondary` don't use `!important` (attribute selector specificity sufficient).
+- **Shinchan glass**: All 6 shinchan themes apply `backdrop-filter: blur(8px)` + semi-transparent bg to `.card`, `.summary-banner`, `.cal-cell`, `.shift-badge-wrapper`, `.mys-chip`
+- **Admin gate**: `user_profiles.is_admin` DB query (not hardcoded email)
+- **Buddhist year**: `toBuddhistYear(year)` from `@/constants`
 - **Back button guard**: popstate handler + `navDepthRef` for PWA exit confirmation
 - **LocalStorage key**: `last-saved-{userId}-{year}-{month}-{day}`
 - **Timezone**: regex extract hh:mm from Supabase, `Intl.DateTimeFormat('sv-SE')` for local
