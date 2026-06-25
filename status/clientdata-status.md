@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-06-25T09:00:00Z
+last_updated: 2026-06-25T10:00:00Z
 project: clientdata
 type: status
 ---
@@ -41,6 +41,22 @@ type: status
 - eslint-config-next: 16.2.6 → 16.2.9
 - Added `"types": ["geojson"]` to tsconfig.json (TS6 `types: []` default broke global GeoJSON namespace)
 - eslint 10 blocked — `eslint-config-next` doesn't support it yet
+
+### 2026-06-25 — Code Review Fixes (15 issues)
+- **P1**: POST /api/clients duplicate check now uses `getClientById()` instead of loading entire table
+- **Q5**: Removed dead `localStorage.setItem('ezzylist_session', ...)` in LoginModal
+- **E5**: `approveSuggestion` wraps client update + status update in `db.transaction()` — prevents double-approval on crash
+- **E6**: Added try/catch around approve/reject in suggestion API route
+- **R1**: NavState stores `client`/`editClient` objects — fixes stale closure in `applyNav` (`clients.find()` no longer needed)
+- **Q1**: Extracted `formatDateTime`/`formatDate` to `lib/utils.ts`, removed 3 duplicates
+- **Q3**: Extracted `generateId()` to `lib/utils.ts`
+- **Q4**: Removed dead `getAdminToken()` and `x-admin-token` header fallback from storage.ts
+- **E3**: Photo timer stored in ref, cleared on unmount in ClientDetail
+- **E4**: Added try/catch around `addClient()` in POST /api/clients
+- **A2**: Added auth check to `GET /api/suggestions?clientId=X`
+- **A5**: Added 4-char minimum password length on first setup
+- **A6**: DELETE /api/clients/:id returns 404 if client doesn't exist
+- **S6**: Telegram error details logged server-side, generic message sent to client
 
 ### 38146e6 — Code Review Fixes (2026-06-23)
 - `fetchClients` now calls `setCachedClients(data)` to keep localStorage cache in sync
