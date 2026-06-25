@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-06-25T11:00:00Z
+last_updated: 2026-06-25T12:00:00Z
 project: clientdata
 type: status
 ---
@@ -72,6 +72,17 @@ type: status
 - **M4**: Sidebar section headers changed from `<p>` to `<h3>` for heading hierarchy
 - **M5**: EmptyState container gets `aria-live="polite"` for screen readers
 - Search clear button expanded to 32px with focus ring
+
+### 2026-06-25 — Hardcoded Hex → CSS Variable Migration
+- Added 5 new CSS variables to globals.css: `--primary-hover`, `--accent-blue`, `--accent-blue-hover`, `--selection-bg`, `--border-hover` (+ dark mode variants)
+- Migrated ~300+ hardcoded hex values across 20 component files to use CSS custom properties
+- Affected: ClientDetail, InlineMap, RouteModal, AdminSuggestionsInline, DesktopTableView, SuggestEditForm, CopyDropdown, MobileCardList, SelectionToolbar, ImageUpload, DesktopCardView, LoginModal, PageHeader, sheet, AddClientForm, InlineAddEditView, MapPickerDynamic, MapPreviewDynamic, MapPreview, SetupScreen, Logo, app/c/[id]/page.tsx
+- Logo.tsx SVG fill converted to style prop for CSS variable compatibility
+- All colors now flow from globals.css tokens — single source of truth
+
+### 2026-06-25 — Alert → Toast Migration
+- Replaced 2 `alert()` calls with `toast.error()` (sonner) in page.tsx
+- Error messages now show as non-blocking toast notifications
 
 ### 38146e6 — Code Review Fixes (2026-06-23)
 - `fetchClients` now calls `setCachedClients(data)` to keep localStorage cache in sync
