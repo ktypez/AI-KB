@@ -2,7 +2,7 @@
 last_updated: 2026-06-25
 project: truck
 type: status
-last_commit: 15a2abb
+last_commit: 6bfda29
 ---
 
 # Project Status — truck
@@ -79,10 +79,9 @@ last_commit: 15a2abb
 ## Themes
 
 - 16 themes total (default: `clean-light`)
-- 5 light: clean-light, retro-pastel, modern, cotton-candy, summer-morning
+- 5 light: clean-light, retro-pastel, modern, neobrutalist, summer-morning
 - 5 dark: clean-dark, retro-dark, midnight-ocean, twilight, sunset
 - 6 shinchan: shinchan, shinchan-blue, shinchan-bath, shinchan-sleep, shinchan-cute, shinchan-white
-- Includes one "glass" theme (glassmorphism full blur effects)
 - Theme picker: 2-column grid (light/dark) + collapsible "ชินจัง (6)" section at bottom
 - Theme modal closes on selection (theme flash effect visible)
 - `clean-light` / `clean-dark`: gradient bg (160°) + SVG noise texture overlay (feTurbulence, 8% opacity)
@@ -92,6 +91,7 @@ last_commit: 15a2abb
 - shinchan/shinchan-blue/shinchan-bath have `.modal-content, .month-bar` override (solid bg + 3px border)
 - Shinchan themes (all 6) apply `backdrop-filter: blur(8px)` + semi-transparent bg to `.card`, `.summary-banner`, `.cal-cell`, `.shift-badge-wrapper`, `.mys-chip` (glass effect)
 - CSS custom properties `--primary`, `--primary-bg`, `--secondary` no longer use `!important` (attribute selector specificity is sufficient)
+- **Neobrutalist**: vivid yellow bg (`#fde047`), blue primary (`#2563eb`), thick 3px black borders, offset box-shadows (`4px 4px 0px #1a1a1a`), rounded 12px corners
 
 ## Hooks
 
@@ -116,14 +116,14 @@ last_commit: 15a2abb
 - `PageHeader.tsx` — shared header component: back button `<` + title (font 22, weight 900) + optional description (14px) + optional children in 2-col grid (6fr/4fr). Hard text shadow on title+desc. Used by all 6 views.
 - `MonthYearSelector.tsx` — prev/next `<` `>` buttons + clickable month/year label → opens `MonthYearPopup`. Height 42px, radius 12px, flex-fill.
 - `Skeleton.tsx` — base skeleton component: CSS `var(--skeleton-base)`/`var(--skeleton-shine)` for theme-aware shimmer (animation `skeleton-pulse 1.4s ease-in-out infinite`). Props: `width`, `height`, `borderRadius` (default 8), `className`. Exported as named export + default.
-- `skeletons/DailyViewSkeleton.tsx` — skeleton for DailyView: DateSlider block (280x44, radius 22) + date text (100x16) + 2 counter cards (2-col grid, each 140x70) + 2 wide blocks (300x44) + summary banner (340x80). Wraps in outer card matching DailyView card styling.
+- `skeletons/DailyViewSkeleton.tsx` — skeleton for DailyView: uses `daily-grid` with left/right columns matching real layout. Left: ShiftBadge skeleton (flex row with button + toggle) + OdometerCard skeleton (3 stats with dashed dividers + 4 input rows with dashed borders). Right: CounterCard skeleton (2×2 counters with dashed dividers + info pill) + Save button skeleton.
 - `skeletons/ShiftCalendarSkeleton.tsx` — skeleton for ShiftCalendar: month bar (200x36) + legend row (80x16 + 80x16) + 4 rows × 6 columns of date cells (each 44x44, radius 10) in CSS grid `repeat(6, 1fr)`. Spacing: row gap 6px, col gap 4px.
 - `skeletons/IncomeViewSkeleton.tsx` — skeleton for IncomeView: month selector row (200x36) + hero card (340x110) + heading (100x18) + 6 salary rows (label 80x14 + value 60x14) + tax summary (340x50). Two hero card rows: one large (140x28) + one small (80x18).
 - `ConfirmModal.tsx` — reusable confirmation dialog with `.confirm-overlay` + `.confirm-dialog` pattern
 
 ### DailyView
 
-- `DailyView.tsx` — หน้าบันทึกกะรายวัน: DateSlider เลือกวัน, ShiftBadge แสดงกะ (solid card, no glass), OdometerCard (รวม SummaryBanner: ระยะทาง/รอบ/จุดส่ง + ไมล์เข้า/ออก/OT/สาย คั่นด้วย horizontal dashed divider), CounterCard (4 steppers: รอบ/จุด + งานช่วย/งานแก้ ใน 2×2 layout คั่นด้วย horizontal divider), LeaveCard (ลา, มี glow animation)
+- `DailyView.tsx` — หน้าบันทึกกะรายวัน: DateSlider เลือกวัน, ShiftBadge แสดงกะ (solid card, no glass), OdometerCard (รวม SummaryBanner: ระยะทาง/รอบ/จุดส่ง + ไมล์เข้า/ออก/OT/สาย คั่นด้วย dashed dividers ทั้งแนวตั้งและแนวนอน), CounterCard (4 steppers: รอบ/จุด + งานช่วย/งานแก้ ใน 2×2 layout คั่นด้วย dashed dividers), LeaveCard (ลา, มี glow animation)
 - Left column (desktop ≥1024px): ShiftBadge + OdometerCard
 - Right column (desktop ≥1024px): CounterCard + info pill + Save button
 - **Deleted files**: `HelpFixWorkCard.tsx` (merged into CounterCard), `SummaryBanner.tsx` (merged into OdometerCard)
@@ -237,6 +237,16 @@ last_commit: 15a2abb
 - **Hover**: DailyList replaced inline `onMouseEnter/Leave` with `.daily-row:hover` CSS class
 - **Buddhist year**: extracted `toBuddhistYear()` to `@/constants` (6 call sites unified)
 - **Offline queue**: `replayQueue` now `continue`s on error instead of `break` (resilience)
+
+### 2026-06-25 — Theme + layout updates
+- **Theme**: replaced cotton-candy with neobrutalist (vivid yellow `#fde047` bg, blue `#2563eb` primary, 3px black borders, offset shadows)
+- **Theme**: removed Liquid Glass theme (glasscn-inspired, was unregistered in picker)
+- **Theme migration**: `App.tsx` localStorage migration `cotton-candy` → `neobrutalist`
+- **OdometerCard**: vertical dividers solid → dashed (`borderLeft: '1px dashed var(--border)'`)
+- **OdometerCard**: horizontal divider already dashed, kept consistent
+- **Input-group**: global `border-bottom` solid → dashed (`globals.css`)
+- **DailyViewSkeleton**: rewritten to match `daily-grid` two-column layout (left: ShiftBadge + OdometerCard, right: CounterCard + Save)
+- **Cleanup**: removed unused `getShiftLabel` function from `shift-helpers.ts`
 
 ## Deletions (2026-06-24)
 

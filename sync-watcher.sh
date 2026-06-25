@@ -1,12 +1,26 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # Background watcher daemon for AI-KB → shared/AI-KB
-# Watches for file changes and syncs automatically
+# Watches for file changes and syncs automatically (including deletes)
 # Requires: inotify-tools (pkg install inotify-tools)
 
 SRC="$HOME/AI-KB"
 DST="$HOME/storage/shared/AI-KB"
 LOG="$HOME/.termux/ai-kb-sync.log"
 PIDFILE="$HOME/.termux/ai-kb-sync.pid"
+
+sync_dst() {
+  # Copy new/updated files
+  cp -rf "$SRC/." "$DST/"
+  # Remove files in DST that no longer exist in SRC
+  while IFS= read -r -d '' f; do
+    rel="${f#$DST/}"
+    if [ ! -e "$SRC/$rel" ]; then
+      rm -f "$f"
+    fi
+  done < <(find "$DST" -type f -print0)
+  # Remove empty dirs in DST
+  find "$DST" -type d -empty -delete 2>/dev/null
+}
 
 case "$1" in
   start)
@@ -29,13 +43,11 @@ case "$1" in
     fi
     ;;
   watch)
-    # Initial sync
-    cp -rf "$SRC/." "$DST/"
-    # Watch for changes (every 2s debounce)
+    sync_dst
     while true; do
       inotifywait -r -e modify,create,delete,move "$SRC" 2>/dev/null
       sleep 2
-      cp -rf "$SRC/." "$DST/"
+      sync_dst
     done
     ;;
   status)

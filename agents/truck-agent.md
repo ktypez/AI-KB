@@ -78,7 +78,7 @@ main.tsx → App.tsx (auth gate + session + theme)
 - **Modal pattern**: `.modal-backdrop` (fadeIn) + `.modal-content` (scaleIn) — no glassmorphism on modals
 - **Card margin**: `.card` has no margin-bottom; spacing via parent `gap` or `.view > .card + .card { margin-top: var(--space-md) }`
 - **Spacing**: CSS var system `--space-2xs`(2px) through `--space-3xl`(30px) used across all margin/padding/gap
-- **Theme**: CSS custom properties + `data-theme` (16 themes), saved in localStorage. `--primary`/`--primary-bg`/`--secondary` don't use `!important` (attribute selector specificity sufficient).
+- **Theme**: CSS custom properties + `data-theme` (16 themes), saved in localStorage. `--primary`/`--primary-bg`/`--secondary` don't use `!important` (attribute selector specificity sufficient). Neobrutalist theme: vivid yellow bg, blue primary, thick black borders, offset shadows.
 - **Shinchan glass**: All 6 shinchan themes apply `backdrop-filter: blur(8px)` + semi-transparent bg to `.card`, `.summary-banner`, `.cal-cell`, `.shift-badge-wrapper`, `.mys-chip`
 - **Admin gate**: `user_profiles.is_admin` DB query (not hardcoded email)
 - **Buddhist year**: `toBuddhistYear(year)` from `@/constants`
