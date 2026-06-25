@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-06-25T10:00:00Z
+last_updated: 2026-06-25T11:00:00Z
 project: clientdata
 type: status
 ---
@@ -57,6 +57,21 @@ type: status
 - **A5**: Added 4-char minimum password length on first setup
 - **A6**: DELETE /api/clients/:id returns 404 if client doesn't exist
 - **S6**: Telegram error details logged server-side, generic message sent to client
+
+### 2026-06-25 — Design Audit Fixes
+- **C1**: `--text-muted` bumped from #8a91a6 → #6b7280 (4.57:1 contrast, WCAG AA)
+- **C3**: Added `.focus-visible` utility class for non-input focus rings
+- **H1**: `--text-dark-muted` bumped from #666c83 → #7d849a (4.52:1 contrast, WCAG AA)
+- **H10**: Muted oklch values bumped for light + dark themes
+- **H4**: PageHeader menu/back buttons expanded to 44px
+- **H5**: Sidebar links expanded to 44px (py-2→py-3), sidebar buttons expanded to 44px
+- **H7**: CopyDropdown trigger expanded to 40px
+- **H8**: Added `aria-label` to search input
+- **H9**: Added `aria-label` to icon-only close buttons (RouteModal, InlineMap, ClientDetail lightbox/photo, ImageUpload)
+- **M1**: Sidebar active link gets `border-l-2` indicator + stronger color
+- **M4**: Sidebar section headers changed from `<p>` to `<h3>` for heading hierarchy
+- **M5**: EmptyState container gets `aria-live="polite"` for screen readers
+- Search clear button expanded to 32px with focus ring
 
 ### 38146e6 — Code Review Fixes (2026-06-23)
 - `fetchClients` now calls `setCachedClients(data)` to keep localStorage cache in sync
