@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "skills/update-md.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "update-md"
             }
           }
         ]
@@ -112,7 +112,7 @@
         "state": {
           "type": "backlink",
           "state": {
-            "file": "status/mcky-status.md",
+            "file": "skills/update-md.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -170,16 +170,21 @@
   },
   "active": "7b333842dbfffa2f",
   "lastOpenFiles": [
-    "INSTRUCTION.md",
+    "skills/frontend-dev.md",
+    "skills/web-dev.md",
+    "skills/kb-manage.md",
+    "skills/cleanup-project.md",
+    "agents/clientdata-agent.md",
+    "memory/user-profile.md",
+    "memory/projects-summary.md",
+    "INDEX.md",
+    "tasks/overview.md",
     "status/truck-status.md",
+    "README.md",
+    "INSTRUCTION.md",
     "status/habby-status.md",
     "status/mcky-status.md",
     "agents/truck-agent.md",
-    "agents/writer-agent.md",
-    "memory/user-profile.md",
-    "memory/projects-summary.md",
-    "tasks/overview.md",
-    "INDEX.md",
-    "README.md"
+    "agents/writer-agent.md"
   ]
 }
