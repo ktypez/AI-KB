@@ -35,13 +35,13 @@ Centralized index of all AI agents across the knowledge base.
 ```
 ~/AI-KB/
 ├── INDEX.md             ← THIS FILE — start here
-├── USAGE.md             ← Universal prompt for any AI tool
+├── INSTRUCTION.md       ← How to use this KB
 ├── agents/              ← Agent profiles (one per project)
 ├── skills/              ← Specialized skills (INDEX.md + 8 skills)
 ├── status/              ← Live project status
 ├── memory/              ← User profile + projects summary
 ├── tasks/               ← Shared triggers and task patterns
-└── workflow.md          ← Workflow docs
+└── .opencode/           ← Rules & plugins (opencode integration)
 ```
 
 ## Project AGENTS.md Pattern
@@ -54,7 +54,7 @@ All context lives in this KB.
 
 ## Skills Index
 
-See `~/AI-KB/skills/INDEX.md` for all 8 specialized skills:
+See [skills INDEX](skills/INDEX.md) for all 8 specialized skills:
 - **update-md** — KB maintenance (sync project state to KB)
 - **cleanup-project** — Project health (scan unused, health check)
 - **code-review** — Code quality, bug detection, security, performance, best practices
@@ -90,7 +90,7 @@ See `~/AI-KB/skills/INDEX.md` for all 8 specialized skills:
 1. Read this file (`INDEX.md`) — understand the project roster and rules
 2. Read `./AGENTS.md` in the project root you're working on
 3. Follow the `## KB` links in that file to load full context
-4. Read `~/AI-KB/memory/user-profile.md` for user preferences
+4. Read [user profile](memory/user-profile.md) for user preferences
 5. Start working
 
-See `~/AI-KB/USAGE.md` for tool-specific setup and a copy-paste universal prompt.
+See [INSTRUCTION.md](INSTRUCTION.md) for full usage guide and universal prompt.

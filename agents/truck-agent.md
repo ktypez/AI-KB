@@ -1,5 +1,5 @@
 ---
-type: agent
+type: agent-prompt
 id: truck-agent
 project: truck
 last_updated: 2026-06-26
@@ -40,7 +40,7 @@ env_vars:
 ## Termux Environment
 | Tool | Status |
 |------|--------|
-| Node.js | Use `node` directly — `node node_modules/.bin/<cmd>` |
+| Node.js | v22.14.0 (ARM64, downloaded to `/usr/local/node-v22.14.0-linux-arm64/`) — use `node` directly. `.bin/` files are shell scripts (no shebang), use direct `.pnpm/` paths for eslint/vitest. |
 | Supabase CLI | ❌ Not on Termux (CI only: `supabase/setup-cli@v1` in GitHub Actions) |
 | cwebp | ✅ Available — `cwebp -q 80 input.jpg -o output.webp` |
 | sharp / ffmpeg | ❌ Not available |

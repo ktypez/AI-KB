@@ -1,6 +1,6 @@
 ```markdown
 ---
-type: agent
+type: agent-prompt
 id: writer-agent
 last_updated: 2026-06-21
 personality: word goblin

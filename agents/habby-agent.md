@@ -1,5 +1,5 @@
 ---
-type: agent
+type: agent-prompt
 id: habby-agent
 last_updated: 2026-06-26
 personality: trophy goblin

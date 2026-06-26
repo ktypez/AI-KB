@@ -283,6 +283,27 @@ last_commit: 95c380f
 ### Best practices
 - Replaced index-as-key with label keys in `ProfilePage.tsx`, `SummaryCard.tsx`, `ShiftSummary.tsx`
 
+## Cleanup (2026-06-26) — Code review fix round 2
+
+### Bug fixes
+- **IncomeView**: wrapped `incomeSettings` in `useMemo` to prevent query re-fire every render (was creating new object each render)
+- **DailyView**: removed redundant `day-log` invalidation in `handleSaveShift` (already covered by `onSaveSuccess()`)
+- **PwaInstallBanner**: typed `deferredPrompt` with `BeforeInstallPromptEvent` (removed `as any`)
+
+### Performance
+- Added `useMemo` to 5 derived data sites: `allDaysArray` (DailyView), `merged` (History), `tot`/`yearTot` (ShiftCalendar), `kpiItems` (ProfilePage), `filteredUsers` (UserManagement)
+
+### Code quality
+- **ShiftCalendar**: moved local `LogEntry` interface to shared `LogEntryFull` in `shift-helpers.ts`; removed `console.error` in production
+- **UserManagement**: `statusConfig` elevated to module-level constant `STATUS_CONFIG`; `filteredUsers` wrapped in `useMemo`; replaced hardcoded colors with CSS var references
+- **UserManagement**: removed hardcoded `123456` from password reset UI messages
+- **IncomeSettings**: fixed `void load()` → proper async call
+- **OfflineBanner + PwaInstallBanner**: replaced emoji icons with Phosphor icons (`WifiX`, `DownloadSimple`)
+
+### Magic strings → constants
+- Added `SHIFT_TIMES`, `SHIFT_OFF`, `DAY_TYPE_HOLIDAY`, `DAY_TYPE_WORKDAY`, `DAY_TYPE_SPECIAL`, `LEAVE_SICK`, `LEAVE_PERSONAL`, `OFF_TYPES` to `constants.ts`
+- Migrated comparison sites across 9 files: `calculator.ts`, `shift-helpers.ts`, `DailyView.tsx`, `ShiftCalendar.tsx`, `History.tsx`, `ProfilePage.tsx`, `ShiftBadge.tsx`, `ShiftModal.tsx`, `DailyList.tsx`
+
 ## PWA
 
 - Install banner (`PwaInstallBanner.tsx`): ลอยเหนือ navtab (bottom: 88px), จำ dismissed ใน localStorage, fallback 5s สำหรับ iOS (ไม่มี beforeinstallprompt)
@@ -297,6 +318,19 @@ last_commit: 95c380f
 - PWA shortcuts (vite.config.ts manifest): บันทึกกะ (`/daily?today=1`), ตารางกะ (`/shifts`), รายได้ (`/income`), โปรไฟล์ (`/profile`)
 - `today=1` URL param: DailyView detects `?today=1` → jump to current date (bypass last-saved date)
 - Lesson: cache-first สำหรับ hashed assets ทำให้ React.lazy "Failed to fetch dynamically imported module" ถ้า SW ยังไม่ update precache manifest — เปลี่ยนเป็น network-first แล้ว
+
+## Node.js Upgrade (2026-06-26)
+
+- **Before**: Node v18.19.1 (Ubuntu 24.04 ARM64 `apt`)
+- **After**: Node v22.14.0 (official ARM64 binary at `/usr/local/node-v22.14.0-linux-arm64/`)
+- **Why**: Vite 8 requires 20.19+, ESLint 10 uses `util.styleText` (Node 21.7+), jsdom 29 uses `@exodus/bytes` ESM (fails on Node 18)
+- **Install**: `curl -fsSL https://nodejs.org/dist/v22.14.0/node-v22.14.0-linux-arm64.tar.xz | tar -xJ -C /usr/local/`
+- **Symlinks**: `/bin/node` → v22, `/bin/npm` → v22, `/usr/bin/node` → v22, `/usr/local/bin/node` → v22
+- **Commands** (shebang unavailable, use direct paths):
+  - Vite build: `node node_modules/vite/bin/vite.js build` ✅
+  - ESLint: `node node_modules/.pnpm/eslint@10.5.0/node_modules/eslint/bin/eslint.js src/` ✅ (0 errors)
+  - Tests: `node node_modules/.pnpm/vitest@3.2.6_.../vitest.mjs run` ✅ (16/16 pass)
+  - TypeScript: `tsc --noEmit` ✅ (no errors)
 
 ## Constraints
 
