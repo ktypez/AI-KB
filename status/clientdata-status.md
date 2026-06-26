@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-06-25T14:00:00Z
+last_updated: 2026-06-26T07:00:00Z
 project: clientdata
 type: status
 ---
@@ -19,6 +19,14 @@ type: status
 - `master`
 
 ## Changelog
+
+### 2026-06-26 — Test Setup (Vitest + Testing Library)
+- **Added**: Vitest 1.6 + @testing-library/react + @testing-library/jest-dom + jsdom 24
+- **Added**: `vitest.config.mts` — React plugin, jsdom env, `@/` path alias, PostCSS disabled
+- **Added**: `tests/setup.ts` — jest-dom matchers auto-import
+- **Added**: `test` / `test:watch` scripts to package.json
+- **Added**: `vitest/globals` to tsconfig.json types
+- **Added**: 9 tests covering `lib/utils.ts` (cn, getMapsUrl, formatDateTime, formatDate, generateId) and `hooks/useDebounce.ts`
 
 ### 2026-06-25 — Map Pin Fix + Color Update
 - **Fixed**: Map pins not rendering after style changes (theme toggle) — `addLayers()` now explicitly cleans up stale layers/source before re-adding instead of guarding with `getSource()` which could return stale references during style transitions
@@ -151,8 +159,29 @@ type: status
 | SearchDropdown | `components/SearchDropdown.tsx` | Map view search results dropdown |
 | MapPreviewDynamic | `components/MapPreviewDynamic.tsx` | Lazy-loaded map preview wrapper |
 
+## Tests
+
+- **Framework**: Vitest 1.6 + Testing Library + jsdom 24
+- **Command**: `pnpm test` (or `node node_modules/vitest/vitest.mjs run`)
+- **Tests**: 16 passing — see coverage below
+- **Dir**: `tests/` — config in `vitest.config.mts`, setup in `tests/setup.ts`
+- PostCSS disabled in test config (avoids native binding issue with lightningcss)
+
+### Coverage
+
+| Module | Tests | What's tested |
+|--------|-------|---------------|
+| `lib/utils.ts` | 14 | cn, getMapsUrl, formatDateTime, formatDate, generateId, haversineKm, displayStep |
+| `hooks/useDebounce.ts` | 2 | initial value, delayed update |
+
+### Not yet tested
+
+- `app/page.tsx` — 30 useState hooks, filtering/search, nav state, route planning (useReducer refactor deferred)
+- All components (EmptyState, ThemeToggle, Sidebar, forms, modals, etc.)
+- API routes (`app/api/`)
+- Hooks: none beyond useDebounce
+
 ## Known
 
-- No test runner
 - `/usr/bin/env` broken on Termux
-- `useReducer` refactor of page.tsx deferred (20+ tightly coupled useState hooks)
+- `useReducer` refactor of page.tsx deferred (30 useState hooks tightly coupled) — tests exist for extracted helpers (haversineKm, displayStep) but page.tsx behavior itself is untested

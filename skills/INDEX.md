@@ -75,7 +75,6 @@ To invoke a skill manually, reference it by name in your task:
 3. Create `~/AI-KB/skills/<skill-name>.md` with summary — **always required**
 4. Update `~/AI-KB/INDEX.md` skills section if it lists individual skills
 5. Update `~/AI-KB/USAGE.md` skills count in directory tree
-6. Run `bash ~/AI-KB/sync-to-shared.sh` to sync
 
 > **Rule**: Every skill MUST have a matching `~/AI-KB/skills/<skill-name>.md` doc. No skill without docs.
 

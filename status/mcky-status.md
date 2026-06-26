@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-06-24T23:30
+last_updated: 2026-06-26
 project: mcky.space
 type: status
 ---
@@ -14,7 +14,7 @@ type: status
 | `/about` | ✅ Live | About page with terminal-style bio (pure Astro, no JS) |
 | `/blog` | ✅ Live | Blog listing — Astro page (static .md data, read-only) |
 | `/blog/[slug]` | ✅ Live | Blog post by slug — Astro dynamic page (read-only, .md source) |
-| `/habits` | ✅ Live | Habit tracker — Alpine.js x-data (3 views: day, week, month) |
+| `/habits` | 🔀 Redirect | Redirects to habby.mcky.space |
 | `/task` | ✅ Live | Todo list — Alpine.js x-data (CRUD, priority, stats heatmap) |
 | `/projects` | ✅ Live | Project showcase (pure Astro, no JS) |
 
@@ -24,7 +24,7 @@ type: status
 - **Language:** TypeScript
 - **Styling:** Pure CSS via `globals.css` (no Tailwind classes used)
 - **Font:** JetBrains Mono via Google Fonts CSS `@import`
-- **Data:** Supabase (habits, todos, auth); blog from `.md` files (no Supabase dependency)
+- **Data:** Supabase (todos, auth); blog from `.md` files (no Supabase dependency); habits moved to habby.mcky.space
 - **Markdown:** `marked` (lightweight, no React dependency)
 - **Data Fetching:** Plain fetch for all client data
 - **Client UI:** Alpine.js via CDN (`x-data`/`x-init` patterns for interactivity)
@@ -72,6 +72,8 @@ type: status
 
 ## Recent Updates
 
+- `2026-06-26` — **Habits redirect to habby.mcky.space**. `/habits` page now shows redirect notice instead of full Alpine.js app. Habit tracking moved to standalone project at habby.mcky.space.
+- `2026-06-26` — **Fix: selected date highlight**. Fixed white-on-white in week strip by excluding `.today` from selected number styles.
 - `2026-06-24` — **Cleanup: removed stale `.next/` directory and unused `@napi-rs/wasm-runtime` dep** (leftover from old Next.js setup).
 - `2026-06-24` — **Update: refreshed `/projects` page** with current stack info across all 3 projects (mcky.space stack → Astro 7/Alpine.js, renamed "data" → "clientdata", added route planning & OT calc features).
 - `2026-06-24` — **Code review fixes**. Fixed `perfectDays`→`greenDays` in habit stats (was rendering `undefined`). Fixed month view DOW calc to use `T12:00:00` (DST-safe). Added missing `aggRes` error check in `buildHabitsData`. Simplified `goToDate` to use `d.date` directly. Replaced all bare `catch {}` with `console.warn` in habits + task Alpine apps. Added Supabase error check in `require-auth.ts` (returns 503 on outage).
@@ -85,7 +87,7 @@ type: status
 
 ## Known Issues
 
-- `_ld()` helper duplicated in both `habits.astro` and `task.astro` inline scripts — minor, could be hoisted to Layout
+- `_ld()` helper duplicated in both `task.astro` (and was in `habits.astro` before redirect) — minor, could be hoisted to Layout
 
 ## Upcoming
 

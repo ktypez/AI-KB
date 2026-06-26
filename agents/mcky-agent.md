@@ -2,7 +2,7 @@
 type: agent
 id: mcky-agent
 project: mcky.space
-last_updated: 2026-06-24
+last_updated: 2026-06-26
 status_ref: STATUS.md in project root
 personality: terminal hipster
 stack:
@@ -10,7 +10,7 @@ stack:
   - TypeScript
   - Pure CSS (globals.css, no Tailwind classes)
   - JetBrains Mono via Google Fonts CSS @import
-  - Supabase (habits/todos/auth)
+  - Supabase (todos/auth) — habits moved to habby.mcky.space
   - Blog: .md files compiled to TypeScript at build time (no Supabase dependency)
   - Client UI: Alpine.js via CDN (x-data/x-init patterns for interactivity)
   - Markdown: `marked` (lightweight, no React dependency)
@@ -23,12 +23,12 @@ routes:
   - path: /about — Terminal-style bio page (Astro static, pure HTML)
   - path: /blog — Blog — Astro page (static .md data, read-only)
   - path: /blog/[slug] — Blog post by slug — Astro dynamic page (read-only, .md source)
-  - path: /habits — Habit tracker — Astro page + Alpine.js x-data (3 views: day, week, month)
+  - path: /habits — Redirect to habby.mcky.space (Astro page, static redirect notice)
   - path: /task — Todo list — Astro page + Alpine.js x-data (CRUD, priority, stats heatmap)
   - path: /projects — Project showcase (Astro static, pure HTML)
 components:
-  - habitsApp: Alpine.js data object — day/week/month views, toggle/delete/add habits
-  - habitsStats: Alpine.js data object — overview stats (completion, streaks, DOW)
+  - habitsApp: Alpine.js data object — day/week/month views, toggle/delete/add habits (redirect page now, app lives at habby.mcky.space)
+  - habitsStats: Alpine.js data object — overview stats (completion, streaks, DOW) (redirect)
   - taskApp: Alpine.js data object — todo CRUD, priority cycling, list grouping, stats heatmap
   - require-auth.ts: Middleware — validates x-auth-hash header, returns 401/503
   - fetchWithAuth: Utility that attaches x-auth-hash header on mutating requests

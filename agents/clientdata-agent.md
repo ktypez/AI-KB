@@ -3,7 +3,7 @@ type: agent
 id: clientdata-agent
 project: clientdata
 domain: data.mcky.space
-last_updated: 2026-06-23
+last_updated: 2026-06-26
 status_ref: STATUS.md in project root
 personality: data goblin
 stack:
@@ -16,11 +16,14 @@ stack:
   - SPA on app/page.tsx with History API
   - sonner (toast notifications with undo/progress)
   - CSS custom properties for theming (surface, text, border tokens)
+  - Vitest 1.6 + @testing-library/react + jsdom 24 for testing
   - Deployment: Vercel (build: next build --webpack)
 branch: master
 commands:
   dev: npm run dev (port 3002, host 0.0.0.0)
   build: npm run build (next build --webpack)
+  test: pnpm test
+  test:watch: pnpm test:watch
   lint: npm run lint
   db-push: npm run db:push
   db-migrate: npm run db:migrate
@@ -72,7 +75,6 @@ This is NOT the Next.js you know — APIs, conventions, and file structure may d
 - Ask before acting, never push without instruction
 - CSS-only compositor animations (`transform`, `opacity`) — no JS animation libs, 150–300ms
 - Service worker: custom `NetworkOnly` for `/api/suggestions` and `/api/clients` — do not remove
-- No test runner configured
 - App is public for viewing — login only required for admin actions (add/edit/delete)
 
 ## Animation Map

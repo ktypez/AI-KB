@@ -1,7 +1,7 @@
 ---
 type: memory
 id: projects-summary
-last_updated: 2026-06-24
+last_updated: 2026-06-26
 projects:
   - id: truck
     path: ~/truck
@@ -12,23 +12,26 @@ projects:
   - id: clientdata
     path: ~/clientdata
     domain: data.mcky.space (Vercel)
+  - id: habby
+    path: ~/habby
+    domain: habby.mcky.space (Vercel)
 ---
 
 # Projects Summary
 
 ## Project Comparison
 
-| Aspect | truck | mcky.space | clientdata |
-|--------|-------|------------|------------|
-| Framework | React 19 + Vite 6 | Astro 7 + Alpine.js | Next.js 16 |
-| Database | Supabase (Postgres) | Supabase (habits/todos/auth) + .md files (blog) | Neon Postgres (Drizzle) |
-| Storage | Supabase Storage | Supabase | Cloudflare R2 |
-| State | tanstack/react-query | Alpine.js x-data | custom fetch + React state |
-| Auth | Supabase Auth | SHA-256 header-based auth | scrypt + HMAC tokens |
-| PWA | ✅ (injectManifest) | ❌ | ✅ (Serwist) |
-| Testing | vitest (14 tests) | ❌ | ❌ |
-| Theme | 16 themes, CSS vars | Aura dark terminal, shimmer skeleton | Tailwind |
-| CI/CD | GitHub Actions (edge functions) | Vercel | Vercel |
+| Aspect | truck | mcky.space | clientdata | habby |
+|--------|-------|------------|------------|-------|
+| Framework | React 19 + Vite 8 | Astro 7 + Alpine.js | Next.js 16 | Vite 6 + vanilla HTML/CSS/JS |
+| Database | Supabase (Postgres) | Supabase (todos/auth) + .md files (blog) | Neon Postgres (Drizzle) | None |
+| Storage | Supabase Storage | Supabase | Cloudflare R2 | None |
+| State | tanstack/react-query | Alpine.js x-data | custom fetch + React state | None |
+| Auth | Supabase Auth | SHA-256 header-based auth | scrypt + HMAC tokens | None |
+| PWA | ✅ (injectManifest) | ❌ | ✅ (Serwist) | ❌ |
+| Testing | vitest (14 tests) | ❌ | ❌ | ❌ |
+| Theme | 16 themes, CSS vars | Aura dark terminal, shimmer skeleton | Tailwind | Custom CSS vars |
+| CI/CD | GitHub Actions (edge functions) | Vercel | Vercel | Vercel |
 
 ## Dev Commands
 
@@ -49,3 +52,7 @@ projects:
 - `npm run db:push` — push Drizzle schema
 - `npm run db:migrate` — run migration
 - `node /data/data/com.termux/files/usr/bin/vercel --prod` — deploy
+
+**habby**:
+- `npm run dev` — dev
+- `npm run build` — build

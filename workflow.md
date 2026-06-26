@@ -10,15 +10,12 @@ last_updated: 2026-06-22
 |---------|-------------|
 | "update .md" | Read AGENTS.md + KB status → update `status/<project>-status.md` → sync agent file |
 | "cleanup" | Scan unused deps/files → health check → present findings → update status |
-| "sync KB" | Validate frontmatter → update agent/task indexes → sync to shared storage |
 | "wrap-day" | Read diff → update Changelog.tsx + status → commit (truck only) |
 
 ## 2. Daily Workflow
 **update .md** — Read project AGENTS.md + status file → read source files → update status (components/routes/data flow) → update agent file if patterns changed.
 
 **cleanup** — Read project status → scan unused imports, console.log, TODO/FIXME → run health check (build/test/lint) → present findings → update status.
-
-**sync KB** — Validate all .md files have YAML frontmatter (type, id, last_updated) → update AGENTS.md index → update tasks/overview.md → run `bash ~/AI-KB/sync-to-shared.sh`.
 
 **wrap-day** — Read git diff + Changelog.tsx → add `vYYYY.MM.DD` entry with Thai summary → commit (truck only).
 
@@ -42,5 +39,3 @@ last_updated: 2026-06-22
 | `status/` | Centralized project status — replaces local STATUS.md. |
 | `memory/` | User profile + projects summary (stack, commands). |
 | `tasks/` | Shared trigger definitions. Update when adding/removing triggers. |
-
-Auto-sync: `sync-watcher.sh` daemon syncs to `~/storage/shared/AI-KB` automatically.

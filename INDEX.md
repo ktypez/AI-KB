@@ -1,7 +1,7 @@
 ---
 type: index
 id: agents-index
-last_updated: 2026-06-25
+last_updated: 2026-06-26
 projects:
   - id: mcky-agent
     path: agents/mcky-agent.md
@@ -9,6 +9,8 @@ projects:
     path: agents/truck-agent.md
   - id: clientdata-agent
     path: agents/clientdata-agent.md
+  - id: habby-agent
+    path: agents/habby-agent.md
   - id: writer-agent
     path: agents/writer-agent.md
 ---
@@ -25,6 +27,7 @@ Centralized index of all AI agents across the knowledge base.
 | mcky-agent | mcky.space | Terminal-style personal website (Astro 7 + Alpine.js) | terminal hipster |
 | truck-agent | truck | Shift logging & income PWA (React 19 + Supabase) | overtime enthusiast |
 | clientdata-agent | clientdata | Client management & CRM (Next.js 16 + Neon) | data goblin |
+| habby-agent | habby | Gamification UI Kit (Vite 6 + vanilla HTML/CSS/JS) | trophy goblin |
 | writer-agent | global | Content writer & summarizer | word goblin |
 
 ## Directory Layout
@@ -39,9 +42,7 @@ Centralized index of all AI agents across the knowledge base.
 ├── memory/              ← User profile + projects summary
 ├── tasks/               ← Shared triggers and task patterns
 ├── blog/                ← KB internal notes
-├── workflow.md          ← Workflow docs
-├── sync-to-shared.sh    ← Sync script
-└── sync-watcher.sh      ← Auto-sync daemon
+└── workflow.md          ← Workflow docs
 ```
 
 ## Project AGENTS.md Pattern
@@ -69,10 +70,10 @@ See `~/AI-KB/skills/INDEX.md` for all 8 specialized skills:
 
 | Trigger | truck | mcky.space | clientdata |
 |---------|-------|------------|------------|
-| `update kb` | ✅ | ✅ | ✅ |
-| `update .md` | ✅ | ✅ | ✅ |
-| `cleanup` | ✅ | ✅ | ✅ |
-| `wrap-day` | ✅ | — | — |
+| `update kb` | ✅ | ✅ | ✅ | ✅ |
+| `update .md` | ✅ | ✅ | ✅ | ✅ |
+| `cleanup` | ✅ | ✅ | ✅ | ✅ |
+| `wrap-day` | ✅ | — | — | — |
 
 `update .md` is an alias for `update kb` — both do the same thing (update centralized KB files in `~/AI-KB/`).
 
@@ -84,18 +85,6 @@ See `~/AI-KB/skills/INDEX.md` for all 8 specialized skills:
 - All files use YAML frontmatter + Markdown body (OKF standard)
 - Never update KB files unless explicitly told (via triggers above)
 - Never commit or push unless told
-
-## Auto-Sync to Shared Storage
-
-A background watcher syncs changes to `~/storage/shared/AI-KB` automatically.
-
-| Command | Action |
-|---------|--------|
-| `bash ~/AI-KB/sync-watcher.sh start` | Start daemon |
-| `bash ~/AI-KB/sync-watcher.sh stop` | Stop daemon |
-| `bash ~/AI-KB/sync-watcher.sh status` | Check if running |
-
-Starts automatically on device boot (via Termux:Boot at `~/.termux/boot/ai-kb-sync`).
 
 ## How AI Tools Should Use This
 

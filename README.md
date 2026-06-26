@@ -10,9 +10,7 @@ Centralized knowledge base for all projects — agent profiles, status, user mem
 ├── memory/       User profile & projects summary
 ├── tasks/        Shared trigger definitions
 ├── workflow.md   Step-by-step instruction workflow
-├── blog/         Blog posts
-├── sync-watcher.sh   Daemon → ~/storage/shared/AI-KB
-└── sync-to-shared.sh One-shot sync
+└── blog/         Blog posts
 ```
 
 ## Skills (OpenCode)
@@ -23,7 +21,7 @@ Tasks run via `~/.config/opencode/skills/`:
 |-------|---------|--------|
 | `update-md` | "update .md" | Sync status + agent files |
 | `cleanup-project` | "cleanup" | Unused scan + health check |
-| `kb-manage` | "sync KB" | Validate, index, sync |
+
 | `writer-work` | "summarize" / "wrap-day" | Docs & changelogs |
 
 ## Projects

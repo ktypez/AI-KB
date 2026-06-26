@@ -39,6 +39,7 @@ This knowledge base (`~/AI-KB/`) works with **any** AI coding tool — Cursor, C
 | mcky.space | `~/mcky.space` | `~/AI-KB/agents/mcky-agent.md` | `~/AI-KB/status/mcky-status.md` |
 | truck | `~/truck` | `~/AI-KB/agents/truck-agent.md` | `~/AI-KB/status/truck-status.md` |
 | clientdata | `~/clientdata` | `~/AI-KB/agents/clientdata-agent.md` | `~/AI-KB/status/clientdata-status.md` |
+| habby | `~/habby` | `~/AI-KB/agents/habby-agent.md` | `~/AI-KB/status/habby-status.md` |
 
 Shared files used by all projects:
 - `~/AI-KB/memory/user-profile.md` — user preferences (tone, language, style)
