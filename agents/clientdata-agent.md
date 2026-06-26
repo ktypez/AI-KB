@@ -3,7 +3,7 @@ type: agent-prompt
 id: clientdata-agent
 project: clientdata
 domain: data.mcky.space
-last_updated: 2026-06-26T08:00
+last_updated: 2026-06-26T18:05
 status_ref: STATUS.md in project root
 personality: data goblin
 stack:
@@ -91,19 +91,20 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 | TableSkeleton | `components/TableSkeleton.tsx` | Table row loading placeholder |
 | CardSkeleton | `components/CardSkeleton.tsx` | Card grid loading placeholder |
 | SearchDropdown | `components/SearchDropdown.tsx` | Map view search results dropdown |
-| StylePicker | `components/StylePicker.tsx` | 10-style preset picker (gear button → popup) |
+| StylePicker | `components/StylePicker.tsx` | 6-style preset picker (gear button → popup) |
 | Sidebar | `components/Sidebar.tsx` | Sheet drawer with collapsible groups, no how-to |
 | InlineMap | `components/InlineMap.tsx` | Full-page cluster map with geolocation + route |
 
 ### Style System
 
-**10 presets**: Swiss (default), Modern, Bento Grid, Neo-brutalism, Flat 2.0, Cyberpunk, Retro/Y2K, Monochromatic, Dark Academia, Brutalism
+**6 presets**: Default, Terminal, Flat 2.0, Monochromatic, Dark Academia, Brutalism
 
 - Each preset sets `data-style`, `data-theme-color`, `data-radius`, `data-shadow`, `data-bg-pattern` on `<html>`
 - `hooks/useStyleSettings.ts` manages state + localStorage persistence
 - `components/StylePicker.tsx` renders gear button + preset grid
 - Full CSS per-preset overrides in `globals.css` (backgrounds, surfaces, borders, text, pin color)
-- Swiss is the `:root` default (oklch blue primary, 0.25rem radius)
+- Default is the `:root` default (oklch blue primary, 0.25rem radius)
+- Terminal is inspired by mcky.space — warm off-white bg, black text, green #06d6a0 accent, 2px borders, hard 4px shadow
 - **Light mode only** — dark mode removed entirely (no `next-themes`, no `.dark` class, no `ThemeToggle`)
 
 ### CSS Tokens

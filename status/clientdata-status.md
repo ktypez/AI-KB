@@ -4,7 +4,7 @@ project: clientdata
 last_updated: 2026-06-26
 id: clientdata-status
 title: clientdata-status
-timestamp: 2026-06-26T17:55:39Z
+timestamp: 2026-06-26T18:05:00Z
 ---
 
 # Project Status — clientdata
@@ -82,7 +82,9 @@ timestamp: 2026-06-26T17:55:39Z
 - **Final bg-white removal**: all `bg-white` → `bg-[var(--card)]` across 20+ files
 - **Pin colors**: theme-aware (reads `--pin-color` hex via `getComputedStyle`); `lib/pin.ts` accepts color param
 - **Undefined var fixes**: `--text-dark-*`, `--surface-card`, `--border-dark`, `--surface-elevated` used without `dark:` prefix → proper light-mode variables across 6 files
-- **10 preset overrides**: full CSS variable blocks per preset (backgrounds, surfaces, borders, text, pin color) in `globals.css`
+- **10 → 6 presets**: removed Modern, Retro/Y2K, Bento Grid, Neo-brutalism, Cyberpunk; renamed Swiss → Default
+- **Terminal preset**: added from mcky.space — warm off-white bg, black text, green accent (#06d6a0), 2px borders, hard 4px shadow
+- **10 preset overrides → 5 + Terminal**: full CSS variable blocks per preset (backgrounds, surfaces, borders, text, pin color) in `globals.css`
 - **Dark mode scrubbed**: `MapPreview.tsx` and `InlineMap.tsx` basemap toggle → always light; `MapPicker.tsx` dark style removed
 - **MapPreview cleaned**: removed MutationObserver for dark class, simplified to single BASE_STYLE
 
