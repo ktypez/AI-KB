@@ -8,28 +8,26 @@ personality: terminal hipster
 stack:
   - Astro 7.0.2 (server output, Vercel adapter)
   - TypeScript
-  - Pure CSS (globals.css, no Tailwind classes)
-  - JetBrains Mono via Google Fonts CSS @import
-  - Supabase (todos/auth) — habits moved to habby.mcky.space
-  - Blog: .md files compiled to TypeScript at build time (no Supabase dependency)
-  - Client UI: Alpine.js via CDN (x-data/x-init patterns for interactivity)
+  - Pure CSS — Neobrutalism (globals.css, no Tailwind)
+  - JetBrains Mono via Google Fonts (400–800)
+  - Supabase (todos/auth) — habits on habby.mcky.space
+  - Blog: .md files compiled to TypeScript at build time
+  - Client UI: Alpine.js via CDN (x-data/x-init patterns)
   - Markdown: `marked` (lightweight, no React dependency)
   - Data Fetching: Plain fetch for all client data
   - API: Astro endpoints (8 routes in src/pages/api/)
   - Auth: SHA-256 password via Web Crypto API, header-based gating
   - Deployment: Vercel via @astrojs/vercel
 routes:
-  - path: / — Terminal sim homepage — Astro page (static HTML, CSS cursor blink)
-  - path: /about — Terminal-style bio page (Astro static, pure HTML)
-  - path: /blog — Blog — Astro page (static .md data, read-only)
-  - path: /blog/[slug] — Blog post by slug — Astro dynamic page (read-only, .md source)
-  - path: /habits — Redirect to habby.mcky.space (Astro page, static redirect notice)
-  - path: /task — Todo list — Astro page + Alpine.js x-data (CRUD, priority, stats heatmap)
-  - path: /projects — Project showcase (Astro static, pure HTML)
+  - path: / — Neobrutalist homepage — terminal sim in neo-card, tech stack tags
+  - path: /about — About page — neo-cards for bio, stack badges, contact
+  - path: /blog — Blog listing — neo-card per post, badge dates
+  - path: /blog/[slug] — Blog post — neo-styled content, code blocks with shadows
+  - path: /task — Todo list — Alpine.js x-data (CRUD, priority, stats in neo-cards)
+  - path: /projects — Project showcase — neo-cards with colored tags
+  - external: habby.mcky.space — Sidebar + homepage link (new tab)
 components:
-  - habitsApp: Alpine.js data object — day/week/month views, toggle/delete/add habits (redirect page now, app lives at habby.mcky.space)
-  - habitsStats: Alpine.js data object — overview stats (completion, streaks, DOW) (redirect)
-  - taskApp: Alpine.js data object — todo CRUD, priority cycling, list grouping, stats heatmap
+  - taskApp: Alpine.js data object — todo CRUD, priority cycling, list grouping, stats
   - require-auth.ts: Middleware — validates x-auth-hash header, returns 401/503
   - fetchWithAuth: Utility that attaches x-auth-hash header on mutating requests
 commands:
@@ -47,7 +45,6 @@ perf_patterns:
   - Plain fetch for all API calls (no SWR/React Query)
   - Astro static pages for non-interactive content (about, projects)
   - Blog .md compiled to TS at build time (no runtime filesystem access)
-  - JetBrains Mono via CSS @import (Google Fonts)
   - CSS-only skeleton loading (.skel class with shimmer keyframe)
   - SHA-256 auth hash stored in localStorage as auth_hash
 ---
@@ -55,11 +52,12 @@ perf_patterns:
 # mcky.space Agent
 
 ## Design System
-- Dark theme `#0a0e14` → `#15141b` (Aura)
-- Accent colors: purple, mint, peach, blue, pink
+- **Neobrutalism** — light default (`#f5f5f0` bg), dark mode supported
+- Thick 3px black borders, hard offset shadows (`4px 4px 0`)
+- Bright saturated accents: green, amber, red, blue, purple, orange, pink
+- Components: `.neo-card` (shadow cards), `.neo-tag` (colored labels), `.neo-badge` (inline chips)
 - CSS variables in `:root` — no magic numbers
-- Terminal/retro aesthetic
-- 2px dashed terminal-style page dividers
+- JetBrains Mono 400–800 via Google Fonts
 
 ## Triggers
 
@@ -87,10 +85,10 @@ perf_patterns:
 | Behavior | Answer first, then act |
 
 - Prioritize reference design when given
-- New routes must match existing terminal style exactly
+- New routes must match existing neobrutalism style
 - Static pages (about, projects) are pure Astro HTML — no JS needed
-- Interactive pages (habits, task) use Alpine.js x-data directives inline in .astro templates
+- Interactive pages (task) use Alpine.js x-data directives inline in .astro templates
 - Blog is read-only — edit via Git (.md files + rebuild)
 - All mutating API endpoints require `x-auth-hash` header (validated via `require-auth` middleware)
-- No external API calls, no database (except Supabase for habits/todos/auth)
+- No external API calls, no database (except Supabase for todos/auth)
 - Build: `npm run build` runs `prebuild` (blog index) + `astro build`
