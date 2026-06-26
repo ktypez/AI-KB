@@ -1,7 +1,7 @@
 ---
 type: skill
 id: kb-manage
-last_updated: 2026-06-25
+last_updated: 2026-06-26
 source: ~/.config/opencode/skills/kb-manage/SKILL.md
 category: kb-maintenance
 projects: [global]
@@ -16,12 +16,12 @@ projects: [global]
 
 ## Validation
 1. Check all `.md` files have valid YAML frontmatter (required: `type`, `id`, `last_updated`)
-2. Verify `agents/AGENTS.md` index matches actual files in `agents/`
+2. Verify `~/AI-KB/INDEX.md` index matches actual files in `agents/`
 3. Check `status/` files reference correct project names
 
 ## Index Updates
-- New agent: add to `agents/AGENTS.md` table + create `agents/<agent>.md` + `status/<project>-status.md`
-- Rename/delete agent: update AGENTS.md index
+- New agent: add to `~/AI-KB/INDEX.md` table + create `agents/<agent>.md` + `status/<project>-status.md`
+- Rename/delete agent: update INDEX.md index
 
 ## Tasks Sync
 - After adding/removing shared trigger: update `tasks/overview.md` tables

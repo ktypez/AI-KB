@@ -67,8 +67,8 @@ See [skills INDEX](skills/INDEX.md) for all 8 specialized skills:
 
 ## Cross-Project Triggers
 
-| Trigger | truck | mcky.space | clientdata |
-|---------|-------|------------|------------|
+| Trigger | truck | mcky.space | clientdata | habby |
+|---------|-------|------------|------------|-------|
 | `update kb` | ✅ | ✅ | ✅ | ✅ |
 | `update .md` | ✅ | ✅ | ✅ | ✅ |
 | `cleanup` | ✅ | ✅ | ✅ | ✅ |

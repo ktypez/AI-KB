@@ -1,7 +1,7 @@
 ---
 type: index
 id: skills-index
-last_updated: 2026-06-25
+last_updated: 2026-06-26
 skills:
   - id: update-md
     path: skills/update-md.md
@@ -36,7 +36,7 @@ Centralized index of all specialized skills available for AI agents.
 | cleanup-project | Project Health | Scan for unused deps/files, health check, present findings, update KB status |
 | code-review | Engineering | Code quality, bug detection, security audit, performance, best practices |
 | kb-manage | KB Maintenance | Maintain and validate the AI-KB — frontmatter checks, index updates, sync |
-| frontend-dev | Engineering | Expert frontend — React 19, Next.js 15, Vue, Angular, Svelte, TypeScript |
+| frontend-dev | Engineering | Expert frontend — React 19, Next.js 16, Vue, Angular, Svelte, TypeScript |
 | design-skill-os | Design | Elite design reasoning — gestalt, 60-30-10, modular scale, Nielsen heuristics |
 | supabase-postgres-best-practices | Database | Postgres performance optimization from Supabase |
 | web-dev | Engineering | Modern web apps — semantic HTML5, CSS Grid/Flexbox, vanilla JS |
@@ -74,7 +74,7 @@ To invoke a skill manually, reference it by name in your task:
 2. Add entry to this `INDEX.md` (table + skills list in frontmatter)
 3. Create `~/AI-KB/skills/<skill-name>.md` with summary — **always required**
 4. Update `~/AI-KB/INDEX.md` skills section if it lists individual skills
-5. Update `~/AI-KB/USAGE.md` skills count in directory tree
+5. Update `~/AI-KB/INSTRUCTION.md` skills count in directory tree
 
 > **Rule**: Every skill MUST have a matching `~/AI-KB/skills/<skill-name>.md` doc. No skill without docs.
 

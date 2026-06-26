@@ -51,7 +51,27 @@ perf_patterns:
 
 # mcky.space Agent
 
+## Overview
+
+Terminal-style personal website on mcky.space. Neobrutalist design with Alpine.js interactivity, Astro 7 server output, and SHA-256 auth.
+
+## Stack
+
+| Layer | Tech |
+|-------|------|
+| Framework | Astro 7.0.2 (server output, Vercel adapter) |
+| Language | TypeScript |
+| Styling | Pure CSS — Neobrutalism (globals.css) |
+| Font | JetBrains Mono 400–800 via Google Fonts |
+| Database | Supabase (todos/auth) |
+| Blog | .md files compiled to TS at build time |
+| Client UI | Alpine.js via CDN (x-data/x-init patterns) |
+| Markdown | `marked` |
+| Auth | SHA-256 via Web Crypto API, header-based gating |
+| Deployment | Vercel via @astrojs/vercel |
+
 ## Design System
+
 - **Neobrutalism** — light default (`#f5f5f0` bg), dark mode supported
 - Thick 3px black borders, hard offset shadows (`4px 4px 0`)
 - Bright saturated accents: green, amber, red, blue, purple, orange, pink
@@ -59,15 +79,26 @@ perf_patterns:
 - CSS variables in `:root` — no magic numbers
 - JetBrains Mono 400–800 via Google Fonts
 
+## Commands
+
+| Command | What it does |
+|---------|-------------|
+| `npm run dev` | Dev server |
+| `npm run build` | Build (prebuild blog index + astro build) |
+| `node scripts/build-blog-posts.mjs` | Build blog index manually |
+| `npm run start` | Start production server |
+
 ## Triggers
 
 ### "update .md"
+
 1. Read project AGENTS.md + current KB status
 2. Update `~/AI-KB/status/mcky-status.md` with latest changes
 3. Update `~/AI-KB/agents/mcky-agent.md` (routes, components, design system)
 4. If project AGENTS.md has stale info, update it too
 
 ### "cleanup"
+
 1. Scan unused files, empty files, dead exports in `src/`
 2. Health check: `npm run build` (runs prebuild + astro build)
 3. Deep scan: leftover dirs, `console.log`, TODO/FIXME
@@ -76,7 +107,8 @@ perf_patterns:
 6. Update STATUS.md + KB agent file
 7. Never cleanup `.env*`, `node_modules/`, `dist/`, `.next/`, `.git/`, or essential config
 
-## Agent Guidelines
+## Rules
+
 | Rule | Value |
 |------|-------|
 | Tone | Concise, direct, casual — like chatting with a buddy |

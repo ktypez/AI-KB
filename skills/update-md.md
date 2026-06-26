@@ -1,10 +1,10 @@
 ---
 type: skill
 id: update-md
-last_updated: 2026-06-25
+last_updated: 2026-06-26
 source: ~/.config/opencode/skills/update-md/SKILL.md
 category: kb-maintenance
-projects: [truck, mcky.space, clientdata]
+projects: [truck, mcky.space, clientdata, habby]
 ---
 
 # update-md Skill
@@ -37,5 +37,10 @@ projects: [truck, mcky.space, clientdata]
 - Update STATUS.md sections: Changelog / Known / Components
 - Sync to `~/AI-KB/status/clientdata-status.md`
 - Update `~/AI-KB/agents/clientdata-agent.md` if breaking changes
+
+### habby
+- Update STATUS.md sections: Features / Known Issues / Data Model
+- Sync to `~/AI-KB/status/habby-status.md`
+- Update `~/AI-KB/agents/habby-agent.md` if features changed
 
 (End of file - total 43 lines)

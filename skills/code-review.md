@@ -3,7 +3,7 @@ type: skill
 id: code-review
 category: Engineering
 description: Code quality, bug detection, security audit, performance review, and best practices checks.
-last_updated: 2026-06-25
+last_updated: 2026-06-26
 source_skill: ~/.config/opencode/skills/code-review/SKILL.md
 ---
 
@@ -28,4 +28,4 @@ Invoke via opencode skill system — triggered by "code review" in conversation 
 ## See Also
 
 - `cleanup-project` skill for broader project health checks
-- `~/AI-KB/agents/code-review.md` for the original agent definition
+

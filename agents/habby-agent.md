@@ -1,9 +1,10 @@
 ---
 type: agent-prompt
 id: habby-agent
+project: habby
 last_updated: 2026-06-26
 personality: trophy goblin
-capabilities:
+stack:
   - Vite 6 + vanilla HTML/CSS/JS
   - Express 5 + ioredis (Upstash)
   - SHA-256 access password auth
@@ -13,6 +14,14 @@ capabilities:
   - push notifications (Service Worker)
   - daily digest + stats dashboard
   - theme picker (5 themes)
+commands:
+  dev: yarn dev (Express + Vite)
+  build: yarn build
+  start: node server.js (port 3001)
+  deploy: push to GitHub → Vercel auto-deploys
+triggers:
+  "update .md": Read STATUS.md + AGENTS.md, update features/data model → sync KB
+  "cleanup": Scan unused → build check → present findings → update docs
 ---
 
 # Habby Agent
@@ -60,9 +69,30 @@ notifications:enabled → boolean
 notifications:time → HH:MM string
 ```
 
-## Dev Commands
+## Commands
 
-- `yarn dev` — dev server (Express + Vite)
-- `yarn build` — production build (Vite)
-- Local: `node server.js` — full stack on port 3001
-- Deploy: push to GitHub → Vercel auto-deploys
+| Command | What it does |
+|---------|-------------|
+| `yarn dev` | Dev server (Express + Vite) |
+| `yarn build` | Production build (Vite) |
+| `node server.js` | Local full-stack (port 3001) |
+| push to GitHub | Vercel auto-deploys |
+
+## Triggers
+
+### "update .md"
+
+1. Read project AGENTS.md + current KB status
+2. Update `~/AI-KB/status/habby-status.md` with latest changes
+3. Update `~/AI-KB/agents/habby-agent.md` (features, data model)
+4. If project AGENTS.md has stale info, update it too
+
+### "cleanup"
+
+1. Scan unused files, empty files, dead exports
+2. Health check: `yarn build`
+3. Deep scan: leftover dirs, `console.log`, TODO/FIXME
+4. Present findings for user to choose
+5. Commit & Push if user says so
+6. Update STATUS.md + KB agent file
+7. Never cleanup `.env*`, `node_modules/`, `dist/`, `.git/`, or essential config

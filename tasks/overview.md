@@ -1,14 +1,14 @@
 ---
-type: tasks
+type: task
 id: tasks-overview
-last_updated: 2026-06-22
+last_updated: 2026-06-26
 shared_triggers:
   - trigger: update .md
     action: Read KB/status/<project>-status.md + AGENTS.md, update KB/status/<project>-status.md, sync KB/agents/<agent>.md if needed
-    applies_to: [truck, mcky.space, clientdata]
+    applies_to: [truck, mcky.space, clientdata, habby]
   - trigger: cleanup
     action: Scan unused → health check → present findings → update KB/status/<project>-status.md + KB
-    applies_to: [truck, mcky.space, clientdata]
+    applies_to: [truck, mcky.space, clientdata, habby]
   - trigger: wrap-day
     action: Read diff, update Changelog.tsx + KB/status/truck-status.md, commit
     applies_to: [truck]
@@ -16,13 +16,15 @@ shared_triggers:
 
 # Task Triggers Overview
 
+See [INSTRUCTION.md](/root/AI-KB/INSTRUCTION.md) for the full usage guide.
+
 ## Shared Task Patterns
 
 | Trigger | Description | Projects |
 |---------|-------------|----------|
-| `update .md` | Read KB/status/<project>-status.md + AGENTS.md, update KB/status/<project>-status.md, sync KB/agents/ if needed | truck, mcky.space, clientdata |
-| `cleanup` | Scan unused → health check → present findings → update KB/status/<project>-status.md + KB | truck, mcky.space, clientdata |
-| `wrap-day` | Review today's diff, write changelog entry, update KB/status/truck-status.md, commit | truck |
+| `update .md` | Read KB/status + AGENTS.md, update status, sync agent files | truck, mcky.space, clientdata, habby |
+| `cleanup` | Scan unused → health check → present findings → update KB | truck, mcky.space, clientdata, habby |
+| `wrap-day` | Review today's diff, write changelog entry, update truck status, commit | truck |
 
 ## Task Checklist
 
