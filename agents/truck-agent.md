@@ -2,7 +2,7 @@
 type: agent
 id: truck-agent
 project: truck
-last_updated: 2026-06-25
+last_updated: 2026-06-26
 status_ref: STATUS.md in project root
 personality: overtime enthusiast
 stack:
@@ -90,6 +90,7 @@ main.tsx → App.tsx (auth gate + session + theme)
 - **Modal pattern**: All 6 modals + MonthYearPopup use `.modal-backdrop` + `.modal-content`
 - **Skeleton loaders**: Theme-aware CSS skeleton (var(--skeleton-base)/var(--skeleton-shine) pulse animation) for DailyView, ShiftCalendar, IncomeView
 - **Mutation invalidation contract**: any save that mutates `logs` must invalidate ALL of: `['monthly-logs', userId, year, month]`, `['yearly-logs', userId, year]`, `['income', userId, year, month]`. `App.tsx handleSaveSuccess` (DailyView path) and `ShiftCalendar.tsx` upsert/delete onSuccess must stay in sync — if one is updated, the other must be too. Lesson: X2/special days picked only from calendar were invisible to IncomeView because ShiftCalendar onSuccess only invalidated logs.
+- **Performance ref pattern**: For handlers with many closure deps (e.g. `handleSave` reading 15+ form values), use a single `formRef` object updated every render + `useCallback` with minimal stable deps. The handler reads `formRef.current` instead of closure values. This prevents memo'd children from re-rendering when form state changes but handler identity is stable.
 
 ## Triggers
 

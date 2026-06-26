@@ -1,8 +1,8 @@
 ---
-last_updated: 2026-06-25
+last_updated: 2026-06-26
 project: truck
 type: status
-last_commit: 11e6a6d
+last_commit: 95c380f
 ---
 
 # Project Status — truck
@@ -98,8 +98,12 @@ last_commit: 11e6a6d
 - `useOnlineStatus()` — extract from OfflineBanner
 - `useFocusTrap()` — trap focus within a container (modal/dialog): `useFocusTrap(active, ref, onClose?)`. Queries focusable elements, cycles Tab/Shift+Tab, Escape calls onClose, restores previous focus on cleanup. Applied to all 6 modals.
 - `usePendingSyncCount()` — count pending offline mutations from localStorage keys matching `offline-mutation-*`. Returns `number`.
-- `useRef` patterns — OdometerCard (focus chain), AuthScreen (password ref)
+- `useRef` patterns — OdometerCard (focus chain), AuthScreen (password ref), DailyView formRef (form values for useCallback stability)
 - `src/hooks/` folder: `useOnlineStatus.ts`, `useFocusTrap.ts`, `usePendingSyncCount.ts`
+
+## Patterns
+
+- **Performance**: DailyView handlers wrapped in `useCallback` + `formRef` (single ref mirroring form state) — decouples handler identity from form value changes. `handleSave` deps: `[showToast, queryClient, onSaveSuccess]` only, reads values from `formRef.current`.
 
 ## Library — offlineQueue
 
@@ -252,6 +256,32 @@ last_commit: 11e6a6d
 
 - `HelpFixWorkCard.tsx` — merged into CounterCard (all 4 steppers in one card with horizontal divider)
 - `SummaryBanner.tsx` — merged into OdometerCard (stats row + horizontal divider + input fields)
+
+## Cleanup (2026-06-26) — Database audit + code review
+
+### DB fixes
+- **`logs` table**: created migration SQL (table definition, unique index `idx_logs_user_date`, RLS policies — user owns own logs, admin can read all)
+- **RLS**: `logs` now has `INSERT/UPDATE/DELETE/SELECT WHERE user_id = auth.uid()` + admin read-all
+- **Index**: Created `idx_logs_user_date` (unique on `user_id,year,month,day`) + `idx_logs_user_year_month` for filtering
+
+### Code fixes
+- `select('*')` → explicit column select across 6 query sites (DailyView, ShiftCalendar, History, IncomeView, ProfilePage × 2)
+- Removed `trucks` column writes from DailyView (dead column, mirrored `rounds` but never read)
+- Added `help_work`/`fix_work` to `LogEntryShared` interface (were missing, only via `Record<string, any>`)
+
+### Code review bugs
+- `ThemeEffects.tsx` — added `clearTimeout` for overlay timer in cleanup
+- `PwaInstallBanner.tsx` — added `scheduledTimers` array + cleanup for inner `setTimeout`
+- `App.tsx` — added `.catch()` to `replayQueue` and `getSession` promises
+- `ProfilePage.tsx` — added `.catch()` to `getUser` and `user_profiles` promises
+
+### Performance
+- DailyView handlers wrapped in `useCallback` + `formRef` ref pattern (reads form values from ref, not closure)
+- `handleSave`, `handleSaveShift`, `handleDeleteShift`, `handleToggleDayType` all stabilized
+- Prevents unnecessary re-renders of `memo(OdometerCard)` and `memo(CounterCard)` when unrelated state changes
+
+### Best practices
+- Replaced index-as-key with label keys in `ProfilePage.tsx`, `SummaryCard.tsx`, `ShiftSummary.tsx`
 
 ## PWA
 
