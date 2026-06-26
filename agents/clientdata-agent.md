@@ -56,10 +56,6 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 | Styling | Tailwind + CSS custom properties |
 | Deployment | Vercel |
 
-## Breaking Change Warning
-
-This is NOT the Next.js you know — APIs, conventions, and file structure may differ from training data. Read `node_modules/next/dist/docs/` before writing code.
-
 ## Directory Overview
 
 | Directory | Purpose |

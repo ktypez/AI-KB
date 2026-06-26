@@ -24,13 +24,24 @@ timestamp: 2026-06-26T17:55:38Z
 | Deploy | Vercel (static + serverless function) |
 | PWA | Service Worker (push notifications, install prompt) |
 
-## Pages
+## Routes
 
 | Path | Purpose |
 |------|---------|
 | `/` | Main dashboard — habit grid, daily check-in, this week overview |
 | `/stats` | Stats dashboard — 6 cards + bar chart (XP, streaks, completion %) |
 | `/settings` | Auth, notifications config, theme picker |
+
+## Components
+
+## API
+
+## Design System
+
+- **Theme**: 5 accent-color themes (default, ocean, sunset, forest, midnight)
+- **Style**: Neobrutalist-inspired, clean and minimal
+- **Components**: cards, buttons, modals, form inputs
+- **Typography**: system font stack
 
 ## Features (Active)
 
@@ -42,7 +53,6 @@ timestamp: 2026-06-26T17:55:38Z
 - ✅ Daily digest modal (done/pending counts + streaks)
 - ✅ Stats dashboard (total habits, XP, best streak, weekly completion %, bar chart)
 - ✅ Push notifications with configurable time
-- ✅ 5 accent-color themes (default, ocean, sunset, forest, midnight)
 - ✅ Access password auth (SHA-256, stored in Redis)
 - ✅ Persistent login (localStorage, logout button)
 
@@ -52,16 +62,6 @@ timestamp: 2026-06-26T17:55:38Z
 - ❌ Export/Import
 - ❌ Dark theme (kept midnight)
 - ❌ Archive feature
-
-## Changelog
-
-### 2026-06-26 — Launch
-- **Added**: Full deployment to habby.mcky.space (Vercel). Habit CRUD, daily check-ins, streak tracking, XP/leveling, daily notes, productivity timer, daily digest, stats dashboard, push notifications, 5 themes, SHA-256 auth, persistent login, this week overview grid.
-
-## Known Issues
-
-- Login button contrast fixed for dark/midnight themes
-- Toast shadow uses `var(--shadow)` instead of hardcoded rgba
 
 ## Data Model
 
@@ -77,6 +77,23 @@ app:password → SHA-256 hash string
 notifications:enabled → boolean
 notifications:time → HH:MM string
 ```
+
+## Changelog
+
+### 2026-06-26 — Launch
+- **Added**: Full deployment to habby.mcky.space (Vercel). Habit CRUD, daily check-ins, streak tracking, XP/leveling, daily notes, productivity timer, daily digest, stats dashboard, push notifications, 5 themes, SHA-256 auth, persistent login, this week overview grid.
+
+## PWA
+
+- Service Worker for push notifications + install prompt
+- Configurable daily reminder via browser notification
+
+## Tests
+
+## Known Issues
+
+- Login button contrast needs improvement on dark/midnight themes
+- Toast shadow uses `var(--shadow)` instead of hardcoded rgba
 
 ## Dev Commands
 

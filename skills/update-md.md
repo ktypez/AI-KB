@@ -12,35 +12,43 @@ projects: [truck, mcky.space, clientdata, habby]
 **Purpose:** Read project AGENTS.md + KB status, update KB with latest project changes.
 
 ## Trigger
-`update .md` or `update kb` — shared trigger for truck, mcky.space, clientdata
+`update .md` or `update kb` — all projects
 
 ## Workflow
 1. Determine project from context (cwd, conversation)
 2. Read project's `AGENTS.md` + `~/AI-KB/status/<project>-status.md`
 3. Read `~/AI-KB/agents/<project>-agent.md` for trigger instructions
-4. Update `~/AI-KB/status/<project>-status.md` with latest changes
-5. Sync `~/AI-KB/agents/<project>-agent.md` if patterns/architecture changed
+4. Read `~/AI-KB/status/_template.md` to confirm section order
+5. Update sections in `~/AI-KB/status/<project>-status.md`:
+   - Stack, Routes, Components, API (if applicable), Design System, Data Model
+   - Changelogs (from git log), PWA, Tests, Known Issues
+6. Sync `~/AI-KB/agents/<project>-agent.md` if architecture, patterns, or stack changed
 
-## Per-Project Guidance
+## Status File Structure (all projects)
 
-### truck
-- Update STATUS.md sections: Components / Data Flow / Constraints
-- Sync to `~/AI-KB/status/truck-status.md`
-- Update `~/AI-KB/agents/truck-agent.md` if patterns changed
+Every status file `~/AI-KB/status/<project>-status.md` must have these sections (empty if N/A):
 
-### mcky.space
-- Update STATUS.md sections: Routes / Components / Design System / Recent Updates
-- Sync to `~/AI-KB/status/mcky-status.md`
-- Update `~/AI-KB/agents/mcky-agent.md` if routes/design changed
+1. Current State
+2. Stack
+3. Routes
+4. Components
+5. API
+6. Design System
+7. Data Model
+8. Changelog
+9. PWA
+10. Tests
+11. Known Issues
 
-### clientdata
-- Update STATUS.md sections: Changelog / Known / Components
-- Sync to `~/AI-KB/status/clientdata-status.md`
-- Update `~/AI-KB/agents/clientdata-agent.md` if breaking changes
+See `~/AI-KB/status/_template.md` for the exact format.
 
-### habby
-- Update STATUS.md sections: Features / Known Issues / Data Model
-- Sync to `~/AI-KB/status/habby-status.md`
-- Update `~/AI-KB/agents/habby-agent.md` if features changed
+## Per-Project
+
+| Project | Stack | Notes |
+|---------|-------|-------|
+| truck | React 19 + Vite 8 + Supabase | PWA, 16 tests, edge functions |
+| mcky.space | Astro 7 + Alpine.js | No PWA, no tests |
+| clientdata | Next.js 16 + Drizzle + Neon | PWA, 16 tests |
+| habby | Vite 6 + Express 5 + Redis | PWA, no tests |
 
 (End of file - total 43 lines)

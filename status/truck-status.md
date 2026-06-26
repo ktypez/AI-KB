@@ -64,7 +64,18 @@ Active Development — 16/16 tests passing, 0 ESLint errors, clean `tsc --noEmit
 - **History** — DailyList with 'x2' badge for special days
 - **IncomeView** — MonthYearSelector + HeroCard (net income) + SalaryBreakdown (left) + TaxSummary (right) in 2-col grid. Uses `calculateIncome(logs, daysInMonth, settings)`
 
-## Data Flow
+## Design System
+
+- **16 themes**: 5 light (clean-light, retro-pastel, modern, neobrutalist, summer-morning), 5 dark (clean-dark, retro-dark, midnight-ocean, twilight, sunset), 6 shinchan
+- **Picker**: 2-column grid (light/dark) + collapsible "ชินจัง (6)" section; closes on selection
+- **Clean light/dark**: gradient bg (160°) + SVG noise texture overlay (feTurbulence, 8% opacity)
+- **Shinchan**: glass effect (`backdrop-filter: blur(8px)`) on `.card`, `.summary-banner`, `.cal-cell`, `.shift-badge-wrapper`, `.mys-chip`; solid bg + 3px border on `.modal-content`, `.month-bar`; dark-on-gradient text for light shinchan themes
+- **Neobrutalist**: vivid yellow `#fde047` bg, blue `#2563eb` primary, 3px black borders, offset shadows
+- CSS custom properties `--primary`/`--primary-bg`/`--secondary` use attribute selector specificity (no `!important`)
+- Spacing system: `--space-2xs`(2px) to `--space-3xl`(30px) used across all margin/padding/gap
+- `toBuddhistYear(year)` from `@/constants` แทน inline `+ 543`
+
+## Data Model
 
 - **Income Settings**: `income_settings` table (key/value/label, 11 defaults, RLS: select all / write admin) → `useQuery(['income-settings'])` → `calculateIncome()` with merge + `DEFAULT_SETTINGS`
 - **Leave Counts**: Monthly from `monthly-logs` query, yearly from `yearly-logs` query — both invalidated on upsert/delete
@@ -109,7 +120,6 @@ Command: `node node_modules/.pnpm/vitest@3.2.6_jsdom@29.1.1_lightningcss@1.32.0_
 - Workflow: `.github/workflows/deploy-edge-functions.yml`
 - Trigger: push to `master` changing `supabase/functions/**`
 - Steps: checkout → `supabase link` → git diff → deploy changed functions
-- Edge functions: `approve-user`, `get-all-users`, `notify-telegram`
 - Secret: `SUPABASE_ACCESS_TOKEN`, hardcoded ref `rmkevbdpmixsydldkiwv`
 
 ## Bundle (dist)
@@ -126,6 +136,20 @@ Command: `node node_modules/.pnpm/vitest@3.2.6_jsdom@29.1.1_lightningcss@1.32.0_
 | ProfilePage | 20 KB | 5 KB |
 | Route chunks | 9-11 KB | 3-4 KB |
 | PWA precache | ~1960 KB | — (55 entries) |
+
+## API — Supabase Edge Functions
+
+### `approve-user`
+- Trigger: Admin approves pending user in-app
+- Purpose: Sets `pending_users.status = 'approved'`, inserts into `user_profiles`, sends Telegram notification
+
+### `get-all-users`
+- Trigger: Admin opens UserManagement panel
+- Purpose: Returns all users (id, email, display_name, status, role) — admin-only
+
+### `notify-telegram`
+- Trigger: New account request or approved/rejected
+- Purpose: Sends Telegram message to admin chat with user details + status
 
 ## Hooks
 
