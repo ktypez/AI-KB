@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "status/clientdata-status.md",
+                "file": "status/truck-status.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "clientdata-status"
+              "title": "truck-status"
             }
           }
         ]
@@ -171,9 +171,11 @@
   "active": "7b333842dbfffa2f",
   "lastOpenFiles": [
     "status/_template.md",
-    "status/clientdata-status.md",
-    "status/habby-status.md",
+    "status/truck-status.md",
+    "status/mcky-status.md",
     "status/index.md",
+    "status/habby-status.md",
+    "status/clientdata-status.md",
     "skills/cleanup-project.md",
     "memory/projects-summary.md",
     "skills/frontend-dev.md",
@@ -185,8 +187,6 @@
     "agents/mcky-agent.md",
     "agents/habby-agent.md",
     "agents/clientdata-agent.md",
-    "status/mcky-status.md",
-    "status/truck-status.md",
     "skills/update-md.md",
     "README.md",
     "INSTRUCTION.md",

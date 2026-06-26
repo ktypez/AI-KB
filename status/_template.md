@@ -9,10 +9,6 @@ timestamp: 2026-06-26T19:23:07Z
 
 # Project Status — {name}
 
-## Current State
-
-{One-line status: ✅ Live / Active Development / etc.}
-
 ## Stack
 
 {Table or bullet list of tech stack}
@@ -39,8 +35,8 @@ timestamp: 2026-06-26T19:23:07Z
 
 ## Changelog
 
-### Week YYYY-MM-DD
-- **Summary**: compact bullet list of changes from git log
+### YYYY-MM-DD
+- **Summary**: compact bullet list of changes from git log (<10 lines)
 
 ## PWA
 
