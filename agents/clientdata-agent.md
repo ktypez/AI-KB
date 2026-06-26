@@ -99,13 +99,13 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 
 **6 presets**: Default, Terminal, Flat 2.0, Monochromatic, Dark Academia, Brutalism
 
-- Each preset sets `data-style`, `data-theme-color`, `data-radius`, `data-shadow`, `data-bg-pattern` on `<html>`
+- Each preset sets `data-style`, `data-color`, `data-mode`, `data-radius`, `data-shadow`, `data-bg-pattern` on `<html>`
 - `hooks/useStyleSettings.ts` manages state + localStorage persistence
-- `components/StylePicker.tsx` renders gear button + preset grid
-- Full CSS per-preset overrides in `globals.css` (backgrounds, surfaces, borders, text, pin color)
+- `components/StylePicker.tsx` renders gear button + preset grid with style, color, and dark toggle
+- Full CSS per-preset overrides in `globals.css` (backgrounds, surfaces, borders, text, pin color) with light and dark variants
 - Default is the `:root` default (oklch blue primary, 0.25rem radius)
 - Terminal is inspired by mcky.space — warm off-white bg, black text, green #06d6a0 accent, 2px borders, hard 4px shadow
-- **Light mode only** — dark mode removed entirely (no `next-themes`, no `.dark` class, no `ThemeToggle`)
+- Dark mode supported per style with `.dark` class and `data-mode='dark'` attribute
 
 ### CSS Tokens
 
