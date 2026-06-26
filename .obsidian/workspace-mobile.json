@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "status/mcky-status.md",
+                "file": "status/truck-status.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "mcky-status"
+              "title": "truck-status"
             }
           }
         ]
@@ -170,6 +170,7 @@
   },
   "active": "7b333842dbfffa2f",
   "lastOpenFiles": [
+    "status/mcky-status.md",
     "agents/truck-agent.md",
     "agents/writer-agent.md",
     "memory/user-profile.md",
