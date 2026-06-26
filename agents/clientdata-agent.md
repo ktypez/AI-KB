@@ -56,7 +56,7 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 | Styling | Tailwind + CSS custom properties |
 | Deployment | Vercel |
 
-## Directory Overview
+## Architecture
 
 | Directory | Purpose |
 |-----------|---------|
@@ -68,7 +68,7 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 | `scripts/` | One-off migration scripts |
 | `public/` | Static assets — PWA manifest, icons, service worker |
 
-## Animation Map
+### Animation Map
 
 | Component | Animation |
 |-----------|-----------|
@@ -83,7 +83,7 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 | (removed) | sonner toast deleted — delete is immediate without undo |
 | LoadingScreen | skeleton layout (no spinner) |
 
-## Components
+### Components
 
 | Component | File | Purpose |
 |-----------|------|---------|
@@ -91,14 +91,47 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 | TableSkeleton | `components/TableSkeleton.tsx` | Table row loading placeholder |
 | CardSkeleton | `components/CardSkeleton.tsx` | Card grid loading placeholder |
 | SearchDropdown | `components/SearchDropdown.tsx` | Map view search results dropdown |
+| StylePicker | `components/StylePicker.tsx` | 10-style preset picker (gear button → popup) |
+| Sidebar | `components/Sidebar.tsx` | Sheet drawer with collapsible groups, no how-to |
+| InlineMap | `components/InlineMap.tsx` | Full-page cluster map with geolocation + route |
 
-## CSS Tokens
+### Style System
 
-Custom properties in `globals.css` for consistent theming:
-- `--surface`, `--surface-hover`, `--surface-dark`, `--surface-card`, `--surface-elevated`
-- `--text-primary`, `--text-secondary`, `--text-muted`, `--text-subtle`
-- `--text-dark-primary`, `--text-dark-secondary`, `--text-dark-muted`, `--text-dark-accent`
-- `--border`, `--border-strong`, `--border-dark`
+**10 presets**: Swiss (default), Modern, Bento Grid, Neo-brutalism, Flat 2.0, Cyberpunk, Retro/Y2K, Monochromatic, Dark Academia, Brutalism
+
+- Each preset sets `data-style`, `data-theme-color`, `data-radius`, `data-shadow`, `data-bg-pattern` on `<html>`
+- `hooks/useStyleSettings.ts` manages state + localStorage persistence
+- `components/StylePicker.tsx` renders gear button + preset grid
+- Full CSS per-preset overrides in `globals.css` (backgrounds, surfaces, borders, text, pin color)
+- Swiss is the `:root` default (oklch blue primary, 0.25rem radius)
+- **Light mode only** — dark mode removed entirely (no `next-themes`, no `.dark` class, no `ThemeToggle`)
+
+### CSS Tokens
+
+Custom properties in `globals.css` for consistent theming (light mode only):
+- `--background`, `--foreground`, `--card`, `--card-foreground`
+- `--surface`, `--surface-hover`, `--text-primary`, `--text-secondary`, `--text-muted`, `--text-subtle`
+- `--border`, `--border-hover`, `--selection-bg`
+- `--primary`, `--primary-hover`, `--ring`, `--accent-blue`, `--accent-blue-hover`, `--destructive`
+- `--pin-color` — hex value for MapLibre-friendly pin color (per-preset)
+- Sidebar CSS variables retained for shadcn compatibility
+
+## Key Patterns
+
+- `lib/auth.ts` uses `.auth-local.json` fallback when DATABASE_URL is unset
+- Auth setup check handles DB failures gracefully (defaults to configured)
+- `fetchClients` in `page.tsx` calls `setCachedClients(data)` to sync localStorage cache
+- `ClientDetail` uses `AbortController` for suggestions fetch to discard stale responses
+- `pushNav` writes distinct query-param URLs per view (detail, edit, add, map, suggestions)
+- Delete is immediate (no undo toast) — on failure, client restored via `onClientUpdated()`
+- `/c/[id]` page uses server wrapper pattern (`client-page.tsx` receives `id` as prop, not `useParams()`)
+- Suggestions API `/api/suggestions?clientId=X` returns `{ error: 'Unauthorized' }` for non-admin — `ClientDetail.tsx` guards with `if (!Array.isArray(data)) return` before calling `data.map()`
+- `useReducer` refactor of page.tsx deferred (20+ tightly coupled useState hooks)
+- **Pin colors**: MapLibre paint properties use runtime `getComputedStyle(document.documentElement).getPropertyValue('--pin-color')` since Maplibre can't parse CSS `var()` or `oklch()`
+- **No dark mode**: all `dark:` Tailwind classes are dead code; light-only CSS variables throughout
+- **Sidebar**: sheet drawer (`Sheet` from Base UI) with backdrop blur, collapsible groups (ภาพรวม/ระบบ), 240px wide, hamburger visible on desktop
+- **MapPreview**: simple single-style map (no dark/light toggle, no MutationObserver)
+- **MapPicker**: uses `getPinColor()` to pass theme color to `pinHtml()` for draggable pin
 
 ## Commands
 
@@ -130,22 +163,15 @@ Custom properties in `globals.css` for consistent theming:
 6. Update STATUS.md + KB agent file
 7. Never cleanup `.env*`, `node_modules/`, `.next/`, `.git/`, or essential config
 
-## Termux
+## Rules
+
+### Termux
 
 - `/usr/bin/env` broken — use `node /path/to/bin` instead of `npx`
 - `oc` alias = normal opencode, `occ` alias = termux-chroot with HOME override
 - Plugins: opencode-mem, opencode-command-inject, opencode-background-agents, DCP, termux-notify
 
-## Notes
+### Project
 
-- `lib/auth.ts` uses `.auth-local.json` fallback when DATABASE_URL is unset
 - `public/sw.js` is a cleanup-only script (Serwist removed)
-- `useReducer` refactor of page.tsx deferred (20+ tightly coupled useState hooks)
-- Auth setup check handles DB failures gracefully (defaults to configured)
-- `fetchClients` in `page.tsx` calls `setCachedClients(data)` to sync localStorage cache
-- `ClientDetail` uses `AbortController` for suggestions fetch to discard stale responses
-- `pushNav` writes distinct query-param URLs per view (detail, edit, add, map, suggestions)
-- Delete is immediate (no undo toast) — on failure, client restored via `onClientUpdated()`
-- `/c/[id]` page uses server wrapper pattern (`client-page.tsx` receives `id` as prop, not `useParams()`)
-- Suggestions API `/api/suggestions?clientId=X` returns `{ error: 'Unauthorized' }` for non-admin — `ClientDetail.tsx` guards with `if (!Array.isArray(data)) return` before calling `data.map()`
 - sonner removed — no toast library installed

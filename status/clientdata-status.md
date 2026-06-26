@@ -78,6 +78,14 @@ timestamp: 2026-06-26T17:55:39Z
 
 ## Changelog
 
+### Week 2026-06-26
+- **Final bg-white removal**: all `bg-white` → `bg-[var(--card)]` across 20+ files
+- **Pin colors**: theme-aware (reads `--pin-color` hex via `getComputedStyle`); `lib/pin.ts` accepts color param
+- **Undefined var fixes**: `--text-dark-*`, `--surface-card`, `--border-dark`, `--surface-elevated` used without `dark:` prefix → proper light-mode variables across 6 files
+- **10 preset overrides**: full CSS variable blocks per preset (backgrounds, surfaces, borders, text, pin color) in `globals.css`
+- **Dark mode scrubbed**: `MapPreview.tsx` and `InlineMap.tsx` basemap toggle → always light; `MapPicker.tsx` dark style removed
+- **MapPreview cleaned**: removed MutationObserver for dark class, simplified to single BASE_STYLE
+
 ### Week 2026-06-22
 - **Redesign**: sidebar → sheet drawer, hamburger on desktop, collapsible groups, Swiss default, remove dark mode
 - **Style picker**: 10 presets + per-style CSS
@@ -122,6 +130,8 @@ timestamp: 2026-06-26T17:55:39Z
 
 - `/usr/bin/env` broken on Termux
 - `useReducer` refactor of `page.tsx` deferred (30 tightly coupled `useState` hooks) — helpers extracted (`haversineKm`, `displayStep`) and tested, but page.tsx behavior itself untested
-- sonner removed — delete is immediate without undo
+- Delete is immediate without undo (sonner removed)
 - eslint 10 blocked — `eslint-config-next` doesn't support it yet
 - PostCSS disabled in test config (avoids `lightningcss` native binding issue)
+- Cannot build locally (Node.js 18.19.1 too old for Next.js 16)
+- `dark:` Tailwind variant classes left as dead code across 40+ files (harmless, dark mode removed)

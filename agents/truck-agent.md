@@ -51,16 +51,18 @@ Shift logging & income PWA for truck drivers. React 19 + Supabase with 16 themes
 | Notifications | Telegram Bot API |
 | Deployment | Vercel (SPA rewrite) |
 
-## Termux Environment
+## Architecture
 
-| Tool | Status |
-|------|--------|
-| Node.js | v22.14.0 (ARM64, downloaded to `/usr/local/node-v22.14.0-linux-arm64/`) — use `node` directly. `.bin/` files are shell scripts (no shebang), use direct `.pnpm/` paths for eslint/vitest. |
-| Supabase CLI | ❌ Not on Termux (CI only: `supabase/setup-cli@v1` in GitHub Actions) |
-| cwebp | ✅ Available — `cwebp -q 80 input.jpg -o output.webp` |
-| sharp / ffmpeg | ❌ Not available |
+```
+main.tsx → App.tsx (auth gate + session + theme)
+         → AppRoutes.tsx (lazy-loaded: DailyView, ShiftCalendar, History, IncomeView, ProfilePage, Changelog, AdminPanel, UserManagement, IncomeSettings)
+         → ErrorBoundary wrapper per route (catch-all, RouteError fallback)
+         → Supabase (sb) + ReactQuery (monthly-logs, day-log, income, yearly-logs)
+         → offlineQueue (localStorage mutation queue, auto-replay on reconnect)
+         → AuthScreen (sign-in / request account via Telegram)
+```
 
-## Directory Map
+### Directory Map
 
 | Directory | Responsibility |
 |-----------|---------------|
@@ -76,17 +78,6 @@ Shift logging & income PWA for truck drivers. React 19 + Supabase with 16 themes
 | `src/components/income/` | Salary breakdown (HeroCard, SalaryBreakdown, TaxSummary) |
 | `src/components/profile/` | Profile management modals |
 | `src/components/skeletons/` | Loading skeletons (DailyView, ShiftCalendar, IncomeView) |
-
-## Architecture
-
-```
-main.tsx → App.tsx (auth gate + session + theme)
-         → AppRoutes.tsx (lazy-loaded: DailyView, ShiftCalendar, History, IncomeView, ProfilePage, Changelog, AdminPanel, UserManagement, IncomeSettings)
-         → ErrorBoundary wrapper per route (catch-all, RouteError fallback)
-         → Supabase (sb) + ReactQuery (monthly-logs, day-log, income, yearly-logs)
-         → offlineQueue (localStorage mutation queue, auto-replay on reconnect)
-         → AuthScreen (sign-in / request account via Telegram)
-```
 
 ## Key Patterns
 
@@ -151,3 +142,12 @@ main.tsx → App.tsx (auth gate + session + theme)
 
 - `oldString` must be short & precise — avoid long code blocks in edits
 - Always read the latest file version before editing
+
+### Termux Environment
+
+| Tool | Status |
+|------|--------|
+| Node.js | v22.14.0 (ARM64, downloaded to `/usr/local/node-v22.14.0-linux-arm64/`) — use `node` directly. `.bin/` files are shell scripts (no shebang), use direct `.pnpm/` paths for eslint/vitest. |
+| Supabase CLI | ❌ Not on Termux (CI only: `supabase/setup-cli@v1` in GitHub Actions) |
+| cwebp | ✅ Available — `cwebp -q 80 input.jpg -o output.webp` |
+| sharp / ffmpeg | ❌ Not available |

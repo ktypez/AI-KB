@@ -18,14 +18,6 @@ stack:
   - API: Astro endpoints (8 routes in src/pages/api/)
   - Auth: SHA-256 password via Web Crypto API, header-based gating
   - Deployment: Vercel via @astrojs/vercel
-routes:
-  - path: / — Neobrutalist homepage — terminal sim in neo-card, tech stack tags
-  - path: /about — About page — neo-cards for bio, stack badges, contact
-  - path: /blog — Blog listing — neo-card per post, badge dates
-  - path: /blog/[slug] — Blog post — neo-styled content, code blocks with shadows
-  - path: /task — Todo list — Alpine.js x-data (CRUD, priority, stats in neo-cards)
-  - path: /projects — Project showcase — neo-cards with colored tags
-  - external: habby.mcky.space — Sidebar + homepage link (new tab)
 components:
   - taskApp: Alpine.js data object — todo CRUD, priority cycling, list grouping, stats
   - require-auth.ts: Middleware — validates x-auth-hash header, returns 401/503
@@ -35,18 +27,11 @@ commands:
   build: npm run build (runs prebuild hook for blog index first)
   build-blog: node scripts/build-blog-posts.mjs
   start: npm run start
+  test: Not configured
   lint: Not configured (pure CSS, no framework lint)
 triggers:
   "update .md": Read STATUS.md + AGENTS.md, update routes/components/design → sync KB
   "cleanup": Scan unused → build check → present findings → update docs
-perf_patterns:
-  - Alpine.js x-data + x-init for client-side interactivity (no React bundle)
-  - `marked` for lightweight markdown rendering (no React dependency)
-  - Plain fetch for all API calls (no SWR/React Query)
-  - Astro static pages for non-interactive content (about, projects)
-  - Blog .md compiled to TS at build time (no runtime filesystem access)
-  - CSS-only skeleton loading (.skel class with shimmer keyframe)
-  - SHA-256 auth hash stored in localStorage as auth_hash
 ---
 
 # mcky.space Agent
@@ -70,7 +55,29 @@ Terminal-style personal website on mcky.space. Neobrutalist design with Alpine.j
 | Auth | SHA-256 via Web Crypto API, header-based gating |
 | Deployment | Vercel via @astrojs/vercel |
 
-## Design System
+## Architecture
+
+| Route | Description |
+|-------|-------------|
+| `/` | Neobrutalist homepage — terminal sim in neo-card, tech stack tags |
+| `/about` | About page — neo-cards for bio, stack badges, contact |
+| `/blog` | Blog listing — neo-card per post, badge dates |
+| `/blog/[slug]` | Blog post — neo-styled content, code blocks with shadows |
+| `/task` | Todo list — Alpine.js x-data (CRUD, priority, stats in neo-cards) |
+| `/projects` | Project showcase — neo-cards with colored tags |
+| `habby.mcky.space` (external) | Sidebar + homepage link (new tab) |
+
+## Key Patterns
+
+- Alpine.js x-data + x-init for client-side interactivity (no React bundle)
+- `marked` for lightweight markdown rendering (no React dependency)
+- Plain fetch for all API calls (no SWR/React Query)
+- Astro static pages for non-interactive content (about, projects)
+- Blog .md compiled to TS at build time (no runtime filesystem access)
+- CSS-only skeleton loading (.skel class with shimmer keyframe)
+- SHA-256 auth hash stored in localStorage as auth_hash
+
+### Design System
 
 - **Neobrutalism** — light default (`#f5f5f0` bg), dark mode supported
 - Thick 3px black borders, hard offset shadows (`4px 4px 0`)
@@ -87,6 +94,8 @@ Terminal-style personal website on mcky.space. Neobrutalist design with Alpine.j
 | `npm run build` | Build (prebuild blog index + astro build) |
 | `node scripts/build-blog-posts.mjs` | Build blog index manually |
 | `npm run start` | Start production server |
+| test | Not configured |
+| lint | Not configured (pure CSS, no framework lint) |
 
 ## Triggers
 

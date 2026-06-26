@@ -19,6 +19,8 @@ commands:
   build: yarn build
   start: node server.js (port 3001)
   deploy: push to GitHub → Vercel auto-deploys
+  test: Not configured
+  lint: Not configured
 triggers:
   "update .md": Read STATUS.md + AGENTS.md, update features/data model → sync KB
   "cleanup": Scan unused → build check → present findings → update docs
@@ -41,7 +43,9 @@ Gamified habit tracker — Vite frontend + Express 5 backend + Redis (Upstash). 
 | Deploy | Vercel (static + serverless function) |
 | PWA | Service Worker (push notifications, install prompt) |
 
-## Features
+## Architecture
+
+### Features
 
 - **Habits**: CRUD with emoji picker, name, color
 - **Check-ins**: Daily toggle, streak calculation, XP rewards
@@ -54,7 +58,7 @@ Gamified habit tracker — Vite frontend + Express 5 backend + Redis (Upstash). 
 - **Themes**: 5 accent-color themes (default, ocean, sunset, forest, midnight)
 - **Auth**: Access password stored in Redis (SHA-256), persistent login via localStorage
 
-## Data Model
+### Data Model
 
 ```
 habit:{id} → hash { name, emoji, color, archived, created_at }
@@ -69,6 +73,10 @@ notifications:enabled → boolean
 notifications:time → HH:MM string
 ```
 
+## Key Patterns
+
+None yet.
+
 ## Commands
 
 | Command | What it does |
@@ -77,6 +85,8 @@ notifications:time → HH:MM string
 | `yarn build` | Production build (Vite) |
 | `node server.js` | Local full-stack (port 3001) |
 | push to GitHub | Vercel auto-deploys |
+| test | Not configured |
+| lint | Not configured |
 
 ## Triggers
 
@@ -96,3 +106,7 @@ notifications:time → HH:MM string
 5. Commit & Push if user says so
 6. Update STATUS.md + KB agent file
 7. Never cleanup `.env*`, `node_modules/`, `dist/`, `.git/`, or essential config
+
+## Rules
+
+None yet.
