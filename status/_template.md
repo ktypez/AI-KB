@@ -37,8 +37,8 @@ id: <project>-status
 
 ## Changelog
 
-### YYYY-MM-DD — Title
-- **Added/Removed/Fixed/Updated**: description
+### Week YYYY-MM-DD
+- **Summary**: compact bullet list of changes from git log
 
 ## PWA
 
