@@ -9,10 +9,6 @@ timestamp: 2026-06-26T17:55:38Z
 
 # Project Status — habby
 
-## Current State
-
-✅ **Live** — deployed at habby.mcky.space (Vercel), all core features operational
-
 ## Stack
 
 | Layer | Tech |
@@ -42,26 +38,6 @@ timestamp: 2026-06-26T17:55:38Z
 - **Style**: Neobrutalist-inspired, clean and minimal
 - **Components**: cards, buttons, modals, form inputs
 - **Typography**: system font stack
-
-## Features (Active)
-
-- ✅ Habit CRUD with emoji/color picker
-- ✅ Daily check-in with streak tracking
-- ✅ XP/leveling system (+10-40 XP per check-in, level up every 100 XP)
-- ✅ Daily notes per habit (edit/delete)
-- ✅ Per-habit productivity timer (start/stop with total accumulation)
-- ✅ Daily digest modal (done/pending counts + streaks)
-- ✅ Stats dashboard (total habits, XP, best streak, weekly completion %, bar chart)
-- ✅ Push notifications with configurable time
-- ✅ Access password auth (SHA-256, stored in Redis)
-- ✅ Persistent login (localStorage, logout button)
-
-## Removed
-
-- ❌ Categories (emoji/color picker + filter bar)
-- ❌ Export/Import
-- ❌ Dark theme (kept midnight)
-- ❌ Archive feature
 
 ## Data Model
 
@@ -102,10 +78,3 @@ notifications:time → HH:MM string
 
 - Login button contrast needs improvement on dark/midnight themes
 - Toast shadow uses `var(--shadow)` instead of hardcoded rgba
-
-## Dev Commands
-
-- `yarn dev` — dev server (Express + Vite)
-- `yarn build` — production build (Vite)
-- Local: `node server.js` — full stack on port 3001
-- Deploy: push to GitHub → Vercel auto-deploys

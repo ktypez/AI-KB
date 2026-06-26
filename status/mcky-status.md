@@ -3,13 +3,11 @@ type: project-status
 project: mcky.space
 last_updated: 2026-06-26
 id: mcky-status
+title: mcky-status
+timestamp: 2026-06-26T17:55:39Z
 ---
 
 # Project Status — mcky.space
-
-## Current State
-
-✅ Live — deployed on Vercel, neobrutalist design, all routes operational
 
 ## Stack
 
@@ -43,7 +41,7 @@ id: mcky-status
 | `require-auth.ts` | Middleware — validates `x-auth-hash` header, returns 401/503 |
 | `fetchWithAuth` | Utility that attaches `x-auth-hash` header to mutating requests |
 
-## API Endpoints
+## API
 
 | Route | Method | Auth Required | Purpose |
 |-------|--------|---------------|---------|
@@ -77,10 +75,6 @@ id: mcky-status
 
 ## Changelog
 
-## PWA
-
-## Tests
-
 ### Week 2026-06-22
 - **Neobrutalism retheme**: thick 3px borders, hard offset shadows, `.neo-card`/`.neo-tag`/`.neo-badge` components, light default + dark mode
 - **Habits spun off**: removed `habits.astro` + 306 lines dead CSS, links now go directly to habby.mcky.space
@@ -91,6 +85,10 @@ id: mcky-status
 
 ### 2026-06-15
 - Initial Astro 7 project setup with Alpine.js
+
+## PWA
+
+## Tests
 
 ## Known Issues
 

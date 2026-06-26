@@ -3,19 +3,11 @@ type: project-status
 project: clientdata
 last_updated: 2026-06-26
 id: clientdata-status
+title: clientdata-status
+timestamp: 2026-06-26T17:55:39Z
 ---
 
 # Project Status — clientdata
-
-## Current State
-
-**STABLE** — 0 ESLint errors, clean `tsc --noEmit`, 16 tests passing
-
-## Lint / TypeScript / Branch
-
-- **ESLint**: 0 errors, 0 warnings
-- **TypeScript**: `tsc --noEmit` — clean (no errors)
-- **Branch**: `master`
 
 ## Stack
 
@@ -48,7 +40,7 @@ id: clientdata-status
 | `SearchDropdown` | Map view search results dropdown |
 | `MapPreviewDynamic` | Lazy-loaded map preview wrapper |
 
-## API Endpoints
+## API
 
 | Route | Method | Purpose |
 |-------|--------|---------|
@@ -108,15 +100,13 @@ id: clientdata-status
 ### 2026-06-15
 - Initial Next.js 16 + Drizzle + Neon setup
 
-## Known Issues
+## PWA
 
-- `/usr/bin/env` broken on Termux
-- `useReducer` refactor of `page.tsx` deferred (30 tightly coupled `useState` hooks) — helpers extracted (`haversineKm`, `displayStep`) and tested, but page.tsx behavior itself untested
-- sonner removed — delete is immediate without undo
-- eslint 10 blocked — `eslint-config-next` doesn't support it yet
-- PostCSS disabled in test config (avoids `lightningcss` native binding issue)
+- Install prompt: 2 visits + 5s delay before showing; visit count tracked in `localStorage` (`ezzylist_pwa_visits`)
+- Old Serwist `public/sw.js` (43KB) replaced with cleanup script
+- `app/sw.ts` deleted
 
-## Tests (16)
+## Tests
 
 | Module | Tests | What's tested |
 |--------|-------|---------------|
@@ -128,8 +118,10 @@ id: clientdata-status
 - **Config**: `vitest.config.mts` in project root, setup in `tests/setup.ts`
 - **Not yet tested**: `page.tsx` (30 useState hooks), components, API routes, most hooks
 
-## PWA
+## Known Issues
 
-- Install prompt: 2 visits + 5s delay before showing; visit count tracked in `localStorage` (`ezzylist_pwa_visits`)
-- Old Serwist `public/sw.js` (43KB) replaced with cleanup script
-- `app/sw.ts` deleted
+- `/usr/bin/env` broken on Termux
+- `useReducer` refactor of `page.tsx` deferred (30 tightly coupled `useState` hooks) — helpers extracted (`haversineKm`, `displayStep`) and tested, but page.tsx behavior itself untested
+- sonner removed — delete is immediate without undo
+- eslint 10 blocked — `eslint-config-next` doesn't support it yet
+- PostCSS disabled in test config (avoids `lightningcss` native binding issue)
