@@ -3,6 +3,8 @@ type: project-status
 project: <project-name>
 last_updated: YYYY-MM-DD
 id: <project>-status
+title: _template
+timestamp: 2026-06-26T19:23:07Z
 ---
 
 # Project Status — {name}
