@@ -2,6 +2,8 @@
 type: status
 id: habby-status
 last_updated: 2026-06-26
+title: habby-status
+timestamp: 2026-06-26T17:55:38Z
 ---
 
 # Habby Status

@@ -3,6 +3,8 @@ last_updated: 2026-06-26
 project: truck
 type: status
 last_commit: 95c380f
+title: truck-status
+timestamp: 2026-06-26T17:55:39Z
 ---
 
 # Project Status — truck

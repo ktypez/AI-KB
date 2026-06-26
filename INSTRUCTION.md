@@ -2,6 +2,8 @@
 type: instruction
 id: kb-instruction
 last_updated: 2026-06-26
+title: INSTRUCTION
+timestamp: 2026-06-26T17:55:38Z
 ---
 
 # AI-KB Instruction Manual
