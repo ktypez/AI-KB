@@ -1,8 +1,8 @@
 ---
-last_updated: 2026-06-25
+last_updated: 2026-06-26
 project: truck
 type: status
-last_commit: 11e6a6d
+last_commit: 95c380f
 ---
 
 # Project Status — truck
@@ -98,8 +98,12 @@ last_commit: 11e6a6d
 - `useOnlineStatus()` — extract from OfflineBanner
 - `useFocusTrap()` — trap focus within a container (modal/dialog): `useFocusTrap(active, ref, onClose?)`. Queries focusable elements, cycles Tab/Shift+Tab, Escape calls onClose, restores previous focus on cleanup. Applied to all 6 modals.
 - `usePendingSyncCount()` — count pending offline mutations from localStorage keys matching `offline-mutation-*`. Returns `number`.
-- `useRef` patterns — OdometerCard (focus chain), AuthScreen (password ref)
+- `useRef` patterns — OdometerCard (focus chain), AuthScreen (password ref), DailyView formRef (form values for useCallback stability)
 - `src/hooks/` folder: `useOnlineStatus.ts`, `useFocusTrap.ts`, `usePendingSyncCount.ts`
+
+## Patterns
+
+- **Performance**: DailyView handlers wrapped in `useCallback` + `formRef` (single ref mirroring form state) — decouples handler identity from form value changes. `handleSave` deps: `[showToast, queryClient, onSaveSuccess]` only, reads values from `formRef.current`.
 
 ## Library — offlineQueue
 
@@ -253,6 +257,53 @@ last_commit: 11e6a6d
 - `HelpFixWorkCard.tsx` — merged into CounterCard (all 4 steppers in one card with horizontal divider)
 - `SummaryBanner.tsx` — merged into OdometerCard (stats row + horizontal divider + input fields)
 
+## Cleanup (2026-06-26) — Database audit + code review
+
+### DB fixes
+- **`logs` table**: created migration SQL (table definition, unique index `idx_logs_user_date`, RLS policies — user owns own logs, admin can read all)
+- **RLS**: `logs` now has `INSERT/UPDATE/DELETE/SELECT WHERE user_id = auth.uid()` + admin read-all
+- **Index**: Created `idx_logs_user_date` (unique on `user_id,year,month,day`) + `idx_logs_user_year_month` for filtering
+
+### Code fixes
+- `select('*')` → explicit column select across 6 query sites (DailyView, ShiftCalendar, History, IncomeView, ProfilePage × 2)
+- Removed `trucks` column writes from DailyView (dead column, mirrored `rounds` but never read)
+- Added `help_work`/`fix_work` to `LogEntryShared` interface (were missing, only via `Record<string, any>`)
+
+### Code review bugs
+- `ThemeEffects.tsx` — added `clearTimeout` for overlay timer in cleanup
+- `PwaInstallBanner.tsx` — added `scheduledTimers` array + cleanup for inner `setTimeout`
+- `App.tsx` — added `.catch()` to `replayQueue` and `getSession` promises
+- `ProfilePage.tsx` — added `.catch()` to `getUser` and `user_profiles` promises
+
+### Performance
+- DailyView handlers wrapped in `useCallback` + `formRef` ref pattern (reads form values from ref, not closure)
+- `handleSave`, `handleSaveShift`, `handleDeleteShift`, `handleToggleDayType` all stabilized
+- Prevents unnecessary re-renders of `memo(OdometerCard)` and `memo(CounterCard)` when unrelated state changes
+
+### Best practices
+- Replaced index-as-key with label keys in `ProfilePage.tsx`, `SummaryCard.tsx`, `ShiftSummary.tsx`
+
+## Cleanup (2026-06-26) — Code review fix round 2
+
+### Bug fixes
+- **IncomeView**: wrapped `incomeSettings` in `useMemo` to prevent query re-fire every render (was creating new object each render)
+- **DailyView**: removed redundant `day-log` invalidation in `handleSaveShift` (already covered by `onSaveSuccess()`)
+- **PwaInstallBanner**: typed `deferredPrompt` with `BeforeInstallPromptEvent` (removed `as any`)
+
+### Performance
+- Added `useMemo` to 5 derived data sites: `allDaysArray` (DailyView), `merged` (History), `tot`/`yearTot` (ShiftCalendar), `kpiItems` (ProfilePage), `filteredUsers` (UserManagement)
+
+### Code quality
+- **ShiftCalendar**: moved local `LogEntry` interface to shared `LogEntryFull` in `shift-helpers.ts`; removed `console.error` in production
+- **UserManagement**: `statusConfig` elevated to module-level constant `STATUS_CONFIG`; `filteredUsers` wrapped in `useMemo`; replaced hardcoded colors with CSS var references
+- **UserManagement**: removed hardcoded `123456` from password reset UI messages
+- **IncomeSettings**: fixed `void load()` → proper async call
+- **OfflineBanner + PwaInstallBanner**: replaced emoji icons with Phosphor icons (`WifiX`, `DownloadSimple`)
+
+### Magic strings → constants
+- Added `SHIFT_TIMES`, `SHIFT_OFF`, `DAY_TYPE_HOLIDAY`, `DAY_TYPE_WORKDAY`, `DAY_TYPE_SPECIAL`, `LEAVE_SICK`, `LEAVE_PERSONAL`, `OFF_TYPES` to `constants.ts`
+- Migrated comparison sites across 9 files: `calculator.ts`, `shift-helpers.ts`, `DailyView.tsx`, `ShiftCalendar.tsx`, `History.tsx`, `ProfilePage.tsx`, `ShiftBadge.tsx`, `ShiftModal.tsx`, `DailyList.tsx`
+
 ## PWA
 
 - Install banner (`PwaInstallBanner.tsx`): ลอยเหนือ navtab (bottom: 88px), จำ dismissed ใน localStorage, fallback 5s สำหรับ iOS (ไม่มี beforeinstallprompt)
@@ -267,6 +318,19 @@ last_commit: 11e6a6d
 - PWA shortcuts (vite.config.ts manifest): บันทึกกะ (`/daily?today=1`), ตารางกะ (`/shifts`), รายได้ (`/income`), โปรไฟล์ (`/profile`)
 - `today=1` URL param: DailyView detects `?today=1` → jump to current date (bypass last-saved date)
 - Lesson: cache-first สำหรับ hashed assets ทำให้ React.lazy "Failed to fetch dynamically imported module" ถ้า SW ยังไม่ update precache manifest — เปลี่ยนเป็น network-first แล้ว
+
+## Node.js Upgrade (2026-06-26)
+
+- **Before**: Node v18.19.1 (Ubuntu 24.04 ARM64 `apt`)
+- **After**: Node v22.14.0 (official ARM64 binary at `/usr/local/node-v22.14.0-linux-arm64/`)
+- **Why**: Vite 8 requires 20.19+, ESLint 10 uses `util.styleText` (Node 21.7+), jsdom 29 uses `@exodus/bytes` ESM (fails on Node 18)
+- **Install**: `curl -fsSL https://nodejs.org/dist/v22.14.0/node-v22.14.0-linux-arm64.tar.xz | tar -xJ -C /usr/local/`
+- **Symlinks**: `/bin/node` → v22, `/bin/npm` → v22, `/usr/bin/node` → v22, `/usr/local/bin/node` → v22
+- **Commands** (shebang unavailable, use direct paths):
+  - Vite build: `node node_modules/vite/bin/vite.js build` ✅
+  - ESLint: `node node_modules/.pnpm/eslint@10.5.0/node_modules/eslint/bin/eslint.js src/` ✅ (0 errors)
+  - Tests: `node node_modules/.pnpm/vitest@3.2.6_.../vitest.mjs run` ✅ (16/16 pass)
+  - TypeScript: `tsc --noEmit` ✅ (no errors)
 
 ## Constraints
 

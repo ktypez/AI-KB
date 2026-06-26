@@ -9,8 +9,7 @@ Centralized knowledge base for all projects — agent profiles, status, user mem
 ├── status/       Centralized project status (replaces local STATUS.md)
 ├── memory/       User profile & projects summary
 ├── tasks/        Shared trigger definitions
-├── workflow.md   Step-by-step instruction workflow
-└── blog/         Blog posts
+└── workflow.md   Step-by-step instruction workflow
 ```
 
 ## Skills (OpenCode)

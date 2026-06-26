@@ -1,5 +1,5 @@
 ---
-type: agent
+type: agent-prompt
 id: mcky-agent
 project: mcky.space
 last_updated: 2026-06-26

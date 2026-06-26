@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-06-26T07:00:00Z
+last_updated: 2026-06-26T08:00:00Z
 project: clientdata
 type: status
 ---
@@ -19,6 +19,14 @@ type: status
 - `master`
 
 ## Changelog
+
+### 2026-06-26 — `/c/[id]` Crash Fix + sonner Removal + PWA Tune
+- **Fixed**: `/c/[id]` crash `e.map is not a function` — suggestions API returns `{ error: 'Unauthorized' }` for non-admin users, `setSuggestions()` updater called `data.map()` without checking `Array.isArray`. Added `if (!Array.isArray(data)) return` guard.
+- **Refactored**: Replaced `useParams()` with server wrapper pattern (`use(params)` → `id` prop) in `client-page.tsx`
+- **Cleaned**: Replaced stale 43KB Serwist `public/sw.js` with cleanup script; deleted `app/sw.ts`
+- **Removed**: sonner toast library — deleted `components/ui/sonner.tsx`, removed `<Toaster>` from layout, removed all `toast.*` calls, simplified delete handler to direct `deleteClient()`, removed `.delete-toast` CSS
+- **Tuned**: PWA install dialog reduced from 3 visits / 30s delay → 2 visits / 5s delay
+- **Added**: Optional chaining on `client.images?.map()` and `client.images?.length` in ClientDetail.tsx
 
 ### 2026-06-26 — Test Setup (Vitest + Testing Library)
 - **Added**: Vitest 1.6 + @testing-library/react + @testing-library/jest-dom + jsdom 24
@@ -116,11 +124,9 @@ type: status
 - Created `components/CardSkeleton.tsx` — card grid skeletons
 - Updated `LoadingScreen` to show full skeleton layout (sidebar + header + table) instead of spinner
 
-### Undo Delete Toast
-- Delete now shows 10s undo toast with progress bar (sonner)
-- Server deletion deferred until toast auto-closes
-- If undo clicked within 10s, client is restored without server call
-- Progress bar: CSS `@keyframes toast-progress` on `.delete-toast` class
+### Delete Behavior
+- Delete now calls `deleteClient()` immediately, no undo toast
+- On failure, client is restored via `onClientUpdated()`
 
 ### Smarter Empty States
 - `EmptyState` now accepts `filter` and `search` props
@@ -137,7 +143,7 @@ type: status
 - Added `showManualOrigin`, `manualOriginLat/Lng` state to page.tsx
 
 ### PWA Install Timing
-- Install prompt now waits for 3rd visit + 30s delay before showing
+- Install prompt now waits for 2nd visit + 5s delay before showing
 - Tracks visit count in `localStorage` (`ezzylist_pwa_visits`)
 
 ### Auth Fixes
@@ -185,3 +191,5 @@ type: status
 
 - `/usr/bin/env` broken on Termux
 - `useReducer` refactor of page.tsx deferred (30 useState hooks tightly coupled) — tests exist for extracted helpers (haversineKm, displayStep) but page.tsx behavior itself is untested
+- `/c/[id]` page crash was caused by suggestions API returning `{ error: 'Unauthorized' }` for non-admin users — `Array.isArray()` guard added in `ClientDetail.tsx`
+- sonner removed — no toast library currently; delete is immediate without undo
