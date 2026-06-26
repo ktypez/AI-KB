@@ -30,6 +30,14 @@ id: clientdata-status
 - **Font**: IBM Plex Sans Thai via `next/font/google` (self-hosted, subsets: thai+latin, weights 100-700)
 - **Testing**: Vitest 1.6 + @testing-library/react + jsdom 24
 
+## Routes
+
+- `/` — Main SPA (Dashboard / Map / Admin views via History API)
+- `/c/[id]` — Public client page (server wrapper pattern)
+- `/api/clients` — CRUD endpoints
+- `/api/suggestions` — Suggestions CRUD + approve/reject
+- `/api/auth` — Password auth
+
 ## Components
 
 | Component | Purpose |
@@ -53,6 +61,28 @@ id: clientdata-status
 | `/api/suggestions/[id]/reject` | POST | Reject suggestion |
 | `/api/auth` | POST | Password verification |
 | `/api/auth?check=setup` | GET | Check if auth is set up (graceful DB error fallback) |
+
+## Design System
+
+- Custom properties in `globals.css`: --surface, --text-*, --border-* tokens for light/dark
+- Tailwind CSS with custom config
+- Colors flow from CSS variables (no hardcoded hex after migration)
+- Animations: CSS-only compositor (transform, opacity), 150-300ms
+- Touch targets ≥ 44px, aria-labels on icon-only buttons
+
+## Data Model
+
+### Clients
+- Table: `clients` (Neon Postgres via Drizzle ORM)
+- Fields: id, name, phone, address, images[], lat, lng, notes, created_at, updated_at
+- RLS: public read, admin write
+
+### Suggestions
+- Table: `suggestions` — client_id, field, old_value, new_value, status, created_by
+- Approval: wrapped in db.transaction() to prevent double-approval
+
+### Auth
+- Admin accounts: scrypt + HMAC tokens, local `.auth-local.json` fallback
 
 ## Changelog
 

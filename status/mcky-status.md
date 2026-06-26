@@ -65,7 +65,21 @@ id: mcky-status
 - **CSS variables** in `:root` — no magic numbers
 - **Skeleton**: `.skel` class with `shimmer` keyframe (CSS-only)
 
+## Data Model
+
+### Todos
+- Table: `todos` (Supabase) — id, text, done, priority, created_at, updated_at
+- RLS: user owns own todos
+
+### Auth
+- Table: `app_config` — stores SHA-256 password hash
+- Auth: password → SHA-256 → compare with stored hash → return session hash → header-based gating
+
 ## Changelog
+
+## PWA
+
+## Tests
 
 ### 2026-06-26 — Neobrutalism Retheme
 - **Updated**: Full visual overhaul — thick 3px black borders, hard offset shadows, bright saturated colors, `.neo-card`/`.neo-tag`/`.neo-badge` components. Light default theme with dark mode support.
