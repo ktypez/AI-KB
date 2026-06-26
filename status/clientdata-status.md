@@ -1,5 +1,5 @@
 ---
-last_updated: 2026-06-26T08:00:00Z
+last_updated: 2026-06-26T08:30:00Z
 project: clientdata
 type: status
 ---
@@ -19,6 +19,10 @@ type: status
 - `master`
 
 ## Changelog
+
+### 2026-06-26 — IBM Plex Sans Thai via next/font
+- **Added**: `lib/fonts.ts` with `IBM_Plex_Sans_Thai` — self-hosted via `next/font/google`, subsets: thai+latin, weights 100-700
+- **Updated**: `globals.css` — `--font-sans`, `--font-display`, `--font-heading` now use `var(--font-ibm-plex)` with system fallbacks
 
 ### 2026-06-26 — `/c/[id]` Crash Fix + sonner Removal + PWA Tune
 - **Fixed**: `/c/[id]` crash `e.map is not a function` — suggestions API returns `{ error: 'Unauthorized' }` for non-admin users, `setSuggestions()` updater called `data.map()` without checking `Array.isArray`. Added `if (!Array.isArray(data)) return` guard.
