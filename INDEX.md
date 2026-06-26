@@ -41,7 +41,6 @@ Centralized index of all AI agents across the knowledge base.
 ├── status/              ← Live project status
 ├── memory/              ← User profile + projects summary
 ├── tasks/               ← Shared triggers and task patterns
-├── blog/                ← KB internal notes
 └── workflow.md          ← Workflow docs
 ```
 

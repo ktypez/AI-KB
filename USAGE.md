@@ -28,7 +28,6 @@ This knowledge base (`~/AI-KB/`) works with **any** AI coding tool — Cursor, C
 │   ├── user-profile.md
 │   └── projects-summary.md
 ├── tasks/               ← Shared triggers & task patterns
-├── blog/                ← KB internal notes
 └── workflow.md
 ```
 
