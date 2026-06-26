@@ -1,31 +1,50 @@
 ---
-type: status
-id: habby-status
+type: project-status
+project: habby
 last_updated: 2026-06-26
+id: habby-status
 title: habby-status
 timestamp: 2026-06-26T17:55:38Z
 ---
 
-# Habby Status
+# Project Status — habby
 
 ## Current State
 
-Working habit tracker deployed at habby.mcky.space (Vercel). All core features operational.
+✅ **Live** — deployed at habby.mcky.space (Vercel), all core features operational
 
-## Features (active)
+## Stack
+
+| Layer | Tech |
+|-------|------|
+| Frontend | Vite 6 + vanilla HTML/CSS/JS |
+| Backend | Express 5 (serverless via Vercel) |
+| Database | Redis (ioredis → Upstash) |
+| Auth | SHA-256 header-based access password |
+| Deploy | Vercel (static + serverless function) |
+| PWA | Service Worker (push notifications, install prompt) |
+
+## Pages
+
+| Path | Purpose |
+|------|---------|
+| `/` | Main dashboard — habit grid, daily check-in, this week overview |
+| `/stats` | Stats dashboard — 6 cards + bar chart (XP, streaks, completion %) |
+| `/settings` | Auth, notifications config, theme picker |
+
+## Features (Active)
 
 - ✅ Habit CRUD with emoji/color picker
 - ✅ Daily check-in with streak tracking
-- ✅ XP/leveling system
-- ✅ Daily notes per habit
-- ✅ Per-habit productivity timer
-- ✅ Daily digest modal
-- ✅ Stats dashboard (6 cards + bar chart)
+- ✅ XP/leveling system (+10-40 XP per check-in, level up every 100 XP)
+- ✅ Daily notes per habit (edit/delete)
+- ✅ Per-habit productivity timer (start/stop with total accumulation)
+- ✅ Daily digest modal (done/pending counts + streaks)
+- ✅ Stats dashboard (total habits, XP, best streak, weekly completion %, bar chart)
 - ✅ Push notifications with configurable time
 - ✅ 5 accent-color themes (default, ocean, sunset, forest, midnight)
 - ✅ Access password auth (SHA-256, stored in Redis)
 - ✅ Persistent login (localStorage, logout button)
-- ✅ This week overview grid
 
 ## Removed
 
@@ -34,7 +53,34 @@ Working habit tracker deployed at habby.mcky.space (Vercel). All core features o
 - ❌ Dark theme (kept midnight)
 - ❌ Archive feature
 
+## Changelog
+
+### 2026-06-26 — Launch
+- **Added**: Full deployment to habby.mcky.space (Vercel). Habit CRUD, daily check-ins, streak tracking, XP/leveling, daily notes, productivity timer, daily digest, stats dashboard, push notifications, 5 themes, SHA-256 auth, persistent login, this week overview grid.
+
 ## Known Issues
 
 - Login button contrast fixed for dark/midnight themes
 - Toast shadow uses `var(--shadow)` instead of hardcoded rgba
+
+## Data Model
+
+```
+habit:{id} → hash { name, emoji, color, archived, created_at }
+habit:{id}:dates → set of ISO date strings
+habit:{id}:note:{date} → string
+habit:{id}:timer:running → timestamp
+habit:{id}:timer:total → seconds
+habits:all → sorted set (ordered by creation)
+user:xp → integer
+app:password → SHA-256 hash string
+notifications:enabled → boolean
+notifications:time → HH:MM string
+```
+
+## Dev Commands
+
+- `yarn dev` — dev server (Express + Vite)
+- `yarn build` — production build (Vite)
+- Local: `node server.js` — full stack on port 3001
+- Deploy: push to GitHub → Vercel auto-deploys

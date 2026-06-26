@@ -1,10 +1,10 @@
 ---
 type: skill
 id: cleanup-project
-last_updated: 2026-06-25
+last_updated: 2026-06-26
 source: ~/.config/opencode/skills/cleanup-project/SKILL.md
 category: project-health
-projects: [truck, mcky.space, clientdata]
+projects: [truck, mcky.space, clientdata, habby]
 ---
 
 # cleanup-project Skill
@@ -29,13 +29,16 @@ projects: [truck, mcky.space, clientdata]
 
 ## Per-Project Health Checks
 
-### truck (React 19 + Vite 6 + TypeScript + Supabase)
+### truck (React 19 + Vite 8 + TypeScript 6 + Supabase)
 - Health check: `node node_modules/.bin/vitest run` + `node node_modules/vite/bin/vite.js build`
 
-### mcky.space (Next.js 14 + TypeScript + Pure CSS)
+### mcky.space (Astro 7 + TypeScript + Pure CSS)
 - Health check: `npm run build` (includes typecheck + lint)
 
 ### clientdata (Next.js 16 + Drizzle + Neon)
 - Health check: `npm run lint` + `tsc --noEmit`
+
+### habby (Vite 6 + Express 5 + Redis)
+- Health check: `yarn build` (Vite build)
 
 (End of file - total 46 lines)

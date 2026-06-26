@@ -1,7 +1,7 @@
 ---
 type: skill
 id: frontend-dev
-last_updated: 2026-06-25
+last_updated: 2026-06-26
 source: ~/.config/opencode/skills/frontend-dev/SKILL.md
 category: engineering
 projects: [global]
@@ -9,13 +9,13 @@ projects: [global]
 
 # frontend-dev Skill
 
-**Purpose:** Expert frontend engineering — React 19, Next.js 15, Vue, Angular, Svelte, TypeScript, component architecture, state management, responsive design, performance optimization, testing, accessible UI/UX.
+**Purpose:** Expert frontend engineering — React 19, Next.js 16, Vue, Angular, Svelte, TypeScript, component architecture, state management, responsive design, performance optimization, testing, accessible UI/UX.
 
 ## Capabilities
 
 ### React & Next.js
 - React 19: Actions, Server Components, async transitions, `useActionState`, `useOptimistic`, `useTransition`, `useDeferredValue`
-- Next.js 15 App Router: Server vs Client Components, streaming, Suspense boundaries
+- Next.js 16 App Router: Server vs Client Components, streaming, Suspense boundaries
 - Server Actions for client-server data mutations
 - Advanced routing: parallel routes, intercepting routes, route handlers, middleware
 - Rendering: SSR, SSG, ISR, dynamic rendering, edge runtime

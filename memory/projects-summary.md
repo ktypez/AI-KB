@@ -23,13 +23,13 @@ projects:
 
 | Aspect | truck | mcky.space | clientdata | habby |
 |--------|-------|------------|------------|-------|
-| Framework | React 19 + Vite 8 | Astro 7 + Alpine.js | Next.js 16 | Vite 6 + vanilla HTML/CSS/JS |
+| Framework | React 19 + Vite 8 + TypeScript 6 | Astro 7.0.2 + Alpine.js | Next.js 16 (webpack) | Vite 6 + Express 5 |
 | Database | Supabase (Postgres) | Supabase (todos/auth) + .md files (blog) | Neon Postgres (Drizzle) | Redis (Upstash) |
 | Storage | Supabase Storage | Supabase | Cloudflare R2 | None |
-| State | tanstack/react-query | Alpine.js x-data | custom fetch + React state | None |
+| State | tanstack/react-query v5 | Alpine.js x-data | custom fetch + React state | None |
 | Auth | Supabase Auth | SHA-256 header-based auth | scrypt + HMAC tokens | SHA-256 header-based auth |
-| PWA | ✅ (injectManifest) | ❌ | ✅ (Serwist) | ✅ (Service Worker) |
-| Testing | vitest (14 tests) | ❌ | ❌ | ❌ |
+| PWA | ✅ (injectManifest) | ❌ | ✅ (cleanup-only sw) | ✅ (Service Worker) |
+| Testing | vitest (16 tests) | ❌ | Vitest (16 tests) | ❌ |
 | Theme | 16 themes, CSS vars | Aura dark terminal, shimmer skeleton | Tailwind | 5 accent-color themes |
 | CI/CD | GitHub Actions (edge functions) | Vercel | Vercel | Vercel |
 
@@ -38,12 +38,13 @@ projects:
 **truck** (Termux):
 - `node node_modules/.bin/vite` — dev
 - `node node_modules/vite/bin/vite.js build` — build
-- `node node_modules/.bin/vitest run` — test
+- `node node_modules/.bin/vitest run` — test (16 tests)
 - `node node_modules/.bin/eslint src/` — lint
+- Node v22.14.0
 
 **mcky.space**:
 - `npm run dev` — dev
-- `npm run build` — build
+- `npm run build` — build (prebuild + astro build)
 
 **clientdata** (Termux):
 - `npm run dev` — dev (port 3002, host 0.0.0.0)
@@ -51,6 +52,7 @@ projects:
 - `npm run lint` — ESLint
 - `npm run db:push` — push Drizzle schema
 - `npm run db:migrate` — run migration
+- `pnpm test` — Vitest (16 tests)
 - `node /data/data/com.termux/files/usr/bin/vercel --prod` — deploy
 
 **habby**:

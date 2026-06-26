@@ -1,7 +1,7 @@
 ---
 type: memory
 id: user-profile
-last_updated: 2026-06-22
+last_updated: 2026-06-26
 preferences:
   - concise responses
   - easy-to-understand summaries
@@ -15,6 +15,7 @@ rules:
   - use contractions (I'll, don't)
   - emojis only when explicitly asked
   - README.md must use censored names: project-a, project-b, project-c (no real names/domains)
+  - all KB files use OKF format (YAML frontmatter + Markdown body)
 termux:
   - node: use directly (no npx)
   - vite: node node_modules/vite/bin/vite.js build
@@ -45,3 +46,4 @@ git:
 - Always read AGENTS.md + STATUS.md before starting work
 - `update .md` — re-read and update STATUS.md + AGENTS.md from latest state
 - Ask before making changes unless the instruction is clear
+- All KB files use OKF format (YAML frontmatter + Markdown body)

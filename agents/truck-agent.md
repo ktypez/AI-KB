@@ -33,11 +33,26 @@ env_vars:
 
 # Truck Agent
 
-## Code Editing Rules
-- `oldString` must be short & precise — no long code blocks (avoid "Could not find oldString")
-- Always read the latest file version before editing
+## Overview
+
+Shift logging & income PWA for truck drivers. React 19 + Supabase with 16 themes, PWA support, and Telegram bot integration.
+
+## Stack
+
+| Layer | Tech |
+|-------|------|
+| Framework | React 19 + Vite 8 + TypeScript 6 |
+| Routing | react-router-dom v7 |
+| Data Fetching | tanstack/react-query v5 |
+| Database | Supabase (Postgres) |
+| Auth | Supabase Auth |
+| PWA | injectManifest (Workbox) |
+| Styling | Custom themes.css (16 themes) |
+| Notifications | Telegram Bot API |
+| Deployment | Vercel (SPA rewrite) |
 
 ## Termux Environment
+
 | Tool | Status |
 |------|--------|
 | Node.js | v22.14.0 (ARM64, downloaded to `/usr/local/node-v22.14.0-linux-arm64/`) — use `node` directly. `.bin/` files are shell scripts (no shebang), use direct `.pnpm/` paths for eslint/vitest. |
@@ -46,6 +61,7 @@ env_vars:
 | sharp / ffmpeg | ❌ Not available |
 
 ## Directory Map
+
 | Directory | Responsibility |
 |-----------|---------------|
 | `.github/workflows/` | CI/CD — deploy edge functions on push to master |
@@ -62,6 +78,7 @@ env_vars:
 | `src/components/skeletons/` | Loading skeletons (DailyView, ShiftCalendar, IncomeView) |
 
 ## Architecture
+
 ```
 main.tsx → App.tsx (auth gate + session + theme)
          → AppRoutes.tsx (lazy-loaded: DailyView, ShiftCalendar, History, IncomeView, ProfilePage, Changelog, AdminPanel, UserManagement, IncomeSettings)
@@ -72,6 +89,7 @@ main.tsx → App.tsx (auth gate + session + theme)
 ```
 
 ## Key Patterns
+
 - **Responsive**: mobile-first PWA, desktop uses max-width 1400px content-area centered. 2-column grids activated at 1024px. NavTabs stays at bottom on all viewport sizes.
 - **Auth gate**: App.tsx checks Supabase session → AuthScreen or main app
 - **Toast**: `useToast()` from ToastContext — never `alert()` or `console.log()`
@@ -92,15 +110,27 @@ main.tsx → App.tsx (auth gate + session + theme)
 - **Mutation invalidation contract**: any save that mutates `logs` must invalidate ALL of: `['monthly-logs', userId, year, month]`, `['yearly-logs', userId, year]`, `['income', userId, year, month]`. `App.tsx handleSaveSuccess` (DailyView path) and `ShiftCalendar.tsx` upsert/delete onSuccess must stay in sync — if one is updated, the other must be too. Lesson: X2/special days picked only from calendar were invisible to IncomeView because ShiftCalendar onSuccess only invalidated logs.
 - **Performance ref pattern**: For handlers with many closure deps (e.g. `handleSave` reading 15+ form values), use a single `formRef` object updated every render + `useCallback` with minimal stable deps. The handler reads `formRef.current` instead of closure values. This prevents memo'd children from re-rendering when form state changes but handler identity is stable.
 
+## Commands
+
+| Command | What it does |
+|---------|-------------|
+| `node node_modules/.bin/vite` | Dev server |
+| `node node_modules/vite/bin/vite.js build` | Production build |
+| `node node_modules/.bin/vitest run` | Run tests (16 tests) |
+| `node node_modules/.bin/eslint src/` | Lint |
+| `node node_modules/.bin/prettier --write src/` | Format |
+
 ## Triggers
 
 ### "update .md"
+
 1. Read project AGENTS.md + current KB status
 2. Update `~/AI-KB/status/truck-status.md` with latest changes
 3. Update `~/AI-KB/agents/truck-agent.md` (directory map, architecture, patterns)
 4. If project AGENTS.md has stale info, update it too
 
 ### "wrap-day"
+
 1. Read diff, Changelog, STATUS.md
 2. Add Thai summary to `src/components/Changelog.tsx` as new `v{YYYY.MM.DD}` entry
 3. Update STATUS.md — Components / Data Flow / Constraints
@@ -108,6 +138,7 @@ main.tsx → App.tsx (auth gate + session + theme)
 5. Only touch Changelog.tsx and STATUS.md
 
 ### "cleanup"
+
 1. Scan unused imports, empty files, dead exports
 2. Health check: `tsc --noEmit` + build
 3. Deep scan: leftover dirs, `vite.log`, `console.log`, TODO/FIXME
@@ -115,3 +146,8 @@ main.tsx → App.tsx (auth gate + session + theme)
 5. Commit & Push if user says so
 6. Update STATUS.md + project AGENTS.md
 7. Never cleanup `.env*`, `node_modules/`, `dist/`, `.git/`, or essential config
+
+## Rules
+
+- `oldString` must be short & precise — avoid long code blocks in edits
+- Always read the latest file version before editing
