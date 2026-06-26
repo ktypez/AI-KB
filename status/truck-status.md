@@ -191,43 +191,17 @@ Command: `node node_modules/.pnpm/vitest@3.2.6_jsdom@29.1.1_lightningcss@1.32.0_
 
 ## Changelog
 
-### 2026-06-26 — Code Review Fix Round 2 + Node.js 22
-- **Fixed**: IncomeView `useMemo` for incomeSettings (prevent query re-fire); DailyView redundant invalidation removed; PwaInstallBanner typed with `BeforeInstallPromptEvent`
-- **Added**: `useMemo` to 5 derived data sites (`allDaysArray`, `merged`, `tot`/`yearTot`, `kpiItems`, `filteredUsers`)
-- **Fixed**: ShiftCalendar local interface → shared `LogEntryFull`; removed `console.error` in production
-- **Updated**: UserManagement `STATUS_CONFIG` → module-level constant; `filteredUsers` wrapped in `useMemo`; hardcoded colors → CSS var references; removed `123456` from password reset UI
-- **Fixed**: `void load()` → proper async call in IncomeSettings
-- **Replaced**: Emoji icons with Phosphor (`WifiX`, `DownloadSimple`) in OfflineBanner + PwaInstallBanner
-- **Added**: Constants `SHIFT_TIMES`, `SHIFT_OFF`, `DAY_TYPE_*`, `LEAVE_*`, `OFF_TYPES` → migrated comparison sites across 9 files
-- **Upgraded**: Node v18.19.1 → v22.14.0 (official ARM64 binary) for Vite 8 / ESLint 10 / jsdom 29 compatibility. Commands: `node node_modules/vite/bin/vite.js build`, `tsc --noEmit`, vitest via direct path
+### Week 2026-06-22
+- **Node v22**: upgraded from v18 → v22.14.0 (ARM64) for Vite 8/ESLint 10/jsdom 29
+- **Perf**: DailyView handlers wrapped in `useCallback` + `formRef` — stops memo'd children re-rendering
+- **DB**: `logs` migration — unique idx `idx_logs_user_date`, RLS, `idx_logs_user_year_month`
+- **Code quality**: explicit column selects (6 sites), removed dead `trucks` writes, shared `LogEntryFull`
+- **Theme**: replaced cotton-candy → neobrutalist (yellow `#fde047` bg, blue `#2563eb` primary, 3px borders, offset shadows); removed Liquid Glass
+- **Code review**: RLS hardened (`is_admin` check), admin gate from DB query (no hardcoded email), `!important` removed from 49 CSS decls, DOM leak fixed, `as any` → proper types, offline queue retries all items
+- **Skeletons**: DailyView/ShiftCalendar/IncomeView rewritten to match real 2-column layouts
+- **Deps**: removed unused `clsx`, `tailwind-merge`; constants extracted (`DAY_TYPE_*`, `LEAVE_*`)
+- **Components merged**: `HelpFixWorkCard` → CounterCard, `SummaryBanner` → OdometerCard
+- **Dead code cleanup**: removed empty `types.ts`, dead exports, `.opencode/` (62MB stale node_modules)
 
-### 2026-06-26 — Database Audit + Code Review
-- **Added**: `logs` table migration (table definition, unique index `idx_logs_user_date`, RLS policies — user owns own logs, admin read-all); index `idx_logs_user_year_month` for filtering
-- **Fixed**: `select('*')` → explicit column select across 6 query sites; removed `trucks` column writes (dead column); added `help_work`/`fix_work` to `LogEntryShared` interface
-- **Fixed**: `clearTimeout` in ThemeEffects overlay timer; `scheduledTimers` cleanup in PwaInstallBanner; `.catch()` on `replayQueue`, `getSession`, `getUser`, `user_profiles` promises
-- **Added**: `useCallback` + `formRef` pattern for DailyView handlers (`handleSave`, `handleSaveShift`, `handleDeleteShift`, `handleToggleDayType`) — prevents re-renders of `memo(OdometerCard)` and `memo(CounterCard)`
-- **Fixed**: Replaced index-as-key with label keys in ProfilePage, SummaryCard, ShiftSummary
-
-### 2026-06-25 — Code Review Fixes + Theme Overhaul
-- **Fixed**: RLS — `pending_users` SELECT/UPDATE now requires `is_admin` (was any authenticated user)
-- **Fixed**: Admin gate replaced hardcoded `email === 'mcky@mcky.space'` with `user_profiles.is_admin` DB query
-- **Fixed**: CSS — removed duplicate `box-shadow` in twilight/cotton-candy; added missing `-webkit-backdrop-filter` on midnight-ocean `.shift-sheet`; removed duplicate `.profile-grid-left/-right` selectors; removed `!important` from `--primary`/`--primary-bg`/`--secondary` across 16 themes (49 declarations)
-- **Fixed**: ThemeEffects cleanup chocobi-fall container on unmount (DOM leak)
-- **Fixed**: Type safety — replaced `as any` with `Session`, `Record<string, any>` in App/DailyView/ProfilePage
-- **Removed**: Unused deps `clsx`, `tailwind-merge`
-- **Fixed**: DailyList inline `onMouseEnter/Leave` → `.daily-row:hover` CSS class
-- **Added**: `toBuddhistYear()` to `@/constants` (unified 6 call sites)
-- **Fixed**: Offline queue `replayQueue` now `continue`s on error instead of `break` (resilience)
-- **Updated**: Replaced cotton-candy theme with neobrutalist (vivid yellow `#fde047` bg, blue `#2563eb` primary, 3px black borders, offset shadows); removed Liquid Glass (unregistered in picker)
-- **Updated**: Added localStorage migration `cotton-candy` → `neobrutalist`
-- **Updated**: Dashed dividers consistently (OdometerCard vertical + horizontal, input-group border-bottom); DailyViewSkeleton rewritten for 2-column `daily-grid` layout
-- **Removed**: Unused `getShiftLabel` from `shift-helpers.ts`
-
-### 2026-06-24 — Component Consolidation
-- **Merged**: `HelpFixWorkCard.tsx` → CounterCard (all 4 steppers in one card with horizontal divider)
-- **Merged**: `SummaryBanner.tsx` → OdometerCard (stats row + horizontal divider + input fields)
-
-### 2026-06-18/20 — Dead Code Cleanup
-- **Removed**: Empty `src/types.ts`; dead exports `APP_CONFIG` (constants), `getShiftLabel` (shift-helpers), `QueuedOp`/`getQueue` (offlineQueue), `ToastContext` (ToastContext)
-- **Deduped**: `ShiftType` imports in ShiftModal + ShiftCalendar
-- **Deleted**: `.opencode/` (62 MB stale node_modules), added to `.gitignore`
+### 2026-06-15
+- Initial project setup with React 19 + Vite 6 + Supabase

@@ -80,8 +80,16 @@ notifications:time → HH:MM string
 
 ## Changelog
 
-### 2026-06-26 — Launch
-- **Added**: Full deployment to habby.mcky.space (Vercel). Habit CRUD, daily check-ins, streak tracking, XP/leveling, daily notes, productivity timer, daily digest, stats dashboard, push notifications, 5 themes, SHA-256 auth, persistent login, this week overview grid.
+### Week 2026-06-22
+- **Launch**: deployed to habby.mcky.space (Vercel) as Vite 6 + Express 5 + Upstash Redis
+- **Auth**: access password `mewmew` stored in Redis (SHA-256) + login screen + persistent logout
+- **Theme picker**: 5 themes (default, ocean, sunset, forest, midnight), removed dark theme
+- **Cleanup**: removed archive feature, categories, unused `$$` helper, dead CSS
+- **Fixes**: login button contrast on dark themes, orphaned archived habits migration
+- All core features: habit CRUD, daily check-ins, streaks, XP/leveling, notes, timer, digest, stats, PWA notifications
+
+### 2026-06-15
+- Initial rebuild as Vite + vanilla HTML/CSS/JS
 
 ## PWA
 

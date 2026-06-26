@@ -81,20 +81,16 @@ id: mcky-status
 
 ## Tests
 
-### 2026-06-26 — Neobrutalism Retheme
-- **Updated**: Full visual overhaul — thick 3px black borders, hard offset shadows, bright saturated colors, `.neo-card`/`.neo-tag`/`.neo-badge` components. Light default theme with dark mode support.
+### Week 2026-06-22
+- **Neobrutalism retheme**: thick 3px borders, hard offset shadows, `.neo-card`/`.neo-tag`/`.neo-badge` components, light default + dark mode
+- **Habits spun off**: removed `habits.astro` + 306 lines dead CSS, links now go directly to habby.mcky.space
+- **Auth**: SHA-256 header gating on all mutating API endpoints (`require-auth` middleware)
+- **Migration**: Next.js 14 → Astro 7 (build system, routing, layouts, API endpoints)
+- **Fixes**: `perfectDays`→`greenDays`, DST-safe DOW calc, bare `catch` cleanup, Supabase 503 handling
+- **Cleanup**: removed stale `.next/` + unused `@napi-rs/wasm-runtime`
 
-### 2026-06-26 — Remove Habits Redirect + Dead CSS
-- **Deleted**: `habits.astro`, removed 306 lines of unused habit tracker CSS (`.week-strip`, `.heatmap-*`, `.habit-row`, etc.). Sidebar + homepage link directly to habby.mcky.space (external, new tab).
-
-### 2026-06-26 — Habits Moved to habby.mcky.space
-- **Moved**: Habit tracking spun off as standalone project at habby.mcky.space
-
-### 2026-06-24 — Cleanup & Code Review Fixes
-- **Removed**: Stale `.next/` directory and unused `@napi-rs/wasm-runtime` dep
-- **Fixed**: `perfectDays`→`greenDays`, month view DST-safe DOW calc, bare `catch` cleanup, Supabase 503 error check
-- **Added**: Auth gating on all mutating API endpoints — `require-auth.ts` middleware, SHA-256 hash in localStorage, `fetchWithAuth` utility
-- **Migrated**: Next.js 14 → Astro 7 — full rewrite of build system, routing, layouts, API endpoints
+### 2026-06-15
+- Initial Astro 7 project setup with Alpine.js
 
 ## Known Issues
 

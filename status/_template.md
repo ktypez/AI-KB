@@ -39,8 +39,8 @@ timestamp: 2026-06-26T19:23:07Z
 
 ## Changelog
 
-### YYYY-MM-DD — Title
-- **Added/Removed/Fixed/Updated**: description
+### Week YYYY-MM-DD
+- **Summary**: compact bullet list of changes from git log
 
 ## PWA
 
