@@ -78,11 +78,23 @@ timestamp: 2026-06-27T10:00:00Z
 
 ## Changelog
 
+### Week 2026-06-27 (continued)
+- **Lightbox polaroid frame**: white bg-white frame around photo, arrows + dots below (not overlaying image), darker bg-black/95 overlay
+- **Lightbox photo**: plain `<img>` instead of AppImage fill (fill broke rendering in polaroid frame)
+- **Card carousel reverted**: back to object-cover for full cover display
+- **Lightbox swipe scoped**: swipe only on photo div, not overlay/controls
+- **Swipe animation smoother**: requestAnimationFrame for drag updates, velocity tracking (fast flicks trigger swipe below 40px threshold), transition 300ms → 200ms, will-change-transform for GPU compositing
+
 ### Week 2026-06-27
-- **Theme system deleted**: removed `useStyleSettings.ts`, `StylePicker.tsx`, all `[data-*]` CSS blocks (~487 lines removed)
+- **Theme system deleted**: removed useStyleSettings.ts, StylePicker.tsx, all [data-*] CSS blocks (~487 lines removed)
 - **Claude/Anthropic design adopted**: warm cream canvas (#faf9f5), coral primary (#cc785c), dark navy dark mode (#181715), 8px radius, no card shadows
-- **Dark mode**: `:root.dark` class-based, Claude dark navy palette; no toggle UI
-- `app/layout.tsx` themeColor updated → `#181715`
+- **Dark mode**: :root.dark class-based, Claude dark navy palette with toggle UI (Moon/Sun icon), FOUC-prevention script in head
+- **Dark basemaps**: CartoDB voyager (light) / dark-matter (dark) via MutationObserver on html class
+- **Map components**: InlineMap, MapPicker, MapPreview all switch basemap on dark mode toggle
+- **2 photos per client optional**: no DB migration, ImageUpload capped at 2, carousel with dots + translateX
+- **Lightbox carousel**: CaretLeft/CaretRight arrows + dots, prev/next navigation
+- **Swipe animation**: hooks/useSwipe.ts with requestAnimationFrame, velocity tracking, dragOffset, isDragging
+- **Logo hidden on mobile**: hidden md:inline in PageHeader
 
 ### Week 2026-06-26
 - **Theme system split**: style (structural) + color (accent palette) + dark mode — 3 independent selectors
@@ -99,8 +111,9 @@ timestamp: 2026-06-27T10:00:00Z
 - **MapPreview cleaned**: removed MutationObserver for dark class, simplified to single BASE_STYLE
 
 ## Upcoming
-- KB sync issues noted in hooks/useStyleSettings.ts: color: string field in STYLES no longer needed (removed from preview/summary)
-- Check other files for integrity before final commit
+- Photo thumbnail in InlineMap popup
+- Verify all features on deployed Vercel build
+- Card view carousels (if desired)
 
 ### Week 2026-06-22
 - **Redesign**: sidebar → sheet drawer, hamburger on desktop, collapsible groups, Swiss default, remove dark mode
