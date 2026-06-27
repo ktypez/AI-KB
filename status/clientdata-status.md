@@ -56,11 +56,11 @@ timestamp: 2026-06-27T10:00:00Z
 
 ## Design System
 
-- Custom properties in `globals.css`: --surface, --text-*, --border-* tokens for light/dark
-- Tailwind CSS with custom config
-- Colors flow from CSS variables (no hardcoded hex after migration)
-- Animations: CSS-only compositor (transform, opacity), 150-300ms
-- Touch targets ≥ 44px, aria-labels on icon-only buttons
+- **Claude/Anthropic palette** — light: cream `#faf8f4`, coral primary `#cc785c`, soft borders `#ebe6dc`
+- Dark: warm brown `#161513`, dimmed foreground `#c8c3b8`, subtle borders `#3d3a37`
+- 8px radius (0.5rem), no card shadows, minimal hairline borders
+- Dark mode via `:root.dark` class + localStorage, Moon/Sun toggle in header
+- All CSS vars in `globals.css` (~196 lines), `--pin-color` for MapLibre pins
 
 ## Data Model
 
@@ -79,11 +79,10 @@ timestamp: 2026-06-27T10:00:00Z
 ## Changelog
 
 ### Week 2026-06-27 (continued)
-- **Lightbox polaroid frame**: white bg-white frame around photo, arrows + dots below (not overlaying image), darker bg-black/95 overlay
-- **Lightbox photo**: plain `<img>` instead of AppImage fill (fill broke rendering in polaroid frame)
-- **Card carousel reverted**: back to object-cover for full cover display
-- **Lightbox swipe scoped**: swipe only on photo div, not overlay/controls
-- **Swipe animation smoother**: requestAnimationFrame for drag updates, velocity tracking (fast flicks trigger swipe below 40px threshold), transition 300ms → 200ms, will-change-transform for GPU compositing
+- **Palette reworked**: Claude warm palette both light and dark — softer foregrounds, warmer browns
+- **Softer borders**: light `#ebe6dc`, dark `#3d3a37` — less harsh on eyes
+- **Theme system deleted**: removed useStyleSettings.ts, StylePicker.tsx, all [data-*] CSS blocks (~487 lines removed)
+- **Dark mode toggle**: Moon/Sun icon in header, localStorage persistence, FOUC script in head
 
 ### Week 2026-06-27
 - **Theme system deleted**: removed useStyleSettings.ts, StylePicker.tsx, all [data-*] CSS blocks (~487 lines removed)
@@ -163,4 +162,4 @@ timestamp: 2026-06-27T10:00:00Z
 - eslint 10 blocked — `eslint-config-next` doesn't support it yet
 - PostCSS disabled in test config (avoids `lightningcss` native binding issue)
 - Cannot build locally (Node.js 18.19.1 too old for Next.js 16)
-- `dark:` Tailwind variant classes left as dead code across 40+ files (harmless, dark mode removed)
+- `dark:` Tailwind variant classes — some may still be dead code from old theme system, harmless

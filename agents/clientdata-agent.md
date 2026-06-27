@@ -96,14 +96,14 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 
 ### Design System
 
-**Claude/Anthropic-inspired static design** — no theme switching
+**Claude/Anthropic-inspired static design** — dark mode toggle (Moon/Sun in header)
 
-- Cream canvas `#faf9f5`, coral primary `#cc785c`, dark navy dark mode `#181715`
+- Light: cream canvas `#faf8f4`, coral primary `#cc785c`, soft borders `#ebe6dc`
+- Dark: warm brown `#161513`, dimmed foreground `#c8c3b8`, subtle borders `#3d3a37`
 - 8px radius (0.5rem), no card shadows, minimal hairline borders
-- Dark mode via `:root.dark` class — no toggle UI, no localStorage
+- Dark mode via `:root.dark` class + localStorage persistence, FOUC script in head
 - All CSS vars defined in `:root` and `:root.dark` in `globals.css` (~196 lines total)
 - `--pin-color: #cc785c` for MapLibre pin color (reads via `getComputedStyle`)
-- Reference: `/home/DESIGN/DESIGN-claude.md`
 
 ### CSS Tokens
 
@@ -127,7 +127,7 @@ Custom properties in `globals.css` (light + dark):
 - Suggestions API `/api/suggestions?clientId=X` returns `{ error: 'Unauthorized' }` for non-admin — `ClientDetail.tsx` guards with `if (!Array.isArray(data)) return` before calling `data.map()`
 - `useReducer` refactor of page.tsx deferred (20+ tightly coupled useState hooks)
 - **Pin colors**: MapLibre paint properties use runtime `getComputedStyle(document.documentElement).getPropertyValue('--pin-color')` since Maplibre can't parse CSS `var()` or `oklch()`
-- **No dark mode**: all `dark:` Tailwind classes are dead code; light-only CSS variables throughout
+- **Dark mode**: `:root.dark` class-based, Claude warm brown palette, Moon/Sun toggle in header, localStorage persistence
 - **Sidebar**: sheet drawer (`Sheet` from Base UI) with backdrop blur, collapsible groups (ภาพรวม/ระบบ), 240px wide, hamburger visible on desktop
 - **MapPreview**: simple single-style map (no dark/light toggle, no MutationObserver)
 - **MapPicker**: uses `getPinColor()` to pass theme color to `pinHtml()` for draggable pin
