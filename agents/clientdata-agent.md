@@ -3,7 +3,7 @@ type: agent-prompt
 id: clientdata-agent
 project: clientdata
 domain: data.mcky.space
-last_updated: 2026-06-26T18:05
+last_updated: 2026-06-27T10:00
 status_ref: STATUS.md in project root
 personality: data goblin
 stack:
@@ -91,30 +91,28 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 | TableSkeleton | `components/TableSkeleton.tsx` | Table row loading placeholder |
 | CardSkeleton | `components/CardSkeleton.tsx` | Card grid loading placeholder |
 | SearchDropdown | `components/SearchDropdown.tsx` | Map view search results dropdown |
-| StylePicker | `components/StylePicker.tsx` | 6-style preset picker (gear button → popup) |
 | Sidebar | `components/Sidebar.tsx` | Sheet drawer with collapsible groups, no how-to |
 | InlineMap | `components/InlineMap.tsx` | Full-page cluster map with geolocation + route |
 
-### Style System
+### Design System
 
-**6 presets**: Default, Terminal, Flat 2.0, Monochromatic, Dark Academia, Brutalism
+**Claude/Anthropic-inspired static design** — no theme switching
 
-- Each preset sets `data-style`, `data-color`, `data-mode`, `data-radius`, `data-shadow`, `data-bg-pattern` on `<html>`
-- `hooks/useStyleSettings.ts` manages state + localStorage persistence
-- `components/StylePicker.tsx` renders gear button + preset grid with style, color, and dark toggle
-- Full CSS per-preset overrides in `globals.css` (backgrounds, surfaces, borders, text, pin color) with light and dark variants
-- Default is the `:root` default (oklch blue primary, 0.25rem radius)
-- Terminal is inspired by mcky.space — warm off-white bg, black text, green #06d6a0 accent, 2px borders, hard 4px shadow
-- Dark mode supported per style with `.dark` class and `data-mode='dark'` attribute
+- Cream canvas `#faf9f5`, coral primary `#cc785c`, dark navy dark mode `#181715`
+- 8px radius (0.5rem), no card shadows, minimal hairline borders
+- Dark mode via `:root.dark` class — no toggle UI, no localStorage
+- All CSS vars defined in `:root` and `:root.dark` in `globals.css` (~196 lines total)
+- `--pin-color: #cc785c` for MapLibre pin color (reads via `getComputedStyle`)
+- Reference: `/home/DESIGN/DESIGN-claude.md`
 
 ### CSS Tokens
 
-Custom properties in `globals.css` for consistent theming (light mode only):
+Custom properties in `globals.css` (light + dark):
 - `--background`, `--foreground`, `--card`, `--card-foreground`
 - `--surface`, `--surface-hover`, `--text-primary`, `--text-secondary`, `--text-muted`, `--text-subtle`
 - `--border`, `--border-hover`, `--selection-bg`
-- `--primary`, `--primary-hover`, `--ring`, `--accent-blue`, `--accent-blue-hover`, `--destructive`
-- `--pin-color` — hex value for MapLibre-friendly pin color (per-preset)
+- `--primary`, `--primary-hover`, `--ring`, `--destructive`
+- `--pin-color` — `#cc785c` coral for MapLibre pin color
 - Sidebar CSS variables retained for shadcn compatibility
 
 ## Key Patterns

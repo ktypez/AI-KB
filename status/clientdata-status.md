@@ -1,10 +1,10 @@
 ---
 type: project-status
 project: clientdata
-last_updated: 2026-06-26
+last_updated: 2026-06-27
 id: clientdata-status
 title: clientdata-status
-timestamp: 2026-06-26T18:05:00Z
+timestamp: 2026-06-27T10:00:00Z
 ---
 
 # Project Status — clientdata
@@ -78,15 +78,29 @@ timestamp: 2026-06-26T18:05:00Z
 
 ## Changelog
 
+### Week 2026-06-27
+- **Theme system deleted**: removed `useStyleSettings.ts`, `StylePicker.tsx`, all `[data-*]` CSS blocks (~487 lines removed)
+- **Claude/Anthropic design adopted**: warm cream canvas (#faf9f5), coral primary (#cc785c), dark navy dark mode (#181715), 8px radius, no card shadows
+- **Dark mode**: `:root.dark` class-based, Claude dark navy palette; no toggle UI
+- `app/layout.tsx` themeColor updated → `#181715`
+
 ### Week 2026-06-26
+- **Theme system split**: style (structural) + color (accent palette) + dark mode — 3 independent selectors
+  - **6 styles**: Default, Terminal, Flat, Mono, Dark Academia, Brutalism — each defines background/surface/text/border/radius/shadow/pattern
+  - **6 colors**: blue, green, violet, pink, orange, zinc — each defines primary/ring/accent-blue/pin-color
+  - **Dark mode**: per-style dark CSS blocks (Default→GitHub dark, Terminal→mcky deep navy, Dark Academia→dark sepia, etc.)
+  - `[data-theme-color]` → `[data-color]`, new `[data-mode='dark']` + `.dark` class
+- **StylePicker**: redesigned — wider 360px popup with 3 sections: style grid (3-col), color row (6 circles), dark toggle
 - **Final bg-white removal**: all `bg-white` → `bg-[var(--card)]` across 20+ files
 - **Pin colors**: theme-aware (reads `--pin-color` hex via `getComputedStyle`); `lib/pin.ts` accepts color param
 - **Undefined var fixes**: `--text-dark-*`, `--surface-card`, `--border-dark`, `--surface-elevated` used without `dark:` prefix → proper light-mode variables across 6 files
-- **10 → 6 presets**: removed Modern, Retro/Y2K, Bento Grid, Neo-brutalism, Cyberpunk; renamed Swiss → Default
-- **Terminal preset**: added from mcky.space — warm off-white bg, black text, green accent (#06d6a0), 2px borders, hard 4px shadow
-- **10 preset overrides → 5 + Terminal**: full CSS variable blocks per preset (backgrounds, surfaces, borders, text, pin color) in `globals.css`
+- **10 → 6 presets removed**: Modern, Retro/Y2K, Bento Grid, Neo-brutalism, Cyberpunk; renamed Swiss → Default; Terminal added
 - **Dark mode scrubbed**: `MapPreview.tsx` and `InlineMap.tsx` basemap toggle → always light; `MapPicker.tsx` dark style removed
 - **MapPreview cleaned**: removed MutationObserver for dark class, simplified to single BASE_STYLE
+
+## Upcoming
+- KB sync issues noted in hooks/useStyleSettings.ts: color: string field in STYLES no longer needed (removed from preview/summary)
+- Check other files for integrity before final commit
 
 ### Week 2026-06-22
 - **Redesign**: sidebar → sheet drawer, hamburger on desktop, collapsible groups, Swiss default, remove dark mode
