@@ -21,6 +21,8 @@ skills:
     path: skills/web-dev.md
   - id: writer-work
     path: skills/writer-work.md
+  - id: anthropic-design
+    path: skills/anthropic-design.md
 ---
 
 # AI Skills Overview
@@ -41,6 +43,7 @@ Centralized index of all specialized skills available for AI agents.
 | supabase-postgres-best-practices | Database | Postgres performance optimization from Supabase |
 | web-dev | Engineering | Modern web apps — semantic HTML5, CSS Grid/Flexbox, vanilla JS |
 | writer-work | Content | Concise summaries, changelogs, step-by-step instructions, documentation |
+| anthropic-design | Design System | Anthropic's warm parchment + terracotta design tokens, typography, spacing, and component patterns |
 
 ## Directory Layout
 
@@ -56,7 +59,8 @@ Centralized index of all specialized skills available for AI agents.
 │   ├── design-skill-os.md
 │   ├── supabase-postgres-best-practices.md
 │   ├── web-dev.md
-│   └── writer-work.md
+│   ├── writer-work.md
+│   └── anthropic-design.md
 ```
 
 ## Usage

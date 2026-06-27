@@ -96,14 +96,14 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 
 ### Design System
 
-**Claude/Anthropic-inspired static design** — dark mode toggle (Moon/Sun in header)
+**Claude/Anthropic official design system** — dark mode toggle (Moon/Sun in header)
 
-- Light: cream canvas `#faf8f4`, coral primary `#cc785c`, soft borders `#ebe6dc`
-- Dark: warm brown `#161513`, dimmed foreground `#c8c3b8`, subtle borders `#3d3a37`
+- Light: cream `#faf9f5`, coral `#cc785c`, card `#efe9de`, borders `#e6dfd8`
+- Dark: navy `#181715`, card `#252320`, foreground `#faf9f5` (cream-on-dark)
+- **Cormorant Garamond** serif for display headlines, IBM Plex Sans Thai for body
 - 8px radius (0.5rem), no card shadows, minimal hairline borders
-- Dark mode via `:root.dark` class + localStorage persistence, FOUC script in head
-- All CSS vars defined in `:root` and `:root.dark` in `globals.css` (~196 lines total)
-- `--pin-color: #cc785c` for MapLibre pin color (reads via `getComputedStyle`)
+- Dark mode via `:root.dark` class + localStorage, FOUC script in head
+- All CSS vars in `globals.css`, `--pin-color` for MapLibre pins
 
 ### CSS Tokens
 

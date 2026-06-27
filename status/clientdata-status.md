@@ -56,11 +56,13 @@ timestamp: 2026-06-27T10:00:00Z
 
 ## Design System
 
-- **Claude/Anthropic palette** — light: cream `#faf8f4`, coral primary `#cc785c`, soft borders `#ebe6dc`
-- Dark: warm brown `#161513`, dimmed foreground `#c8c3b8`, subtle borders `#3d3a37`
+- **Claude/Anthropic official palette** — light: cream `#faf9f5`, coral `#cc785c`, card `#efe9de`, borders `#e6dfd8`
+- Dark: navy `#181715`, card `#252320`, foreground `#faf9f5` (cream-on-dark)
+- **Cormorant Garamond** serif for display headlines (`--font-serif`), IBM Plex Sans Thai for body
 - 8px radius (0.5rem), no card shadows, minimal hairline borders
 - Dark mode via `:root.dark` class + localStorage, Moon/Sun toggle in header
-- All CSS vars in `globals.css` (~196 lines), `--pin-color` for MapLibre pins
+- New tokens: `--accent-teal`, `--accent-amber`, `--primary-disabled`, `--hairline-soft`
+- All CSS vars in `globals.css`, `--pin-color` for MapLibre pins
 
 ## Data Model
 
