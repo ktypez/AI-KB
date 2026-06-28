@@ -3,7 +3,7 @@ type: agent-prompt
 id: clientdata-agent
 project: clientdata
 domain: data.mcky.space
-last_updated: 2026-06-27T10:00
+last_updated: 2026-06-28T10:00
 status_ref: STATUS.md in project root
 personality: data goblin
 stack:
@@ -13,7 +13,8 @@ stack:
   - Cloudflare R2 for image storage (lib/r2.ts)
   - Admin auth: scrypt + HMAC tokens, local JSON fallback
   - SPA on app/page.tsx with History API
-  - CSS custom properties for theming (surface, text, border tokens)
+  - shadcn/ui components (Base UI + cva variants)
+  - next-themes for dark mode (@custom-variant dark in globals.css)
   - Vitest 1.6 + @testing-library/react + jsdom 24 for testing (16 tests)
   - Deployment: Vercel (build: next build --webpack)
 branch: master
@@ -87,27 +88,25 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 
 | Component | File | Purpose |
 |-----------|------|---------|
-| Button | `components/ui/button.tsx` | shadcn Button with variants (default, outline, ghost, destructive, etc.) |
-| Card | `components/ui/card.tsx` | shadcn Card with CardContent, CardHeader, CardTitle, CardFooter |
-| Dialog | `components/ui/dialog.tsx` | shadcn Dialog modal with overlay |
-| Skeleton | `components/ui/skeleton.tsx` | Base animated skeleton primitive |
+| Button | `components/ui/button.tsx` | shadcn Button with variants (default, outline, secondary, ghost, destructive, link) — size "icon" = size-8 |
+| Card | `components/ui/card.tsx` | shadcn Card — `data-slot="card"`, `ring-1 ring-foreground/10`, overflow-visible |
+| Dialog | `components/ui/dialog.tsx` | shadcn Dialog modal — `@base-ui/react/dialog`, `showCloseButton` prop |
 | Sheet | `components/ui/sheet.tsx` | Side panel overlay |
 | Tooltip | `components/ui/tooltip.tsx` | Hover tooltip |
 | TableSkeleton | `components/TableSkeleton.tsx` | Table row loading placeholder |
-| CardSkeleton | `components/CardSkeleton.tsx` | Card grid loading placeholder |
 | SearchDropdown | `components/SearchDropdown.tsx` | Map view search results dropdown |
-| Sidebar | `components/Sidebar.tsx` | Sheet drawer with collapsible groups, no how-to |
+| Sidebar | `components/Sidebar.tsx` | Sheet drawer with collapsible groups, hamburger visible on desktop |
 | InlineMap | `components/InlineMap.tsx` | Full-page cluster map with geolocation + route |
+| PageHeader | `components/PageHeader.tsx` | Header bar — sidebar toggle, search, "+ add" button (right side), theme toggle |
 
 ### Design System
 
-**Claude/Anthropic official design system** — dark mode toggle (Moon/Sun in header)
+**shadcn/ui + next-themes** — dark mode toggle (Moon/Sun in header)
 
-- Light: cream `#faf9f5`, coral `#cc785c`, card `#efe9de`, borders `#e6dfd8`
-- Dark: navy `#181715`, card `#252320`, foreground `#faf9f5` (cream-on-dark)
-- **Cormorant Garamond** serif for display headlines, IBM Plex Sans Thai for body
-- 8px radius (0.5rem), no card shadows, minimal hairline borders
-- Dark mode via `:root.dark` class + localStorage, FOUC script in head
+- shadcn starter palette: `:root` `--background: oklch(1 0 0)`, `--primary: oklch(0.205 0 0)`
+- Dark: `--background: oklch(0.145 0 0)`
+- **IBM Plex Sans Thai** primary font, applied as `--font-ibm-plex` CSS variable
+- `@custom-variant dark` in globals.css for `dark:` Tailwind classes
 - All CSS vars in `globals.css`, `--pin-color` for MapLibre pins
 
 ### CSS Tokens
@@ -132,8 +131,12 @@ Custom properties in `globals.css` (light + dark):
 - Suggestions API `/api/suggestions?clientId=X` returns `{ error: 'Unauthorized' }` for non-admin — `ClientDetail.tsx` guards with `if (!Array.isArray(data)) return` before calling `data.map()`
 - `useReducer` refactor of page.tsx deferred (20+ tightly coupled useState hooks)
 - **Pin colors**: MapLibre paint properties use runtime `getComputedStyle(document.documentElement).getPropertyValue('--pin-color')` since Maplibre can't parse CSS `var()` or `oklch()`
-- **Dark mode**: `:root.dark` class-based, Claude warm brown palette, Moon/Sun toggle in header, localStorage persistence
-- **Sidebar**: sheet drawer (`Sheet` from Base UI) with backdrop blur, collapsible groups (ภาพรวม/ระบบ), 240px wide, hamburger visible on desktop
+- **Dark mode**: `next-themes`, `@custom-variant dark` in globals.css, Moon/Sun toggle in header, localStorage persistence
+- **Sidebar**: sheet drawer (`Sheet` from Base UI) with backdrop blur, collapsible groups, 240px wide, hamburger visible on desktop; stays open on desktop during nav
+- **"+ add" button**: right side of PageHeader (after theme toggle), `size="icon"` same as other header buttons
+- **Action button colors**: edit = `border-[var(--accent-blue)]`, delete = `border-[var(--destructive)]`
+- **All inputs**: `text-[14px] font-sans` — explicit font + size override for browser consistency
+- **Font fix**: `globals.css:59` — `--font-sans: var(--font-ibm-plex), system-ui, sans-serif` (was circular reference)
 - **MapPreview**: simple single-style map (no dark/light toggle, no MutationObserver)
 - **MapPicker**: uses `getPinColor()` to pass theme color to `pinHtml()` for draggable pin
 
