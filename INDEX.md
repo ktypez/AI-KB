@@ -37,7 +37,7 @@ Centralized index of all AI agents across the knowledge base.
 ├── INDEX.md             ← THIS FILE — start here
 ├── INSTRUCTION.md       ← How to use this KB
 ├── agents/              ← Agent profiles (one per project)
-├── skills/              ← Specialized skills (INDEX.md + 9 skills)
+├── skills/              ← Specialized skills (INDEX.md + 8 skills)
 ├── status/              ← Live project status
 ├── memory/              ← User profile + projects summary
 ├── tasks/               ← Shared triggers and task patterns
@@ -54,7 +54,7 @@ All context lives in this KB.
 
 ## Skills Index
 
-See [skills INDEX](skills/INDEX.md) for all 9 specialized skills:
+See [skills INDEX](skills/INDEX.md) for all 8 specialized skills:
 - **update-md** — KB maintenance (sync project state to KB)
 - **cleanup-project** — Project health (scan unused, health check)
 - **code-review** — Code quality, bug detection, security, performance, best practices
@@ -64,7 +64,6 @@ See [skills INDEX](skills/INDEX.md) for all 9 specialized skills:
 - **supabase-postgres-best-practices** — Postgres performance optimization
 - **web-dev** — Modern web apps (semantic HTML5, CSS Grid/Flexbox, vanilla JS)
 - **writer-work** — Content writing (summaries, changelogs, instructions)
-- **anthropic-design** — Anthropic design system tokens, typography, spacing, component patterns
 
 ## Cross-Project Triggers
 

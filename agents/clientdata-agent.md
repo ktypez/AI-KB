@@ -53,7 +53,7 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 | Auth | scrypt + HMAC tokens |
 | Testing | Vitest 1.6 + @testing-library/react |
 | PWA | Serwist removed (cleanup-only sw) |
-| Styling | Tailwind + CSS custom properties |
+| Styling | Tailwind + CSS custom properties + shadcn/ui components |
 | Deployment | Vercel |
 
 ## Architecture
@@ -87,7 +87,12 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 
 | Component | File | Purpose |
 |-----------|------|---------|
+| Button | `components/ui/button.tsx` | shadcn Button with variants (default, outline, ghost, destructive, etc.) |
+| Card | `components/ui/card.tsx` | shadcn Card with CardContent, CardHeader, CardTitle, CardFooter |
+| Dialog | `components/ui/dialog.tsx` | shadcn Dialog modal with overlay |
 | Skeleton | `components/ui/skeleton.tsx` | Base animated skeleton primitive |
+| Sheet | `components/ui/sheet.tsx` | Side panel overlay |
+| Tooltip | `components/ui/tooltip.tsx` | Hover tooltip |
 | TableSkeleton | `components/TableSkeleton.tsx` | Table row loading placeholder |
 | CardSkeleton | `components/CardSkeleton.tsx` | Card grid loading placeholder |
 | SearchDropdown | `components/SearchDropdown.tsx` | Map view search results dropdown |
@@ -174,3 +179,4 @@ Custom properties in `globals.css` (light + dark):
 
 - `public/sw.js` is a cleanup-only script (Serwist removed)
 - sonner removed — no toast library installed
+- **shadcn standard**: all UI edits must use shadcn components (`components/ui/`) — Button, Card, Dialog, Skeleton, etc. No custom button/modal patterns when shadcn equivalent exists
