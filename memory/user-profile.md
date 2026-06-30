@@ -1,7 +1,7 @@
 ---
 type: memory
 id: user-profile
-last_updated: 2026-06-26
+last_updated: 2026-06-29
 preferences:
   - concise responses
   - easy-to-understand summaries
@@ -23,10 +23,14 @@ termux:
   - test: node node_modules/.pnpm/vitest@3.2.6_jsdom@29.1.1_lightningcss@1.32.0_terser@5.48.0/node_modules/vitest/vitest.mjs run
   - npm: works normally
   - shebang: unavailable (/usr/bin/env broken)
+  - vercel: vercel CLI installed at /home/.npm-global/bin/vercel (v54.18.1), logged in as fall3n36
+  - supabase: npx supabase (v2.108.0), logged in with access token
 node_ver: 22.14.0 (downloaded ARM64 binary, symlinked over v18 in /usr/local/node-v22.14.0-linux-arm64/)
 git:
   - no push without explicit instruction
   - commit only when asked
+env:
+  - SUPABASE_ACCESS_TOKEN: sbp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ---
 
 # User Profile

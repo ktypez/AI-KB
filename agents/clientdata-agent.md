@@ -110,7 +110,7 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 - **IBM Plex Sans Thai** primary font, applied as `--font-ibm-plex` CSS variable
 - `@custom-variant dark` in globals.css for `dark:` Tailwind classes
 - All CSS vars in `globals.css`, `--pin-color` for MapLibre pins
-- **Theme Preset Picker** — 14 tweakcn presets, swaps CSS vars for colors + shadows + spacing + tracking, no font overrides
+- **Theme Preset Picker** — 14 tweakcn presets, swaps CSS vars for colors + shadows + spacing + tracking, no font overrides; custom vars (`--surface`, `--text-*`) cascade from shadcn vars so all components reflect preset changes
 - **Theme presets file**: `lib/theme-presets.ts` — `ThemePreset` with `vars` (light) + `darkVars` (dark), `makeDesign()` for unique shadows/radius/tracking
 - **useThemePreset hook**: `hooks/useThemePreset.ts` — manages preset state, applies via `<style>` tag, persists to `localStorage`
 
@@ -118,11 +118,10 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 
 Custom properties in `globals.css` (light + dark):
 - `--background`, `--foreground`, `--card`, `--card-foreground`
-- `--surface`, `--surface-hover`, `--text-primary`, `--text-secondary`, `--text-muted`, `--text-subtle`
+- `--surface`, `--surface-hover`, `--text-primary`, `--text-secondary`, `--text-muted`, `--text-subtle` (all cascade from shadcn standard vars)
 - `--border`, `--border-hover`, `--selection-bg`
 - `--primary`, `--primary-hover`, `--ring`, `--destructive`
-- `--pin-color` — `#cc785c` coral for MapLibre pin color
-- Sidebar CSS variables retained for shadcn compatibility
+- Sidebar CSS variables (`--sidebar`, `--sidebar-accent`, etc.) reference main vars (`var(--background)`, `var(--muted)`, etc.)
 
 ## Key Patterns
 
@@ -135,15 +134,16 @@ Custom properties in `globals.css` (light + dark):
 - `/c/[id]` page uses server wrapper pattern (`client-page.tsx` receives `id` as prop, not `useParams()`)
 - Suggestions API `/api/suggestions?clientId=X` returns `{ error: 'Unauthorized' }` for non-admin — `ClientDetail.tsx` guards with `if (!Array.isArray(data)) return` before calling `data.map()`
 - `useReducer` refactor of page.tsx deferred (20+ tightly coupled useState hooks)
-- **Pin colors**: MapLibre paint properties use runtime `getComputedStyle(document.documentElement).getPropertyValue('--pin-color')` since Maplibre can't parse CSS `var()` or `oklch()`
+- **Pin colors**: MapLibre paint properties use runtime `cssVarToHex('--foreground')` via Canvas2D trick — reads CSS var and converts to hex (since Maplibre can't parse `var()` or `oklch()`)
+- **cssVarToHex**: `lib/utils.ts` — creates a canvas element, sets `fillStyle` to the raw CSS var value, reads back the browser-resolved hex string ("#xxxxxx") for MapLibre compatibility
 - **Dark mode**: `next-themes`, `@custom-variant dark` in globals.css, Moon/Sun toggle in header, localStorage persistence
 - **Sidebar**: sheet drawer (`Sheet` from Base UI) with backdrop blur, collapsible groups, 240px wide, hamburger visible on desktop; stays open on desktop during nav
 - **"+ add" button**: right side of PageHeader (after theme toggle), `size="icon"` same as other header buttons
 - **Action button colors**: edit = `border-[var(--accent-blue)]`, delete = `border-[var(--destructive)]`
 - **All inputs**: `text-[14px] font-sans` — explicit font + size override for browser consistency
 - **Font fix**: `globals.css:59` — `--font-sans: var(--font-ibm-plex), system-ui, sans-serif` (was circular reference)
-- **MapPreview**: simple single-style map (no dark/light toggle, no MutationObserver)
-- **MapPicker**: uses `getPinColor()` to pass theme color to `pinHtml()` for draggable pin
+- **MapPreview**: simple single-style map (no dark/light toggle, no MutationObserver); marker uses `bg-[var(--primary)]` + `border-[var(--card)]`
+- **MapPicker**: uses `cssVarToHex('--foreground')` to pass theme color to `pinHtml()` for draggable pin; overlay uses `bg-background/80 text-foreground`
 
 ## Commands
 

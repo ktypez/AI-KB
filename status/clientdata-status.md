@@ -70,7 +70,7 @@ timestamp: 2026-06-30T12:00:00Z
 - **Button sizes**: default (h-8), sm (h-7), lg (h-9), icon (size-8), icon-sm, icon-lg
 - Action buttons use `border-[var(--accent-blue)]` or `border-[var(--destructive)]`
 - All inputs at `text-[14px] font-sans` — explicit font override for browsers
-- **Theme Preset Picker** — 14 tweakcn presets (default, violet, twitter, t3, mocha, amethyst, bubblegum, catppuccin, claude, supabase, clean-slate, caffeine, ocean-breeze, cyberpunk, darkmatter, midnight-bloom), swaps CSS vars for colors + shadows + spacing + tracking, persists to localStorage, no font overrides
+- **Theme Preset Picker** — 14 tweakcn presets (default, violet, twitter, t3, mocha, amethyst, bubblegum, catppuccin, claude, supabase, clean-slate, caffeine, ocean-breeze, cyberpunk, darkmatter, midnight-bloom), swaps CSS vars for colors + shadows + spacing + tracking, persists to localStorage, no font overrides; custom vars (`--surface`, `--text-*`) now cascade from shadcn vars so all components reflect preset changes
 
 ## Data Model
 
@@ -88,14 +88,14 @@ timestamp: 2026-06-30T12:00:00Z
 
 ## Changelog
 
-### Week 2026-06-30
-- **Theme Preset Picker**: dropdown in PageHeader with 14 tweakcn presets — swaps CSS vars for colors + shadows + spacing + tracking (no font overrides)
-- **Theme presets file**: `lib/theme-presets.ts` — `ThemePreset` interface with `vars` (light) and `darkVars` (dark), `makeDesign()` for unique shadows/radius/tracking per theme
-- **useThemePreset hook**: manages preset state, applies via `<style>` tag, persists to `localStorage`
-- **Shadow intensity boosted** — ~2x opacity, larger blur/spread, tinted colors per theme
-- **Colors vividified** — increased saturation across all presets (oklch-based and hex-based)
-- **Duplicate presets removed** — `modern-minimal` and `vercel` removed (identical to default)
-- **14 presets**: default, violet, twitter, t3, mocha, amethyst, bubblegum, catppuccin, claude, supabase, clean-slate, caffeine, ocean-breeze, cyberpunk, darkmatter, midnight-bloom
+### 2026-06-30
+- **Custom CSS vars cascade from shadcn vars**: `--surface: var(--muted)`, `--text-primary: var(--foreground)`, etc. — all preset-visible colors (input bg, page bg, active menu bg) now change via presets
+- **Sidebar**: migrated to shadcn sidebar classes (`bg-sidebar-accent`, `text-sidebar-accent-foreground`, `bg-sidebar`) — sidebar active menu now follows presets
+- **Map page**: pin colors read `--foreground`, strokes read `--card` via `cssVarToHex()` (Canvas2D trick) — map clusters, pins, overlays now theme-aware
+- **MapPreview**: marker border `border-white` → `border-[var(--card)]`
+- **MapPicker**: overlay `bg-black/60 text-white` → `bg-background/80 text-foreground`
+- **lib/utils.ts**: added `cssVarToHex()` helper — converts oklch/var to hex for MapLibre compatibility
+- **Sidebar vars**: `--sidebar-*` now reference main vars (`var(--background)`, `var(--muted)`, etc.) instead of hardcoded oklch values
 
 ### Week 2026-06-28
 - **"+" button moved to header right side** — after theme toggle, `size="icon"` same as other header buttons

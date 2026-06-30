@@ -1,7 +1,7 @@
 ---
 type: index
 id: agents-index
-last_updated: 2026-06-26
+last_updated: 2026-06-29
 projects:
   - id: mcky-agent
     path: agents/mcky-agent.md
@@ -11,6 +11,8 @@ projects:
     path: agents/clientdata-agent.md
   - id: habby-agent
     path: agents/habby-agent.md
+  - id: cafe-agent
+    path: agents/cafe-agent.md
   - id: writer-agent
     path: agents/writer-agent.md
 ---
@@ -28,6 +30,7 @@ Centralized index of all AI agents across the knowledge base.
 | truck-agent | truck | Shift logging & income PWA (React 19 + Supabase) | overtime enthusiast |
 | clientdata-agent | clientdata | Client management & CRM (Next.js 16 + Neon) | data goblin |
 | habby-agent | habby | Gamification UI Kit (Vite 6 + vanilla HTML/CSS/JS) | trophy goblin |
+| cafe-agent | cafe | Cafe LIFF ordering & management (Next.js 15 + Supabase) | barista engineer |
 | writer-agent | global | Content writer & summarizer | word goblin |
 
 ## Directory Layout
@@ -67,12 +70,12 @@ See [skills INDEX](skills/INDEX.md) for all 8 specialized skills:
 
 ## Cross-Project Triggers
 
-| Trigger | truck | mcky.space | clientdata | habby |
-|---------|-------|------------|------------|-------|
-| `update kb` | ✅ | ✅ | ✅ | ✅ |
-| `update .md` | ✅ | ✅ | ✅ | ✅ |
-| `cleanup` | ✅ | ✅ | ✅ | ✅ |
-| `wrap-day` | ✅ | — | — | — |
+| Trigger | truck | mcky.space | clientdata | habby | cafe |
+|---------|-------|------------|------------|-------|------|
+| `update kb` | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `update .md` | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `cleanup` | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `wrap-day` | ✅ | — | — | — | — |
 
 `update .md` is an alias for `update kb` — both do the same thing (update centralized KB files in `~/AI-KB/`).
 
