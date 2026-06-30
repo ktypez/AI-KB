@@ -1,10 +1,10 @@
 ---
 type: project-status
 project: clientdata
-last_updated: 2026-06-28
+last_updated: 2026-06-30
 id: clientdata-status
 title: clientdata-status
-timestamp: 2026-06-28T10:00:00Z
+timestamp: 2026-06-30T12:00:00Z
 ---
 
 # Project Status — clientdata
@@ -44,6 +44,7 @@ timestamp: 2026-06-28T10:00:00Z
 | SearchDropdown | Map view search results dropdown |
 | MapPreviewDynamic | Lazy-loaded map preview wrapper |
 | Sidebar | Sheet drawer with collapsible groups |
+| ThemePresetPicker | Dropdown with color swatches for 14 tweakcn theme presets |
 
 ## API
 
@@ -69,6 +70,7 @@ timestamp: 2026-06-28T10:00:00Z
 - **Button sizes**: default (h-8), sm (h-7), lg (h-9), icon (size-8), icon-sm, icon-lg
 - Action buttons use `border-[var(--accent-blue)]` or `border-[var(--destructive)]`
 - All inputs at `text-[14px] font-sans` — explicit font override for browsers
+- **Theme Preset Picker** — 14 tweakcn presets (default, violet, twitter, t3, mocha, amethyst, bubblegum, catppuccin, claude, supabase, clean-slate, caffeine, ocean-breeze, cyberpunk, darkmatter, midnight-bloom), swaps CSS vars for colors + shadows + spacing + tracking, persists to localStorage, no font overrides
 
 ## Data Model
 
@@ -85,6 +87,15 @@ timestamp: 2026-06-28T10:00:00Z
 - Admin accounts: scrypt + HMAC tokens, local `.auth-local.json` fallback
 
 ## Changelog
+
+### Week 2026-06-30
+- **Theme Preset Picker**: dropdown in PageHeader with 14 tweakcn presets — swaps CSS vars for colors + shadows + spacing + tracking (no font overrides)
+- **Theme presets file**: `lib/theme-presets.ts` — `ThemePreset` interface with `vars` (light) and `darkVars` (dark), `makeDesign()` for unique shadows/radius/tracking per theme
+- **useThemePreset hook**: manages preset state, applies via `<style>` tag, persists to `localStorage`
+- **Shadow intensity boosted** — ~2x opacity, larger blur/spread, tinted colors per theme
+- **Colors vividified** — increased saturation across all presets (oklch-based and hex-based)
+- **Duplicate presets removed** — `modern-minimal` and `vercel` removed (identical to default)
+- **14 presets**: default, violet, twitter, t3, mocha, amethyst, bubblegum, catppuccin, claude, supabase, clean-slate, caffeine, ocean-breeze, cyberpunk, darkmatter, midnight-bloom
 
 ### Week 2026-06-28
 - **"+" button moved to header right side** — after theme toggle, `size="icon"` same as other header buttons

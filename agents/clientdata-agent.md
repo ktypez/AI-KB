@@ -3,7 +3,7 @@ type: agent-prompt
 id: clientdata-agent
 project: clientdata
 domain: data.mcky.space
-last_updated: 2026-06-28T10:00
+last_updated: 2026-06-30T12:00
 status_ref: STATUS.md in project root
 personality: data goblin
 stack:
@@ -15,6 +15,7 @@ stack:
   - SPA on app/page.tsx with History API
   - shadcn/ui components (Base UI + cva variants)
   - next-themes for dark mode (@custom-variant dark in globals.css)
+  - tweakcn theme presets (14 presets, CSS var swaps, no font overrides)
   - Vitest 1.6 + @testing-library/react + jsdom 24 for testing (16 tests)
   - Deployment: Vercel (build: next build --webpack)
 branch: master
@@ -97,17 +98,21 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 | SearchDropdown | `components/SearchDropdown.tsx` | Map view search results dropdown |
 | Sidebar | `components/Sidebar.tsx` | Sheet drawer with collapsible groups, hamburger visible on desktop |
 | InlineMap | `components/InlineMap.tsx` | Full-page cluster map with geolocation + route |
-| PageHeader | `components/PageHeader.tsx` | Header bar — sidebar toggle, search, "+ add" button (right side), theme toggle |
+| ThemePresetPicker | `components/ThemePresetPicker.tsx` | Dropdown with color swatches for theme presets |
+| PageHeader | `components/PageHeader.tsx` | Header bar — sidebar toggle, search, "+ add" button (right side), theme toggle, theme preset picker |
 
 ### Design System
 
-**shadcn/ui + next-themes** — dark mode toggle (Moon/Sun in header)
+**shadcn/ui + next-themes** — dark mode toggle (Moon/Sun in header) + tweakcn theme presets
 
 - shadcn starter palette: `:root` `--background: oklch(1 0 0)`, `--primary: oklch(0.205 0 0)`
 - Dark: `--background: oklch(0.145 0 0)`
 - **IBM Plex Sans Thai** primary font, applied as `--font-ibm-plex` CSS variable
 - `@custom-variant dark` in globals.css for `dark:` Tailwind classes
 - All CSS vars in `globals.css`, `--pin-color` for MapLibre pins
+- **Theme Preset Picker** — 14 tweakcn presets, swaps CSS vars for colors + shadows + spacing + tracking, no font overrides
+- **Theme presets file**: `lib/theme-presets.ts` — `ThemePreset` with `vars` (light) + `darkVars` (dark), `makeDesign()` for unique shadows/radius/tracking
+- **useThemePreset hook**: `hooks/useThemePreset.ts` — manages preset state, applies via `<style>` tag, persists to `localStorage`
 
 ### CSS Tokens
 
