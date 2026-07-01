@@ -31,6 +31,15 @@ git:
   - commit only when asked
 env:
   - SUPABASE_ACCESS_TOKEN: sbp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+opencode_permissions:
+  global_config: /root/.config/opencode/opencode.jsonc
+  external_directories:
+    - ~/AI-KB/**
+    - ~/truck/**
+    - ~/mcky.space/**
+    - ~/clientdata/**
+    - ~/habby/**
+    - ~/cafe/**
 ---
 
 # User Profile

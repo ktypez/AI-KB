@@ -65,7 +65,7 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 | `app/` | App Router pages, API routes (`api/`), public pages (`c/`), providers, CSS |
 | `components/` | Reusable UI — views, forms, maps, modals + `ui/` primitives (Base UI) |
 | `lib/` | Core logic — DB (Drizzle ORM), auth, client CRUD, R2 upload, suggestions, utilities |
-| `hooks/` | Custom React hooks (`useDebounce`) |
+| `hooks/` | Custom React hooks (`useDebounce`, `useGeolocation`, `useMapDarkMode`) |
 | `types/` | Ambient type declarations for untyped packages |
 | `scripts/` | One-off migration scripts |
 | `public/` | Static assets — PWA manifest, icons, service worker |
@@ -96,6 +96,7 @@ Client management & CRM — Next.js 16 with Drizzle + Neon Postgres, Cloudflare 
 | Tooltip | `components/ui/tooltip.tsx` | Hover tooltip |
 | TableSkeleton | `components/TableSkeleton.tsx` | Table row loading placeholder |
 | SearchDropdown | `components/SearchDropdown.tsx` | Map view search results dropdown |
+| SuggestionDiff | `components/SuggestionDiff.tsx` | Shared diff display (label + old + new) for suggestions |
 | Sidebar | `components/Sidebar.tsx` | Sheet drawer with collapsible groups, hamburger visible on desktop |
 | InlineMap | `components/InlineMap.tsx` | Full-page cluster map with geolocation + route |
 | ThemePresetPicker | `components/ThemePresetPicker.tsx` | Dropdown with color swatches for theme presets |
@@ -144,6 +145,9 @@ Custom properties in `globals.css` (light + dark):
 - **Font fix**: `globals.css:59` — `--font-sans: var(--font-ibm-plex), system-ui, sans-serif` (was circular reference)
 - **MapPreview**: simple single-style map (no dark/light toggle, no MutationObserver); marker uses `bg-[var(--primary)]` + `border-[var(--card)]`
 - **MapPicker**: uses `cssVarToHex('--pin-color')` to pass theme color to `pinHtml()` for draggable pin; overlay uses `bg-background/80 text-foreground`
+- **Shared SuggestionDiff**: `components/SuggestionDiff.tsx` — renders label + line-through old + success-colored new; skips if unchanged. Replaces duplicate implementations in ClientDetail and AdminSuggestionsInline
+- **Shared useGeolocation**: `hooks/useGeolocation.ts` — returns `{ getCurrentLocation, locating, error }`; wraps navigator.geolocation in a promise. Replaces duplicate implementations in AddClientForm and SuggestEditForm
+- **Shared useMapDarkMode**: `hooks/useMapDarkMode.ts` — watches `document.documentElement` class changes, fires callback with new style URL. Ref: `MapLibre` can't parse `var()`, but `getComputedStyle` always returns `rgb()` hex-convertible. Used by MapPicker, MapPreview, InlineMap
 
 ## Commands
 

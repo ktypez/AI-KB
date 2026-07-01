@@ -4,7 +4,7 @@ project: clientdata
 last_updated: 2026-07-01
 id: clientdata-status
 title: clientdata-status
-timestamp: 2026-07-01T12:00:00Z
+timestamp: 2026-07-01T19:58:00Z
 ---
 
 # Project Status — clientdata
@@ -91,6 +91,15 @@ timestamp: 2026-07-01T12:00:00Z
 ## Changelog
 
 ### 2026-07-01
+- **Code review batch 2 (8 items)**:
+  - Deduplicated `SuggestionDiff`/`DiffRow` → shared `components/SuggestionDiff.tsx`
+  - Deduplicated `getCurrentLocation` → shared `hooks/useGeolocation.ts`
+  - Deduplicated MutationObserver dark mode → shared `hooks/useMapDarkMode.ts` (used by MapPicker, MapPreview, InlineMap)
+  - Fixed empty catch blocks in ClientDetail handleApprove/handleReject — now shows user-facing error messages
+  - Added React.memo to SearchDropdown to prevent re-renders on keystroke
+  - Removed lucide-react dependency (replaced XIcon with phosphor X)
+  - Refactored type assertions in suggestions/route.ts with proper validation guards
+  - Added glow border hover effect on desktop + mobile cards with badge
 - **Pins follow style presets natively**: `getPinColor()` reads `--pin-color` (defaults to `var(--primary)` via globals.css) instead of `--foreground` — every preset customizes `--primary`, so all 16 presets now get distinct pin colors automatically
 - **`pin-color` in ThemePresetVars**: interface now includes optional `'pin-color'` key for presets that want to override the default
 - **cssVarToHex**: replaced Canvas2D `ctx.fillStyle` with DOM `getComputedStyle` — Canvas2D returns raw oklch on Safari/WebView (unparseable by MapLibre), DOM always returns `rgb()`

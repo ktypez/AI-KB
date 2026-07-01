@@ -1,7 +1,7 @@
 ---
 type: instruction
 id: kb-instruction
-last_updated: 2026-06-26
+last_updated: 2026-07-01
 title: INSTRUCTION
 timestamp: 2026-06-26T17:55:38Z
 ---
@@ -202,11 +202,37 @@ Each project AGENTS.md already has a `## KB` section. No setup needed — just p
 
 ---
 
-## 10. Migration
+## 10. OpenCode: External Directory Permissions
+
+This KB lives at `~/AI-KB/` but projects are in separate dirs (`~/truck/`, `~/mcky.space/`, etc.). OpenCode needs **external_directory** rules to access files outside the current project folder without prompting.
+
+Add to `~/.config/opencode/opencode.jsonc` (global) or `<project>/opencode.json` (per-project):
+
+```jsonc
+{
+  "permission": {
+    "external_directory": {
+      "~/AI-KB/**": "allow",
+      "~/truck/**": "allow",
+      "~/mcky.space/**": "allow",
+      "~/clientdata/**": "allow",
+      "~/habby/**": "allow",
+      "~/cafe/**": "allow"
+    }
+  }
+}
+```
+
+The current setup is tracked in `~/AI-KB/memory/user-profile.md` under `opencode_permissions`.
+
+---
+
+## 11. Migration
 
 This KB is self-contained in `~/AI-KB/`. To migrate to a new machine or tool:
 
 1. Copy `~/AI-KB/` to the target environment
 2. Update any absolute paths (e.g., `~/AI-KB/` → new location)
 3. Paste the universal prompt into your AI tool's custom instructions
-4. Done — no other configuration needed
+4. If using OpenCode, set up `external_directory` permissions (see §10)
+5. Done — no other configuration needed

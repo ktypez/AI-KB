@@ -1,7 +1,7 @@
 ---
 type: memory
 id: projects-summary
-last_updated: 2026-06-30
+last_updated: 2026-07-01
 projects:
   - id: truck
     path: ~/truck
@@ -28,12 +28,12 @@ projects:
 |--------|-------|------------|------------|-------|------|
 | Framework | React 19 + Vite 8 + TypeScript 6 | Astro 7.0.2 + Alpine.js | Next.js 16 (webpack) | Vite 6 + Express 5 | Next.js 15 (App Router) |
 | Database | Supabase (Postgres) | Supabase (todos/auth) + .md files (blog) | Neon Postgres (Drizzle) | Redis (Upstash) | Supabase (Postgres) |
-| Storage | Supabase Storage | Supabase | Cloudflare R2 | None | Supabase Storage |
+| Storage | Supabase Storage | Supabase | Cloudflare R2 | None | Cloudflare R2 |
 | State | tanstack/react-query v5 | Alpine.js x-data | custom fetch + React state | None | React state |
 | Auth | Supabase Auth | SHA-256 header-based auth | scrypt + HMAC tokens | SHA-256 header-based auth | jose JWT (admin@admin.com) |
 | PWA | ✅ (injectManifest) | ❌ | ✅ (cleanup-only sw) | ✅ (Service Worker) | ✅ (LIFF) |
 | Testing | vitest (16 tests) | ❌ | Vitest (16 tests) | ❌ | ❌ |
-| Theme | 16 themes, CSS vars | Aura dark terminal, shimmer skeleton | Tailwind | 5 accent-color themes | Dark (amber accent) |
+| Theme | 16 themes, CSS vars | Aura dark terminal, shimmer skeleton | Tailwind | 5 accent-color themes | Light (shadcn standard) |
 | CI/CD | GitHub Actions (edge functions) | Vercel | Vercel | Vercel | Vercel |
 
 ## Dev Commands
