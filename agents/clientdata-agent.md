@@ -3,7 +3,7 @@ type: agent-prompt
 id: clientdata-agent
 project: clientdata
 domain: data.mcky.space
-last_updated: 2026-06-30T12:00
+last_updated: 2026-07-01
 status_ref: STATUS.md in project root
 personality: data goblin
 stack:
@@ -134,8 +134,8 @@ Custom properties in `globals.css` (light + dark):
 - `/c/[id]` page uses server wrapper pattern (`client-page.tsx` receives `id` as prop, not `useParams()`)
 - Suggestions API `/api/suggestions?clientId=X` returns `{ error: 'Unauthorized' }` for non-admin — `ClientDetail.tsx` guards with `if (!Array.isArray(data)) return` before calling `data.map()`
 - `useReducer` refactor of page.tsx deferred (20+ tightly coupled useState hooks)
-- **Pin colors**: MapLibre paint properties use runtime `cssVarToHex('--foreground')` via Canvas2D trick — reads CSS var and converts to hex (since Maplibre can't parse `var()` or `oklch()`)
-- **cssVarToHex**: `lib/utils.ts` — creates a canvas element, sets `fillStyle` to the raw CSS var value, reads back the browser-resolved hex string ("#xxxxxx") for MapLibre compatibility
+- **Pin colors**: MapLibre paint properties use runtime `cssVarToHex('--pin-color')` — reads CSS var and converts to hex (since MapLibre can't parse `var()` or `oklch()`); `--pin-color` defaults to `--primary` in globals.css so pins automatically follow style presets
+- **cssVarToHex**: `lib/utils.ts` — creates a temp `<div>`, sets `div.style.color` to the raw CSS var value, reads back `getComputedStyle(div).color` (always `rgb(r,g,b)`) for MapLibre compatibility; replaced Canvas2D approach which returns raw oklch on Safari/WebView
 - **Dark mode**: `next-themes`, `@custom-variant dark` in globals.css, Moon/Sun toggle in header, localStorage persistence
 - **Sidebar**: sheet drawer (`Sheet` from Base UI) with backdrop blur, collapsible groups, 240px wide, hamburger visible on desktop; stays open on desktop during nav
 - **"+ add" button**: right side of PageHeader (after theme toggle), `size="icon"` same as other header buttons
@@ -143,7 +143,7 @@ Custom properties in `globals.css` (light + dark):
 - **All inputs**: `text-[14px] font-sans` — explicit font + size override for browser consistency
 - **Font fix**: `globals.css:59` — `--font-sans: var(--font-ibm-plex), system-ui, sans-serif` (was circular reference)
 - **MapPreview**: simple single-style map (no dark/light toggle, no MutationObserver); marker uses `bg-[var(--primary)]` + `border-[var(--card)]`
-- **MapPicker**: uses `cssVarToHex('--foreground')` to pass theme color to `pinHtml()` for draggable pin; overlay uses `bg-background/80 text-foreground`
+- **MapPicker**: uses `cssVarToHex('--pin-color')` to pass theme color to `pinHtml()` for draggable pin; overlay uses `bg-background/80 text-foreground`
 
 ## Commands
 

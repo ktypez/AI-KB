@@ -1,10 +1,10 @@
 ---
 type: project-status
 project: clientdata
-last_updated: 2026-06-30
+last_updated: 2026-07-01
 id: clientdata-status
 title: clientdata-status
-timestamp: 2026-06-30T12:00:00Z
+timestamp: 2026-07-01T12:00:00Z
 ---
 
 # Project Status — clientdata
@@ -89,6 +89,11 @@ timestamp: 2026-06-30T12:00:00Z
 - Admin accounts: scrypt + HMAC tokens, local `.auth-local.json` fallback
 
 ## Changelog
+
+### 2026-07-01
+- **Pins follow style presets natively**: `getPinColor()` reads `--pin-color` (defaults to `var(--primary)` via globals.css) instead of `--foreground` — every preset customizes `--primary`, so all 16 presets now get distinct pin colors automatically
+- **`pin-color` in ThemePresetVars**: interface now includes optional `'pin-color'` key for presets that want to override the default
+- **cssVarToHex**: replaced Canvas2D `ctx.fillStyle` with DOM `getComputedStyle` — Canvas2D returns raw oklch on Safari/WebView (unparseable by MapLibre), DOM always returns `rgb()`
 
 ### 2026-06-30
 - **Custom CSS vars cascade from shadcn vars**: `--surface: var(--muted)`, `--text-primary: var(--foreground)`, etc. — all preset-visible colors (input bg, page bg, active menu bg) now change via presets
