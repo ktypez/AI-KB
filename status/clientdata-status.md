@@ -45,6 +45,8 @@ timestamp: 2026-06-30T12:00:00Z
 | MapPreviewDynamic | Lazy-loaded map preview wrapper |
 | Sidebar | Sheet drawer with collapsible groups |
 | ThemePresetPicker | Dropdown with color swatches for 14 tweakcn theme presets |
+| PhotoRequestDialog | Photo upload + send dialog (8 states self-contained) |
+| Lightbox | Full-screen image viewer with prev/next navigation |
 
 ## API
 
@@ -91,11 +93,20 @@ timestamp: 2026-06-30T12:00:00Z
 ### 2026-06-30
 - **Custom CSS vars cascade from shadcn vars**: `--surface: var(--muted)`, `--text-primary: var(--foreground)`, etc. — all preset-visible colors (input bg, page bg, active menu bg) now change via presets
 - **Sidebar**: migrated to shadcn sidebar classes (`bg-sidebar-accent`, `text-sidebar-accent-foreground`, `bg-sidebar`) — sidebar active menu now follows presets
-- **Map page**: pin colors read `--foreground`, strokes read `--card` via `cssVarToHex()` (Canvas2D trick) — map clusters, pins, overlays now theme-aware
+- **Map page**: pin colors read `--pin-color` (defaults to `--primary` via globals.css), strokes read `--card` via `cssVarToHex()` — map clusters, pins, overlays now follow style presets
 - **MapPreview**: marker border `border-white` → `border-[var(--card)]`
 - **MapPicker**: overlay `bg-black/60 text-white` → `bg-background/80 text-foreground`
-- **lib/utils.ts**: added `cssVarToHex()` helper — converts oklch/var to hex for MapLibre compatibility
+- **lib/utils.ts**: added `cssVarToHex()` helper — converts oklch/var to hex for MapLibre compatibility; uses DOM `getComputedStyle` (not Canvas2D) — always returns `rgb()` format that MapLibre can parse
 - **Sidebar vars**: `--sidebar-*` now reference main vars (`var(--background)`, `var(--muted)`, etc.) instead of hardcoded oklch values
+- **Code review + refactor (batch)**:
+  - Empty catch blocks: added `console.warn`/`console.error` across all files
+  - Copy handlers: consolidated 3 `useCallback` (handleCopy/handleCopyMaps/handleCopyTextAndMaps) → single `handleCopy(mode)`
+  - `resizeImage()`: moved from `ImageUpload.tsx` → `lib/utils.ts`
+  - `compressImage`: linear quality loop → binary search (7→6 iterations max)
+  - `PhotoRequestDialog`: extracted from `ClientDetail.tsx` (8 states, 100 lines → self-contained component)
+  - `Lightbox`: extracted from `ClientDetail.tsx` (1 state, 65 lines → self-contained component)
+  - `ClientDetail.tsx`: 966→744 lines, 20→10 `useState`, 0 `useRef`
+  - MapMutationObserver: fixed style comparison bug (`sprite` vs `style.json` — always different) across InlineMap/MapPicker/MapPreview — now uses `currentStyleRef`
 
 ### Week 2026-06-28
 - **"+" button moved to header right side** — after theme toggle, `size="icon"` same as other header buttons
@@ -152,7 +163,7 @@ timestamp: 2026-06-30T12:00:00Z
 
 | Module | Tests | What's tested |
 |--------|-------|---------------|
-| `lib/utils.ts` | 14 | cn, getMapsUrl, formatDateTime, formatDate, generateId, haversineKm, displayStep |
+| `lib/utils.ts` | 14 | cn, getMapsUrl, formatDateTime, formatDate, generateId, haversineKm, displayStep, cssVarToHex |
 | `hooks/useDebounce.ts` | 2 | initial value, delayed update |
 
 - **Framework**: Vitest 1.6 + @testing-library/react + jsdom 24
