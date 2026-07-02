@@ -4,7 +4,7 @@ project: cafe
 last_updated: 2026-07-01
 id: cafe-status
 title: cafe-status
-timestamp: 2026-07-01T12:00:00Z
+timestamp: 2026-07-01T20:40:00Z
 ---
 
 # Project Status — cafe
@@ -111,7 +111,7 @@ Full-featured cafe ordering system: admin dashboard with kanban, LIFF customer o
 
 ## Design System
 
-- **Theme**: Light theme with `--color-background: hsl(0 0% 100%)` semantic tokens, standard shadcn radius/chart colors/animations
+- **Theme**: Claude-inspired warm amber preset — `--color-background: hsl(0 0% 100%)`, `--color-foreground: hsl(20 35% 4%)`, `--color-primary: hsl(30 100% 40%)` (amber)
 - **Accent**: Primary color as main action color
 - **Cards**: `<Card>` shadcn component (cva + cn + forwardRef) with `rounded-xl`, `border border-border`, `bg-card`
 - **Badges**: `<Badge>` shadcn component (default/secondary/destructive/outline/success/warning)
@@ -159,6 +159,16 @@ Full-featured cafe ordering system: admin dashboard with kanban, LIFF customer o
 ## Changelog
 
 ### 2026-07-01
+- **Claude-inspired color palette**: warm amber primary, warm off-white bg, higher contrast for readability
+- **All remaining raw buttons converted to shadcn**: LoginPage (Input/Button), OrderCard (ดูสลิป), PosTab/PosModal (qty +/-), date-picker, settings tabs, LIFF tabs + order type cards (Card) + qty/แก้ไข/slip delete buttons
+- **Kanban column min-width**: `w-80` (320px) per column to prevent narrow layout
+- **AdminHeader subtitle removed**: "ระบบสั่งซื้อกาแฟผ่านไลน์ & สรุปยอดขาย Real-time" deleted
+- **Dashboard tab icons**: all 4 tabs now have icons (ClipboardList/ShoppingCart/DollarSign/Users)
+- **Settings button full text**: always shows "ตั้งค่า" (no `hidden sm:inline`)
+- **Extra shot price field**: CustomizationManager now shows price input for all types including extra_shot, with label captions
+- **LIFF ?tab=member deep-link**: lazy initializer reads `window.location.search` for `?tab=member`
+- **Rich menu updated**: left → LIFF ordering, center → LIFF member tab (`?tab=member`), right → Google Maps
+- **Dialog onDrag type fixed**: removed `{...props}` spread causing motion type conflict
 - **Receipt extracted to component**: `ReceiptViewer.tsx` — shared canonical component, ~170 lines duplicate logic removed (do not modify without instruction)
 - **Full shadcn component library**: Card, Badge, Dialog, Tabs, Table, Label, Separator — all using cva + cn + forwardRef
 - **All admin/settings components converted to shadcn**: OrderCard → Card + Badge, KanbanColumn → Card, SlipModal → Dialog, TabBar → Tabs, SalesSummary → Card + Table + Badge, CategoryManager → Card, CustomizationManager → Card, MenuManager → Card, PosTab → Card, PosModal → Card
@@ -208,5 +218,4 @@ Full-featured cafe ordering system: admin dashboard with kanban, LIFF customer o
 - App title in layout still says "My Google AI Studio App"
 - LIFF page is ~1600 lines (could be split into smaller components)
 - Missing shadcn components: Select, Textarea, Switch (add as needed)
-- Pre-existing `sharp` module missing for `/api/line/setup-richmenu`
-- Dialog `onDrag` type incompatibility with motion 12
+- Pre-existing `sharp` module missing for `/api/line/setup-richmenu` (Termux only — Vercel includes it)

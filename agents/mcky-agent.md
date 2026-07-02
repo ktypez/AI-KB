@@ -2,43 +2,42 @@
 type: agent-prompt
 id: mcky-agent
 project: mcky.space
-last_updated: 2026-06-26
-status_ref: STATUS.md in project root
+last_updated: 2026-07-01
+status_ref: ~/AI-KB/status/mcky-status.md
 personality: terminal hipster
 stack:
   - Astro 7.0.2 (server output, Vercel adapter)
   - TypeScript
   - Pure CSS — Neobrutalism (globals.css, no Tailwind)
-  - JetBrains Mono via Google Fonts (400–800)
-  - Supabase (todos/auth) — habits on habby.mcky.space
+  - JetBrains Mono (self-hosted WOFF2 variable font, font-display:swap)
+  - Supabase (auth) — habits on habby.mcky.space
   - Blog: .md files compiled to TypeScript at build time
   - Client UI: Alpine.js via CDN (x-data/x-init patterns)
   - Markdown: `marked` (lightweight, no React dependency)
-  - Data Fetching: Plain fetch for all client data
-  - API: Astro endpoints (8 routes in src/pages/api/)
-  - Auth: SHA-256 password via Web Crypto API, header-based gating
   - Deployment: Vercel via @astrojs/vercel
+  - Cache: immutable for /fonts/ and /_astro/
+  - Security: X-Content-Type-Options, X-Frame-Options, Referrer-Policy
 components:
-  - taskApp: Alpine.js data object — todo CRUD, priority cycling, list grouping, stats
-  - require-auth.ts: Middleware — validates x-auth-hash header, returns 401/503
-  - fetchWithAuth: Utility that attaches x-auth-hash header on mutating requests
+  - PageHeader: Reusable page header with back link + title
+  - TerminalLine: Reusable terminal prompt line
+  - Layout: Base layout with sidebar, noscript, theme toggle
 commands:
   dev: npm run dev
   build: npm run build (runs prebuild hook for blog index first)
   build-blog: node scripts/build-blog-posts.mjs
   start: npm run start
-  test: Not configured
+  test: Not configured (skip tests)
   lint: Not configured (pure CSS, no framework lint)
 triggers:
   "update .md": Read STATUS.md + AGENTS.md, update routes/components/design → sync KB
-  "cleanup": Scan unused → build check → present findings → update docs
+  "cleanup": Scan unused → present findings → update docs
 ---
 
 # mcky.space Agent
 
 ## Overview
 
-Terminal-style personal website on mcky.space. Neobrutalist design with Alpine.js interactivity, Astro 7 server output, and SHA-256 auth.
+Terminal-style personal website on mcky.space. Neobrutalist design with responsive layout (320px–1440px+), Alpine.js interactivity, Astro 7 server output, and SHA-256 auth.
 
 ## Stack
 
@@ -47,44 +46,59 @@ Terminal-style personal website on mcky.space. Neobrutalist design with Alpine.j
 | Framework | Astro 7.0.2 (server output, Vercel adapter) |
 | Language | TypeScript |
 | Styling | Pure CSS — Neobrutalism (globals.css) |
-| Font | JetBrains Mono 400–800 via Google Fonts |
-| Database | Supabase (todos/auth) |
+| Font | JetBrains Mono (self-hosted WOFF2 variable font) |
+| Database | Supabase (auth) |
 | Blog | .md files compiled to TS at build time |
 | Client UI | Alpine.js via CDN (x-data/x-init patterns) |
 | Markdown | `marked` |
 | Auth | SHA-256 via Web Crypto API, header-based gating |
-| Deployment | Vercel via @astrojs/vercel |
+| Deployment | Vercel with cache + security headers |
 
 ## Architecture
 
 | Route | Description |
 |-------|-------------|
-| `/` | Neobrutalist homepage — terminal sim in neo-card, tech stack tags |
+| `/` | Terminal-style homepage — neo-card with terminal sim, tech stack tags |
 | `/about` | About page — neo-cards for bio, stack badges, contact |
-| `/blog` | Blog listing — neo-card per post, badge dates |
-| `/blog/[slug]` | Blog post — neo-styled content, code blocks with shadows |
-| `/task` | Todo list — Alpine.js x-data (CRUD, priority, stats in neo-cards) |
-| `/projects` | Project showcase — neo-cards with colored tags |
+| `/blog` | Blog listing — neo-card per post, badge dates, empty state |
+| `/blog/[slug]` | Blog post — neo-styled content, prev/next nav |
+| `/projects` | Project showcase — neo-cards with colored tags, empty state |
+| `/404` | Styled 404 page with terminal prompt |
 | `habby.mcky.space` (external) | Sidebar + homepage link (new tab) |
+
+## Responsive Breakpoints
+
+| Breakpoint | Behavior |
+|------------|----------|
+| `<768px` | Mobile-first: sidebar hidden, top-nav, 560px max-width |
+| `≥768px` | Sidebar visible (220px), app borders removed |
+| `≥1024px` | Wider padding (32px), fluid typography |
+| `≥1440px` | Max-width container (720px), wider sidebar (260px) |
 
 ## Key Patterns
 
 - Alpine.js x-data + x-init for client-side interactivity (no React bundle)
 - `marked` for lightweight markdown rendering (no React dependency)
-- Plain fetch for all API calls (no SWR/React Query)
 - Astro static pages for non-interactive content (about, projects)
 - Blog .md compiled to TS at build time (no runtime filesystem access)
 - CSS-only skeleton loading (.skel class with shimmer keyframe)
 - SHA-256 auth hash stored in localStorage as auth_hash
+- Self-hosted fonts with font-display:swap (no external CDN)
+- prefers-reduced-motion for all animations
+- :focus-visible on all interactive elements
+- ARIA landmarks on navigation and main content
+- env(safe-area-inset-*) for notched device support
 
 ### Design System
 
-- **Neobrutalism** — light default (`#f5f5f0` bg), dark mode supported
-- Thick 3px black borders, hard offset shadows (`4px 4px 0`)
-- Bright saturated accents: green, amber, red, blue, purple, orange, pink
-- Components: `.neo-card` (shadow cards), `.neo-tag` (colored labels), `.neo-badge` (inline chips)
+- **Neobrutalism** — light default (`#f5f5f0` bg), dark mode via `[data-theme="dark"]`
+- Thick 3px borders, hard offset shadows (`4px 4px 0`)
+- Bright saturated accents: green, amber, red, blue, purple, orange, cyan, pink
+- Components: `.neo-card` (shadow cards), `.neo-tag` (colored labels), `.neo-badge` (inline chips), `.stub` (empty state)
 - CSS variables in `:root` — no magic numbers
-- JetBrains Mono 400–800 via Google Fonts
+- JetBrains Mono self-hosted WOFF2 variable font
+- Fluid typography via clamp() for h1, h2
+- CSS containment on .neo-card and .todo-row
 
 ## Commands
 
@@ -94,7 +108,7 @@ Terminal-style personal website on mcky.space. Neobrutalist design with Alpine.j
 | `npm run build` | Build (prebuild blog index + astro build) |
 | `node scripts/build-blog-posts.mjs` | Build blog index manually |
 | `npm run start` | Start production server |
-| test | Not configured |
+| test | Not configured (skip tests) |
 | lint | Not configured (pure CSS, no framework lint) |
 
 ## Triggers
@@ -109,12 +123,10 @@ Terminal-style personal website on mcky.space. Neobrutalist design with Alpine.j
 ### "cleanup"
 
 1. Scan unused files, empty files, dead exports in `src/`
-2. Health check: `npm run build` (runs prebuild + astro build)
-3. Deep scan: leftover dirs, `console.log`, TODO/FIXME
-4. Present findings for user to choose
-5. Commit & Push if user says so
-6. Update STATUS.md + KB agent file
-7. Never cleanup `.env*`, `node_modules/`, `dist/`, `.next/`, `.git/`, or essential config
+2. Present findings for user to choose
+3. Commit & Push if user says so
+4. Update STATUS.md + KB agent file
+5. Never cleanup `.env*`, `node_modules/`, `dist/`, `.next/`, `.git/`, or essential config
 
 ## Rules
 
@@ -128,8 +140,11 @@ Terminal-style personal website on mcky.space. Neobrutalist design with Alpine.j
 - Prioritize reference design when given
 - New routes must match existing neobrutalism style
 - Static pages (about, projects) are pure Astro HTML — no JS needed
-- Interactive pages (task) use Alpine.js x-data directives inline in .astro templates
+- Interactive pages use Alpine.js x-data directives inline in .astro templates
 - Blog is read-only — edit via Git (.md files + rebuild)
-- All mutating API endpoints require `x-auth-hash` header (validated via `require-auth` middleware)
-- No external API calls, no database (except Supabase for todos/auth)
+- All mutating API endpoints require `x-auth-hash` header
+- No external API calls, no database (except Supabase for auth)
 - Build: `npm run build` runs `prebuild` (blog index) + `astro build`
+- Do not run `npm install` (android-arm64 binding breaks)
+- Do not delete `node_modules/`
+- Skip tests — no test commands

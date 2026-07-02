@@ -95,12 +95,12 @@ hooks/use-auth.ts → Admin auth (email + password → JWT)
 | Directory | Responsibility |
 |-----------|---------------|
 | `app/` | App Router pages + API routes |
-| `app/api/` | Menu, order, recipe, customer, auth, LINE, upload endpoints |
+| `app/api/` | Menu, order, recipe, customer, auth, LINE, categories, customization-options, shop-status, upload-menu-image endpoints |
 | `components/` | ReceiptViewer — shared receipt component (do not modify without instruction) |
-| `components/admin/` | ReceiptModal, SlipModal, OrderCard, TabBar, AdminHeader |
+| `components/admin/` | ReceiptModal, SlipModal, OrderCard, KanbanColumn, TabBar, AdminHeader, PosTab, PosModal, SalesSummary, LoginPage |
 | `components/settings/` | MenuManager, CategoryManager, CustomizationManager |
-| `components/ui/` | Input, DatePicker, Button, Toaster |
-| `lib/` | Types, data store, menu data, recipes, PromptPay, Supabase, auth, LINE bot, receipt, R2, delivery fee |
+| `components/ui/` | Input, DatePicker, Button (cva), Card, Badge, Dialog, Tabs, Table, Label, Separator |
+| `lib/` | Types, data store, menu data, recipes, PromptPay, Supabase, auth, LINE bot, receipt, R2, delivery fee, category-icons, menu-customization, api-client, db-store |
 | `hooks/` | useLiff, useCustomer, useSound, useAuth, useToast, useIsMobile |
 | `fonts/` | Kanit-Regular.ttf, Kanit-Bold.ttf (full TTF from Google Fonts) |
 
@@ -109,8 +109,8 @@ hooks/use-auth.ts → Admin auth (email + password → JWT)
 | Route | Type | Description |
 |-------|------|-------------|
 | `/` | Page | Admin Dashboard — kanban, POS, sales summary |
-| `/liff` | Page | Customer LIFF ordering — phone login → menu → checkout → tracking |
-| `/settings` | Page | Menu & recipe management |
+| `/liff` | Page | Customer LIFF ordering — phone login → menu → checkout → tracking (supports `?tab=member`) |
+| `/settings` | Page | Tabbed settings: เมนู / หมวดหมู่ / ตัวเลือก |
 | `/api/menus` | API | Menu CRUD |
 | `/api/orders` | API | Orders CRUD (accepts deliveryFee) |
 | `/api/recipes` | API | Recipe CRUD |
@@ -120,8 +120,12 @@ hooks/use-auth.ts → Admin auth (email + password → JWT)
 | `/api/auth/verify` | POST | JWT verification |
 | `/api/line-notify` | POST | LINE push (ready text / receipt image) |
 | `/api/line/webhook` | POST | LINE webhook |
-| `/api/line/setup-richmenu` | POST | Rich menu setup |
+| `/api/line/setup-richmenu` | POST | Rich menu setup (left: LIFF, center: member tab, right: Maps) |
 | `/api/seed` | POST | Auto-seed menus |
+| `/api/categories` | GET, POST | Category CRUD |
+| `/api/customization-options` | GET, POST | Option CRUD (GET ?type= filter) |
+| `/api/shop-status` | GET, PUT | Shop open/close toggle |
+| `/api/upload-menu-image` | POST | R2 image upload |
 
 ## Key Components
 
@@ -153,8 +157,9 @@ hooks/use-auth.ts → Admin auth (email + password → JWT)
 - **Delivery Fee** — Shows "ค่าจัดส่ง" line before total
 
 ### Settings (`app/settings/page.tsx`)
-- **MenuManager** — List/create/edit/delete menu items
-- **RecipeManager** — List/create/edit/delete brewing recipes linked to menu items
+- **MenuManager** — List/create/edit/delete menu items with R2 photo upload, global option toggles per item
+- **CategoryManager** — CRUD for dynamic categories (slug-based icon mapping)
+- **CustomizationManager** — CRUD for global customization options pool grouped by type (sweetness/milk/extra_shot), each with price input
 
 ## Data Flow
 
@@ -172,10 +177,12 @@ hooks/use-auth.ts → Admin auth (email + password → JWT)
 | Entity | Key Fields |
 |--------|-----------|
 | **Order** | id, lineUserId, lineDisplayName, type, tableNumber, pickupTime, deliveryAddress, phoneNumber, items (CartItem[]), total, deliveryFee, slipUrl, status, paymentMethod, paymentConfirmed, customerArrived, queueNumber, carInfo, createdAt, updatedAt |
-| **MenuItem** | id, name, thName, description, price, category, imageUrl, available |
+| **MenuItem** | id, name, thName, description, price, category (text slug), imageUrl (R2 URL), available, customization (jsonb) |
 | **Recipe** | menuItemId, name, thName, ratio, grindSize, temperature, ingredients[{name, amount}], steps[{text, duration?}] |
 | **CartItem** | id, name, price, quantity, sweetness, milk, extraShot |
 | **Customer** | id (text), phoneNumber, lineUserId, lineDisplayName, linePictureUrl, points, createdAt |
+| **Category** | id, name, slug, sortOrder, createdAt |
+| **CustomizationOption** | id, type (sweetness/milk/extra_shot), label, value, priceModifier, sortOrder, createdAt |
 
 ## Environment
 
@@ -221,11 +228,18 @@ hooks/use-auth.ts → Admin auth (email + password → JWT)
 ## Rules
 
 ### Design
-- Light theme with semantic CSS tokens (`--color-background`, `--color-foreground`)
-- Cards: `bg-card` with `border border-border` + `shadow-sm`
-- Buttons: shadcn `<Button>` component everywhere (except LIFF order type cards)
+- Light theme with Claude-inspired warm amber preset: `--color-background: hsl(0 0% 100%)`, `--color-primary: hsl(30 100% 40%)`, `--color-foreground: hsl(20 35% 4%)`
+- All components use shadcn pattern: `class-variance-authority` (cva) + `clsx` + `tailwind-merge` + `forwardRef`
+- Cards: `<Card>` shadcn component (`rounded-xl`, `border border-border`, `bg-card`)
+- Buttons: shadcn `<Button>` component with cva (default/outline/ghost/secondary/destructive/link + sm/lg/icon)
+- Badges: `<Badge>` shadcn (default/secondary/destructive/outline/success/warning)
+- Dialogs: `<Dialog>` motion-based (no Radix)
+- Tabs: `<Tabs>` shadcn with TabsList + TabsTrigger + TabsContent
+- Tables: `<Table>` shadcn with TableHeader + TableBody + TableRow + TableHead + TableCell
+- Labels: `<Label>`, Separators: `<Separator>`
+- Animations: `tw-animate-css` for enter/exit animations
 - Thai labels everywhere (admin + LIFF)
-- Product customization: sweetness (4 levels), milk (fresh/oat/soy), extra shot (+฿15)
+- Product customization: sweetness (4 levels), milk (fresh/oat/soy), extra shot (global option pool in `customization_options` table)
 
 ### Receipt
 - Shared HTML template (`lib/receipt-html.ts`) — 720px wide, compact text
