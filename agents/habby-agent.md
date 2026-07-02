@@ -2,7 +2,7 @@
 type: agent-prompt
 id: habby-agent
 project: habby
-last_updated: 2026-06-26
+last_updated: 2026-07-02
 personality: trophy goblin
 stack:
   - Vite 6 + vanilla HTML/CSS/JS
@@ -13,7 +13,8 @@ stack:
   - productivity timer
   - push notifications (Service Worker)
   - daily digest + stats dashboard
-  - theme picker (5 themes)
+  - theme picker (2 themes: light + dark)
+  - mcky.space design system (JetBrains Mono, neobrutalist tokens)
 commands:
   dev: yarn dev (Express + Vite)
   build: yarn build
@@ -30,7 +31,7 @@ triggers:
 
 ## Overview
 
-Gamified habit tracker — Vite frontend + Express 5 backend + Redis (Upstash). Password-protected, neobrutalist design, 5 accent-color themes.
+Gamified habit tracker — Vite frontend + Express 5 backend + Redis (Upstash). Password-protected, neobrutalist design using mcky.space DESIGN.md tokens. 2 themes (light/dark), self-hosted JetBrains Mono font.
 
 ## Stack
 
@@ -55,8 +56,9 @@ Gamified habit tracker — Vite frontend + Express 5 backend + Redis (Upstash). 
 - **Stats**: Total habits, XP, best streak, weekly completion %, bar chart
 - **Digest**: Daily summary with done/pending counts and streaks
 - **Notifications**: Configurable daily reminder (browser notif)
-- **Themes**: 5 accent-color themes (default, ocean, sunset, forest, midnight)
+- **Themes**: 2 themes — light + dark via `data-theme` attribute
 - **Auth**: Access password stored in Redis (SHA-256), persistent login via localStorage
+- **Design**: mcky.space design system — JetBrains Mono, 3px borders, 6px radius, 4px shadows, terminal-style login
 
 ### Data Model
 

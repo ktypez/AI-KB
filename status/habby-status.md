@@ -1,10 +1,10 @@
 ---
 type: project-status
 project: habby
-last_updated: 2026-06-26
+last_updated: 2026-07-02
 id: habby-status
 title: habby-status
-timestamp: 2026-06-26T17:55:38Z
+timestamp: 2026-07-02T02:30:00Z
 ---
 
 # Project Status — habby
@@ -34,10 +34,13 @@ timestamp: 2026-06-26T17:55:38Z
 
 ## Design System
 
-- **Theme**: 5 accent-color themes (default, ocean, sunset, forest, midnight)
-- **Style**: Neobrutalist-inspired, clean and minimal
-- **Components**: cards, buttons, modals, form inputs
-- **Typography**: system font stack
+- **Theme**: 2 themes — light + dark via `data-theme` attribute
+- **Style**: Neobrutalist, mcky.space design system (DESIGN.md)
+- **Tokens**: `--bg`, `--bg-raise`, `--border`, `--text`, `--muted`, 8 accent colors (`--green`, `--amber`, `--red`, `--blue`, `--purple`, `--orange`, `--cyan`, `--pink`)
+- **Components**: `.neo-card` pattern (3px border, 6px radius, 4px shadow), terminal-style login
+- **Typography**: JetBrains Mono (self-hosted WOFF2, `font-display: swap`)
+- **Accessibility**: `:focus-visible`, `prefers-reduced-motion`, ARIA roles, `viewport-fit=cover`
+- **Responsive**: 600px / 768px / 1024px / 1440px breakpoints
 
 ## Data Model
 
@@ -55,6 +58,14 @@ notifications:time → HH:MM string
 ```
 
 ## Changelog
+
+### Week 2026-07-02
+- **Redesign**: adopted mcky.space design system (DESIGN.md)
+- Replaced Google Fonts (DM Sans + Space Grotesk) with self-hosted JetBrains Mono
+- Replaced 5-theme system with 2-theme (light/dark)
+- Terminal-style login screen (was card-based)
+- Added accessibility: `:focus-visible`, `prefers-reduced-motion`, ARIA, `safe-area-inset`
+- Updated design tokens: 3px borders, 6px radius, 4px shadows
 
 ### Week 2026-06-22
 - **Launch**: deployed to habby.mcky.space (Vercel) as Vite 6 + Express 5 + Upstash Redis
@@ -76,5 +87,4 @@ notifications:time → HH:MM string
 
 ## Known Issues
 
-- Login button contrast needs improvement on dark/midnight themes
-- Toast shadow uses `var(--shadow)` instead of hardcoded rgba
+(none currently)
