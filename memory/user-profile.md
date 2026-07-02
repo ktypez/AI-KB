@@ -21,6 +21,7 @@ termux:
   - vite: node node_modules/vite/bin/vite.js build
   - eslint: node node_modules/.pnpm/eslint@10.5.0/node_modules/eslint/bin/eslint.js src/
   - test: node node_modules/.pnpm/vitest@3.2.6_jsdom@29.1.1_lightningcss@1.32.0_terser@5.48.0/node_modules/vitest/vitest.mjs run
+  - next dev: npx next dev -H localhost (shebang broken, -H localhost for network binding)
   - npm: works normally
   - shebang: unavailable (/usr/bin/env broken)
   - vercel: vercel CLI installed at /home/.npm-global/bin/vercel (v54.18.1), logged in as fall3n36

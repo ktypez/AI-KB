@@ -25,6 +25,10 @@ stack:
 triggers:
   "update .md": Read STATUS.md + AGENTS.md, update Components/Data Flow → sync KB
   "cleanup": Scan unused → health check → present findings → update docs
+commands:
+  dev: npx next dev -H localhost
+  build: npm run build
+  lint: npm run lint
 env_vars:
   - APP_URL
   - NEXT_PUBLIC_SUPABASE_URL

@@ -20,7 +20,7 @@ stack:
   - Deployment: Vercel (build: next build --webpack)
 branch: master
 commands:
-  dev: npm run dev (port 3002, host 0.0.0.0)
+  dev: npx next dev -H localhost (port 3002)
   build: npm run build (next build --webpack)
   test: pnpm test (16 tests)
   test:watch: pnpm test:watch
@@ -153,7 +153,7 @@ Custom properties in `globals.css` (light + dark):
 
 | Command | What it does |
 |---------|-------------|
-| `npm run dev` | Dev server (port 3002, host 0.0.0.0) |
+| `npx next dev -H localhost` | Dev server (port 3002) |
 | `npm run build` | Production build (`next build --webpack`) |
 | `pnpm test` | Run tests (16 tests) |
 | `npm run lint` | ESLint |
